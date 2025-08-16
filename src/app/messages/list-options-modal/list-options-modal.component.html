@@ -34,12 +34,11 @@
                     <p
                         class="w-full pt-8 pb-5 px-4 text-lg text-blue-700"
                         *ngIf="section.title"
-                    >
-                        {{ section.title }}
-                    </p>
+                        [textContent]="section.title"
+                    ></p>
 
                     <div
-                        class="min-h-18 w-full px-4 flex juftify-between items-center hover:bg-gray-100 dark:hover:bg-gray-800"
+                        class="min-h-18 w-full px-6 flex juftify-between items-center hover:bg-gray-100 dark:hover:bg-gray-800"
                         (click)="selectRow(row)"
                         *ngFor="let row of section.rows"
                     >
@@ -52,7 +51,7 @@
                             }}</span>
                         </div>
                         <!-- Selector Div -->
-                        <div class="selector" (click)="selectRow(row)">
+                        <div class="selector w-6 h-6 aspect-square" (click)="selectRow(row)">
                             <mat-icon
                                 class="material-symbols-outlined"
                                 *ngIf="isSelectedRow(row)"
