@@ -1,20 +1,16 @@
 <div
-    class="py-8 fixed top-0 left-0 bottom-0 right-0 flex items-center justify-center bg-gray-800 bg-opacity-70 z-10"
+    class="fixed bottom-0 left-0 right-0 top-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-70 py-8"
     (click)="close.emit()"
 >
-    <div
-        class="max-w-md h-full flex flex-col"
-        id="content"
-        (click)="$event.stopPropagation()"
-    >
+    <div class="flex h-full max-w-md flex-col" id="content" (click)="$event.stopPropagation()">
         <!-- Header -->
         <div
-            class="px-6 py-2 w-full bg-blue-800 dark:bg-gray-700 text-white flex justify-start items-center"
+            class="flex w-full items-center justify-start bg-blue-800 px-6 py-2 text-white dark:bg-gray-700"
             id="header"
         >
             <button
                 [ngClass]="{
-                    'w-10 aspect-square flex items-center justify-center rounded-full mr-2': true,
+                    'mr-2 flex aspect-square w-10 items-center justify-center rounded-full': true,
                 }"
                 (click)="close.emit()"
             >
@@ -26,33 +22,28 @@
 
         <!-- Body -->
         <div
-            class="h-full w-full bg-white dark:bg-gray-900 by-2 overflow-y-scroll hide-scrollbar"
+            class="by-2 hide-scrollbar h-full w-full overflow-y-scroll bg-white dark:bg-gray-900"
             id="body"
         >
             <div class="h-full w-full">
                 <div class="section w-full" *ngFor="let section of sections">
                     <p
-                        class="w-full pt-8 pb-5 px-4 text-lg text-blue-700"
+                        class="w-full px-4 pb-5 pt-8 text-lg text-blue-700"
                         *ngIf="section.title"
-                    >
-                        {{ section.title }}
-                    </p>
+                        [textContent]="section.title"
+                    ></p>
 
                     <div
-                        class="min-h-18 w-full px-4 flex juftify-between items-center hover:bg-gray-100 dark:hover:bg-gray-800"
+                        class="min-h-18 juftify-between flex w-full items-center px-6 hover:bg-gray-100 dark:hover:bg-gray-800"
                         (click)="selectRow(row)"
                         *ngFor="let row of section.rows"
                     >
-                        <div class="w-full flex flex-col py-3">
-                            <span class="dark:text-white text-lg">{{
-                                row.title
-                            }}</span>
-                            <span class="text-gray-600 text-base">{{
-                                row.description
-                            }}</span>
+                        <div class="flex w-full flex-col py-3">
+                            <span class="text-lg dark:text-white">{{ row.title }}</span>
+                            <span class="text-base text-gray-600">{{ row.description }}</span>
                         </div>
                         <!-- Selector Div -->
-                        <div class="selector" (click)="selectRow(row)">
+                        <div class="selector aspect-square h-6 w-6" (click)="selectRow(row)">
                             <mat-icon
                                 class="material-symbols-outlined"
                                 *ngIf="isSelectedRow(row)"
@@ -75,17 +66,15 @@
         </div>
 
         <div
-            class="px-6 py-5 w-full bg-blue-800 dark:bg-gray-700 flex justify-start items-center relative"
+            class="relative flex w-full items-center justify-start bg-blue-800 px-6 py-5 dark:bg-gray-700"
             id="footer"
             *ngIf="selectedRow"
         >
-            <span class="text-sm font-normal text-white">{{
-                selectedRow.title
-            }}</span>
+            <span class="text-sm font-normal text-white">{{ selectedRow.title }}</span>
 
             <button
                 type=""
-                class="w-16 aspect-square bg-blue-700 dark:bg-blue-800 absolute right-6 bottom-8 rounded-full flex items-center justify-center"
+                class="absolute bottom-8 right-6 flex aspect-square w-16 items-center justify-center rounded-full bg-blue-700 dark:bg-blue-800"
                 (click)="copyText(selectedRow.id)"
             >
                 <mat-icon class="material-icons-outlined">copy</mat-icon>

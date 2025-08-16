@@ -44,7 +44,7 @@ export class MainServerGatewayService {
 
     /* ───── Ping / keep-alive knobs ───── */
     sendPing = true; // disable if backend already handles ping/pong
-    pingInterval = environment.webSocketBasePingInterval ?? 30 * 1000; // use ping interval from environment variables
+    pingInterval = environment?.webSocketBasePingInterval ?? 30 * 1000; // use ping interval from environment variables
     private pingTimer?: ReturnType<typeof setInterval>;
 
     /* ───── ctor ───── */
