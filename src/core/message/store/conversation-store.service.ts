@@ -61,35 +61,26 @@ export class ConversationStoreService {
     }
     private async init(route: ActivatedRoute): Promise<void> {
         await Promise.all([
-            this.messageGateway.opened.then(() =>
-                this.messageGateway.watchNewMessage((message) => {
-                    this.unshiftConversation(message);
+            this.messageGateway.watchNewMessage(message => {
+                this.unshiftConversation(message);
 
-                    // Check for "read" condition
-                    const selectedId =
-                        route.snapshot.queryParams[
-                            "messaging_product_contact.id"
-                        ];
-                    if (
-                        selectedId &&
-                        selectedId ===
-                            this.messagingProductPipe.transform(message).id
-                    )
-                        this.read(selectedId);
-                }),
-            ),
+                // Check for "read" condition
+                const selectedId = route.snapshot.queryParams["messaging_product_contact.id"];
+                if (selectedId && selectedId === this.messagingProductPipe.transform(message).id)
+                    this.read(selectedId);
+            }),
+            this.messageGateway.opened,
             this.statusGateway.opened.then(() => {
                 this.statusGateway.watchNewStatus((data: Status) => {
                     const messageId = data.message_id;
                     const message = this.conversations.find(
-                        (value) => value.message.id === messageId,
+                        value => value.message.id === messageId,
                     )?.message;
                     if (!message) return;
 
                     if (!message.statuses) message.statuses = [];
 
-                    const currentStatus =
-                        message.statuses[0]?.product_data?.status;
+                    const currentStatus = message.statuses[0]?.product_data?.status;
                     if (
                         message.statuses.length === 0 ||
                         !data.product_data.status ||
@@ -98,10 +89,8 @@ export class ConversationStoreService {
                         return message.statuses.unshift(data);
 
                     const currentOrder = statusOrder.get(currentStatus) || 0;
-                    const incommingOrder =
-                        statusOrder.get(data.product_data.status) || 0;
-                    if (incommingOrder < currentOrder)
-                        return message.statuses.unshift(data);
+                    const incommingOrder = statusOrder.get(data.product_data.status) || 0;
+                    if (incommingOrder < currentOrder) return message.statuses.unshift(data);
                     return message.statuses.push(data);
                 });
             }),
@@ -115,7 +104,7 @@ export class ConversationStoreService {
         const conversation = new ConversationWithUnread(message);
         // Check for conversation id in the array and remove if found
         const existingIndex = this.conversations.findIndex(
-            (conv) =>
+            conv =>
                 this.messagingProductPipe.transform(conversation.message).id ===
                 this.messagingProductPipe.transform(conv.message).id,
         );
@@ -131,20 +120,16 @@ export class ConversationStoreService {
         } else if (
             this.localSettings.unreadMode === UnreadMode.SERVER &&
             conversation.message.created_at >
-                this.messagingProductPipe.transform(conversation.message)
-                    .last_read_at
+                this.messagingProductPipe.transform(conversation.message).last_read_at
         ) {
             const count = await this.messageController.count(
                 {
-                    from_id: this.messagingProductPipe.transform(
-                        conversation.message,
-                    ).id,
+                    from_id: this.messagingProductPipe.transform(conversation.message).id,
                 },
                 undefined,
                 {
-                    created_at_geq: this.messagingProductPipe.transform(
-                        conversation.message,
-                    ).last_read_at,
+                    created_at_geq: this.messagingProductPipe.transform(conversation.message)
+                        .last_read_at,
                 },
             );
             conversation.unread = count;
@@ -177,7 +162,7 @@ export class ConversationStoreService {
 
     read(messagingProductContactId: string) {
         const conversation = this.conversations.find(
-            (conversation) =>
+            conversation =>
                 this.messagingProductPipe.transform(conversation.message).id ===
                 messagingProductContactId,
         );
@@ -193,27 +178,21 @@ export class ConversationStoreService {
         this.conversations = [
             ...this.conversations,
             ...(await Promise.all(
-                conversations.map(async (conversation) => {
+                conversations.map(async conversation => {
                     const withUnread = new ConversationWithUnread(conversation);
                     if (
                         this.localSettings.unreadMode === UnreadMode.SERVER &&
                         conversation.created_at >
-                            this.messagingProductPipe.transform(conversation)
-                                .last_read_at
+                            this.messagingProductPipe.transform(conversation).last_read_at
                     ) {
                         const count = await this.messageController.count(
                             {
-                                from_id:
-                                    this.messagingProductPipe.transform(
-                                        conversation,
-                                    ).id,
+                                from_id: this.messagingProductPipe.transform(conversation).id,
                             },
                             undefined,
                             {
                                 created_at_geq:
-                                    this.messagingProductPipe.transform(
-                                        conversation,
-                                    ).last_read_at,
+                                    this.messagingProductPipe.transform(conversation).last_read_at,
                             },
                         );
                         withUnread.unread = count;
@@ -225,10 +204,7 @@ export class ConversationStoreService {
     }
 
     addSearch(conversations: Conversation[]) {
-        this.searchConversations = [
-            ...this.searchConversations,
-            ...conversations,
-        ];
+        this.searchConversations = [...this.searchConversations, ...conversations];
     }
 
     async getSearchConversations(): Promise<void> {
@@ -309,7 +285,7 @@ export class ConversationStoreService {
                           },
                           { created_at: DateOrderEnum.desc },
                       )
-                  ).map((contact) => {
+                  ).map(contact => {
                       return {
                           sender_data: {
                               recipient_type: "",
@@ -363,12 +339,9 @@ export class ConversationStoreService {
                               return { ...acc, ...filter.query };
                           }, {}),
                       )
-                : await this.messagingProductContactController.countLikeText(
-                      this.searchValue,
-                      {
-                          id: this.messagingProductContactIdFilter,
-                      },
-                  );
+                : await this.messagingProductContactController.countLikeText(this.searchValue, {
+                      id: this.messagingProductContactIdFilter,
+                  });
     }
 
     async addFilter(
@@ -377,8 +350,7 @@ export class ConversationStoreService {
     ) {
         this.searchFilters.push(filter);
         if (messagingProductContactIdFilter)
-            this.messagingProductContactIdFilter =
-                messagingProductContactIdFilter;
+            this.messagingProductContactIdFilter = messagingProductContactIdFilter;
         this.getInitialSearchConcurrent();
     }
 
@@ -406,12 +378,9 @@ export class ConversationStoreService {
                     this.getInitialSearchConcurrent();
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 // Handle errors if necessary
-                this.logger.error(
-                    "Error in getInitialSearchConversations:",
-                    error,
-                );
+                this.logger.error("Error in getInitialSearchConversations:", error);
                 this.isExecuting = false;
 
                 // Even if there's an error, check for pending execution
@@ -424,7 +393,7 @@ export class ConversationStoreService {
 
     async removeFilter(filter: { text: string; query?: Query }) {
         this.searchFilters = this.searchFilters.filter(
-            (searchFilter) => searchFilter.text !== filter.text,
+            searchFilter => searchFilter.text !== filter.text,
         );
         this.messagingProductContactIdFilter = undefined;
         this.getInitialSearchConcurrent();

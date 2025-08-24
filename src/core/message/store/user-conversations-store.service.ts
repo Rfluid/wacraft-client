@@ -22,10 +22,7 @@ import { NGXLogger } from "ngx-logger";
 export class UserConversationsStoreService {
     public paginationLimit: number = 50;
 
-    public newBottomMessageFromConversations = new Map<
-        string,
-        Subject<Conversation>
-    >();
+    public newBottomMessageFromConversations = new Map<string, Subject<Conversation>>();
 
     public messageHistory = new Map<string, Conversation[]>();
     public unsentMessages = new Map<string, Conversation[]>();
@@ -44,9 +41,7 @@ export class UserConversationsStoreService {
         route: ActivatedRoute,
         messagingProductContactId: string,
     ): Promise<void> {
-        await this.createBottomMessageSubjectIfNotExists(
-            messagingProductContactId,
-        );
+        await this.createBottomMessageSubjectIfNotExists(messagingProductContactId);
         // If we have already started (or finished) initializing, just reuse that.
         if (!this.initPromise) this.initPromise = this.init(route);
 
@@ -54,56 +49,34 @@ export class UserConversationsStoreService {
     }
     private async init(route: ActivatedRoute): Promise<void> {
         await Promise.all([
-            this.messageGateway.opened.then(() =>
-                this.messageGateway.watchNewMessage(
-                    async (msg: Conversation) => {
-                        const messagingProductContactId =
-                            this.mpContactFromMessage.transform(msg).id;
-                        if (msg.sender_data)
-                            this.removeSent(
-                                msg.sender_data,
-                                messagingProductContactId,
-                            );
-                        this.appendConversationIfAtBottom(
-                            msg,
-                            messagingProductContactId,
-                        );
+            this.messageGateway.opened,
+            this.messageGateway.watchNewMessage(async (msg: Conversation) => {
+                const messagingProductContactId = this.mpContactFromMessage.transform(msg).id;
+                if (msg.sender_data) this.removeSent(msg.sender_data, messagingProductContactId);
+                this.appendConversationIfAtBottom(msg, messagingProductContactId);
 
-                        const mpcId = route.snapshot.queryParamMap.get(
-                            "messaging_product_contact.id",
-                        );
-                        if (!mpcId || !this.localSettings.autoMarkAsRead)
-                            return;
-                        this.markAsRead(mpcId);
-                    },
-                ),
-            ),
-            this.statusGateway.opened.then(() => {
-                this.statusGateway.watchNewStatus((data: Status) => {
-                    const messageId = data.message_id;
-                    const message = [...this.messageHistory.values()] // get all arrays
-                        .flat() // flatten into a single array
-                        .find((item) => item.id === messageId); // find by messageId
-                    if (!message) return;
+                const mpcId = route.snapshot.queryParamMap.get("messaging_product_contact.id");
+                if (!mpcId || !this.localSettings.autoMarkAsRead) return;
+                this.markAsRead(mpcId);
+            }),
+            this.statusGateway.opened,
+            this.statusGateway.watchNewStatus((data: Status) => {
+                const messageId = data.message_id;
+                const message = [...this.messageHistory.values()] // get all arrays
+                    .flat() // flatten into a single array
+                    .find(item => item.id === messageId); // find by messageId
+                if (!message) return;
 
-                    if (!message.statuses) message.statuses = [];
+                if (!message.statuses) message.statuses = [];
 
-                    const currentStatus =
-                        message.statuses[0]?.product_data?.status;
-                    if (
-                        message.statuses.length === 0 ||
-                        !data.product_data.status ||
-                        !currentStatus
-                    )
-                        return message.statuses.unshift(data);
+                const currentStatus = message.statuses[0]?.product_data?.status;
+                if (message.statuses.length === 0 || !data.product_data.status || !currentStatus)
+                    return message.statuses.unshift(data);
 
-                    const currentOrder = statusOrder.get(currentStatus) || 0;
-                    const incommingOrder =
-                        statusOrder.get(data.product_data.status) || 0;
-                    if (incommingOrder < currentOrder)
-                        return message.statuses.unshift(data);
-                    return message.statuses.push(data);
-                });
+                const currentOrder = statusOrder.get(currentStatus) || 0;
+                const incommingOrder = statusOrder.get(data.product_data.status) || 0;
+                if (incommingOrder < currentOrder) return message.statuses.unshift(data);
+                return message.statuses.push(data);
             }),
         ]);
     }
@@ -117,18 +90,16 @@ export class UserConversationsStoreService {
 
         await this.getMutex.acquire(messagingProductContactId);
         try {
-            const currentHistory =
-                this.messageHistory.get(messagingProductContactId) || [];
-            const conversations =
-                await this.conversationController.getByMessagingProductContact(
-                    messagingProductContactId,
-                    undefined,
-                    {
-                        limit: this.paginationLimit,
-                        offset: offset + currentHistory.length,
-                    },
-                    { created_at: DateOrderEnum.desc },
-                );
+            const currentHistory = this.messageHistory.get(messagingProductContactId) || [];
+            const conversations = await this.conversationController.getByMessagingProductContact(
+                messagingProductContactId,
+                undefined,
+                {
+                    limit: this.paginationLimit,
+                    offset: offset + currentHistory.length,
+                },
+                { created_at: DateOrderEnum.desc },
+            );
 
             if (!conversations.length)
                 return await this.setReachedMaxLimit(messagingProductContactId);
@@ -149,16 +120,15 @@ export class UserConversationsStoreService {
             await this.offsetMu.release(messagingProductContactId);
 
             await this.getMutex.acquire(messagingProductContactId);
-            const conversations =
-                await this.conversationController.getByMessagingProductContact(
-                    messagingProductContactId,
-                    undefined,
-                    {
-                        limit: limit,
-                        offset: offset,
-                    },
-                    { created_at: DateOrderEnum.desc },
-                );
+            const conversations = await this.conversationController.getByMessagingProductContact(
+                messagingProductContactId,
+                undefined,
+                {
+                    limit: limit,
+                    offset: offset,
+                },
+                { created_at: DateOrderEnum.desc },
+            );
 
             this.unshift(conversations, messagingProductContactId);
         } finally {
@@ -166,49 +136,27 @@ export class UserConversationsStoreService {
         }
     }
 
-    private unshift(
-        conversations: Conversation[],
-        messagingProductContactId: string,
-    ) {
-        const currentConversations =
-            this.messageHistory.get(messagingProductContactId) || [];
+    private unshift(conversations: Conversation[], messagingProductContactId: string) {
+        const currentConversations = this.messageHistory.get(messagingProductContactId) || [];
 
-        if (currentConversations)
-            return currentConversations.unshift(...conversations);
+        if (currentConversations) return currentConversations.unshift(...conversations);
 
-        return this.messageHistory.set(
-            messagingProductContactId,
-            conversations,
-        );
+        return this.messageHistory.set(messagingProductContactId, conversations);
     }
 
-    private append(
-        conversations: Conversation[],
-        messagingProductContactId: string,
-    ) {
-        const currentConversations = this.messageHistory.get(
-            messagingProductContactId,
-        );
-        if (currentConversations)
-            return currentConversations.push(...conversations);
+    private append(conversations: Conversation[], messagingProductContactId: string) {
+        const currentConversations = this.messageHistory.get(messagingProductContactId);
+        if (currentConversations) return currentConversations.push(...conversations);
 
-        return this.messageHistory.set(
-            messagingProductContactId,
-            conversations,
-        );
+        return this.messageHistory.set(messagingProductContactId, conversations);
     }
 
-    private async removeSent(
-        senderData: SenderData,
-        messagingProductContactId: string,
-    ) {
+    private async removeSent(senderData: SenderData, messagingProductContactId: string) {
         await this.unsentMutex.acquire(messagingProductContactId);
 
-        const unsentMessages = this.unsentMessages.get(
-            messagingProductContactId,
-        );
+        const unsentMessages = this.unsentMessages.get(messagingProductContactId);
         if (!unsentMessages) return;
-        const index = unsentMessages.findIndex((msg) =>
+        const index = unsentMessages.findIndex(msg =>
             msg.sender_data
                 ? this.areEqual(
                       msg.sender_data[msg.sender_data.type],
@@ -245,11 +193,9 @@ export class UserConversationsStoreService {
 
         try {
             this.unshift([conversation], messagingProductContactId);
-            (
-                await this.createBottomMessageSubjectIfNotExists(
-                    messagingProductContactId,
-                )
-            ).next(conversation);
+            (await this.createBottomMessageSubjectIfNotExists(messagingProductContactId)).next(
+                conversation,
+            );
         } finally {
         }
     }
@@ -276,15 +222,10 @@ export class UserConversationsStoreService {
         await this.createBottomMsgSubMu.acquire(messagingProductContactId);
         try {
             const curretConversation =
-                this.newBottomMessageFromConversations.get(
-                    messagingProductContactId,
-                );
+                this.newBottomMessageFromConversations.get(messagingProductContactId);
             if (curretConversation) return curretConversation;
             const newSubject = new Subject<Conversation>();
-            this.newBottomMessageFromConversations.set(
-                messagingProductContactId,
-                newSubject,
-            );
+            this.newBottomMessageFromConversations.set(messagingProductContactId, newSubject);
 
             return newSubject;
         } finally {
@@ -298,8 +239,7 @@ export class UserConversationsStoreService {
         await this.unsentMutex.acquire(messagingProductContactId);
         this.logger.debug("Unsent acquired for", messagingProductContactId);
 
-        const unsentMessages =
-            this.unsentMessages.get(messagingProductContactId) || [];
+        const unsentMessages = this.unsentMessages.get(messagingProductContactId) || [];
         const conversation = {
             id: "",
             sender_data: senderData,
@@ -313,17 +253,12 @@ export class UserConversationsStoreService {
 
         this.unsentMessages.set(messagingProductContactId, unsentMessages);
 
-        (
-            await this.createBottomMessageSubjectIfNotExists(
-                messagingProductContactId,
-            )
-        ).next(conversation);
+        (await this.createBottomMessageSubjectIfNotExists(messagingProductContactId)).next(
+            conversation,
+        );
 
         await this.unsentMutex.release(messagingProductContactId);
-        this.logger.debug(
-            "Unsent mutex released for",
-            messagingProductContactId,
-        );
+        this.logger.debug("Unsent mutex released for", messagingProductContactId);
     }
 
     private offsets = new Map<string, number>();
@@ -362,9 +297,7 @@ export class UserConversationsStoreService {
             val === null ||
             val === undefined ||
             val === "" ||
-            (typeof val === "object" &&
-                !Array.isArray(val) &&
-                Object.keys(val).length === 0);
+            (typeof val === "object" && !Array.isArray(val) && Object.keys(val).length === 0);
 
         const normalize = (val: any): any => (isEmpty(val) ? null : val);
 
@@ -402,9 +335,7 @@ export class UserConversationsStoreService {
 
     private reachedMaxLimit = new Map<string, boolean>();
     private reachedMaxLimitMu = new MutexSwapper<string>();
-    async getReachedMaxLimit(
-        messagingProductContactId: string,
-    ): Promise<boolean> {
+    async getReachedMaxLimit(messagingProductContactId: string): Promise<boolean> {
         await this.reachedMaxLimitMu.acquire(messagingProductContactId);
         try {
             return this.reachedMaxLimit.get(messagingProductContactId) || false;
