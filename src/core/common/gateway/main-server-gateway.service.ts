@@ -23,7 +23,7 @@ export class MainServerGatewayService {
     private path: string[] = [];
 
     /* ───── Socket instance ───── */
-    ws?: WebSocket;
+    private ws?: WebSocket;
 
     /* ───── Reactive once-only events ───── */
     openSubject = new Subject<Event>();
@@ -170,6 +170,12 @@ export class MainServerGatewayService {
             if (ws !== this.ws) return; // Check if socket is the current socket to determine if the message will pass through (avoid message double forward).
             this.messageSubject.next(event);
         });
+    }
+    public async sendWebSocketMessage(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
+        await this.opened;
+        if (!this.ws) throw Error("WebSocket isn't available");
+        if (!this.isOpen) throw Error("WebSocket isn't open");
+        this.ws.send(data);
     }
 
     /* ───── State helpers ───── */

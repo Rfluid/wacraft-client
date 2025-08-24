@@ -12,40 +12,32 @@ import { NGXLogger } from "ngx-logger";
 export class CampaignGatewayService extends MainServerGatewayService {
     constructor(auth: AuthService, logger: NGXLogger) {
         super(auth, logger);
-        this.setPath(
-            ServerEndpoints.websocket,
-            ServerEndpoints.campaign,
-            ServerEndpoints.whatsapp,
-        );
+        this.setPath(ServerEndpoints.websocket, ServerEndpoints.campaign, ServerEndpoints.whatsapp);
     }
 
     connectToCampaign(campaignId: string) {
-        this.setPath(
-            ServerEndpoints.websocket,
-            ServerEndpoints.campaign,
-            ServerEndpoints.whatsapp,
-        );
+        this.setPath(ServerEndpoints.websocket, ServerEndpoints.campaign, ServerEndpoints.whatsapp);
         this.appendPath("send", campaignId);
         this.setWs();
     }
 
     send() {
-        (this.ws as WebSocket).send("send");
+        this.sendWebSocketMessage("send");
     }
 
     cancel() {
-        (this.ws as WebSocket).send("cancel");
+        this.sendWebSocketMessage("cancel");
     }
 
     status() {
-        (this.ws as WebSocket).send("status");
+        this.sendWebSocketMessage("status");
     }
 
     watchCampaign(
         jsonCallback: (result: CampaignResults) => void,
         stringCallback?: (result: string) => void,
     ) {
-        (this.ws as WebSocket).addEventListener("message", (event) => {
+        this.messageSubject.subscribe(event => {
             try {
                 if (event.data === WebsocketReceivedMessage.pong) return;
 
