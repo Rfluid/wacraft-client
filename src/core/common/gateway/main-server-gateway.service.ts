@@ -75,14 +75,6 @@ export class MainServerGatewayService {
             this.ws.close();
         }
 
-        /* Reset one-shot Subjects */
-        this.openSubject = new Subject<Event>();
-        this.closedSubject = new Subject<CloseEvent>();
-        this.errorSubject = new Subject<Event>();
-        this.opened = firstValueFrom(this.openSubject);
-        this.closed = firstValueFrom(this.closedSubject);
-        this.error = firstValueFrom(this.errorSubject);
-
         /* Build URL:  ws(s)://host/a/b?Authorization=Bearer xxxx */
         const address = [this.prefix, ...this.path].join("/");
         const url = `${address}?Authorization=${"Bearer " + token}`;
@@ -115,7 +107,7 @@ export class MainServerGatewayService {
 
     /* ───── Token watcher ───── */
     private watchToken(): void {
-        this.auth.token.subscribe((tok) => this.setWs(tok));
+        this.auth.token.subscribe(tok => this.setWs(tok));
     }
 
     /* ───── Reconnection helpers ───── */
@@ -127,7 +119,9 @@ export class MainServerGatewayService {
         }
         const delay = Math.min(this.baseDelay * 2 ** this.reconnectAttempts, this.maxDelay);
         this.reconnectAttempts += 1;
-        this.logger.info(`[WS] retry ${this.reconnectAttempts}/${this.maxReconnectAttempts} in ${delay / 1000}s`);
+        this.logger.info(
+            `[WS] retry ${this.reconnectAttempts}/${this.maxReconnectAttempts} in ${delay / 1000}s`,
+        );
         this.reconnectTimeout = setTimeout(() => this.setWs(), delay);
     }
 
