@@ -17,11 +17,11 @@ button {
     pointer-events: auto;
 }
 
-img.simple-media,
-video.simple-media {
-    @apply max-h-80 max-w-96 rounded-lg;
+.simple-media {
+    @apply w-full rounded-lg;
 }
 
 #caption {
+    @apply mt-1 w-80 whitespace-pre-wrap break-words text-sm font-normal;
     overflow-wrap: break-word;
 }
