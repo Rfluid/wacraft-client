@@ -1,6 +1,4 @@
-<div
-    class="flex flex-row items-center text-gray-600 dark:text-gray-400 text-sm"
->
+<div class="flex flex-row items-center text-sm text-gray-600 dark:text-gray-400">
     <!-- Messages with specifier emoji -->
     <div
         class="mr-1"
@@ -19,29 +17,22 @@
         "
     >
         <div *ngIf="message.type === 'image'">
-            <mat-icon class="material-icons-outlined message-type-icon"
-                >image</mat-icon
-            >
+            <mat-icon class="material-icons-outlined message-type-icon">image</mat-icon>
         </div>
         <div *ngIf="message.type === 'video'">
-            <mat-icon class="material-icons-outlined message-type-icon"
-                >videocam</mat-icon
-            >
+            <mat-icon class="material-icons-outlined message-type-icon">videocam</mat-icon>
+        </div>
+        <div *ngIf="message.type === 'audio'">
+            <mat-icon class="material-icons-outlined message-type-icon">mic</mat-icon>
         </div>
         <div *ngIf="message.type === 'sticker'">
-            <mat-icon class="material-symbols-outlined message-type-icon"
-                >ar_stickers</mat-icon
-            >
+            <mat-icon class="material-symbols-outlined message-type-icon">ar_stickers</mat-icon>
         </div>
         <div *ngIf="message.type === 'document'">
-            <mat-icon class="material-icons-outlined message-type-icon"
-                >description</mat-icon
-            >
+            <mat-icon class="material-icons-outlined message-type-icon">description</mat-icon>
         </div>
         <div *ngIf="message.type === 'location'">
-            <mat-icon class="material-icons-outlined message-type-icon"
-                >pin_drop</mat-icon
-            >
+            <mat-icon class="material-icons-outlined message-type-icon">pin_drop</mat-icon>
         </div>
         <div *ngIf="message.type === 'interactive'">
             <mat-icon class="material-symbols-outlined message-type-icon"
@@ -54,9 +45,7 @@
             >
         </div>
         <div *ngIf="message.type === 'reaction'">
-            <mat-icon class="material-icons-outlined message-type-icon"
-                >add_reaction</mat-icon
-            >
+            <mat-icon class="material-icons-outlined message-type-icon">add_reaction</mat-icon>
         </div>
         <div *ngIf="message.type === 'contacts'">
             <i class="fa fa-user text-xm"></i>
