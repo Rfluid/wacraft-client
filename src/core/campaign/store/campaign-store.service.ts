@@ -87,12 +87,9 @@ export class CampaignStoreService {
                     this.getInitialSearchConcurrent();
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 // Handle errors if necessary
-                this.logger.error(
-                    "Error in getInitialSearchConcurrent:",
-                    error,
-                );
+                this.logger.error("Error in getInitialSearchConcurrent:", error);
                 this.isExecuting = false;
 
                 // Even if there's an error, check for pending execution
@@ -107,7 +104,7 @@ export class CampaignStoreService {
         this.searchCampaigns = [];
 
         const campaigns = await this.campaignController.contentLike(
-            this.searchValue,
+            `%${this.searchValue}%`,
             this.searchMode,
             this.searchFilters.reduce((acc, filter) => {
                 return { ...acc, ...filter.query };
@@ -129,7 +126,7 @@ export class CampaignStoreService {
 
     async getSearch(): Promise<void> {
         const campaigns = await this.campaignController.contentLike(
-            this.searchValue,
+            `%${this.searchValue}%`,
             "url",
             this.searchFilters.reduce((acc, filter) => {
                 return { ...acc, ...filter.query };
@@ -156,13 +153,13 @@ export class CampaignStoreService {
 
     async removeFilter(filter: { text: string; query?: Query }) {
         this.searchFilters = this.searchFilters.filter(
-            (searchFilter) => searchFilter.text !== filter.text,
+            searchFilter => searchFilter.text !== filter.text,
         );
         await this.getInitialSearch();
     }
 
     async addCampaignsToCampaignsById(campaigns: CampaignFields[]) {
-        campaigns.forEach((u) => {
+        campaigns.forEach(u => {
             this.campaignsById.set(u.id, u);
         });
     }

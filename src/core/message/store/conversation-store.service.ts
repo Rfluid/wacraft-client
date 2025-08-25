@@ -212,7 +212,7 @@ export class ConversationStoreService {
             this.messagingProductContactIdFilter
                 ? await this.conversationController.conversationContentLike(
                       this.messagingProductContactIdFilter,
-                      this.searchValue,
+                      `%${this.searchValue}%`,
                       this.searchFilters.reduce((acc, filter) => {
                           return { ...acc, ...filter.query };
                       }, {}),
@@ -223,7 +223,7 @@ export class ConversationStoreService {
                       { created_at: DateOrderEnum.desc },
                   )
                 : await this.messageController.contentLike(
-                      this.searchValue,
+                      `%${this.searchValue}%`,
                       this.searchFilters.reduce((acc, filter) => {
                           return { ...acc, ...filter.query };
                       }, {}),
@@ -252,7 +252,7 @@ export class ConversationStoreService {
                 ? this.messagingProductContactIdFilter
                     ? await this.conversationController.conversationContentLike(
                           this.messagingProductContactIdFilter,
-                          this.searchValue,
+                          `%${this.searchValue}%`,
                           this.searchFilters.reduce((acc, filter) => {
                               return { ...acc, ...filter.query };
                           }, {}),
@@ -263,7 +263,7 @@ export class ConversationStoreService {
                           { created_at: DateOrderEnum.desc },
                       )
                     : await this.messageController.contentLike(
-                          this.searchValue,
+                          `%${this.searchValue}%`,
                           this.searchFilters.reduce((acc, filter) => {
                               return { ...acc, ...filter.query };
                           }, {}),
@@ -275,7 +275,7 @@ export class ConversationStoreService {
                       )
                 : (
                       await this.messagingProductContactController.getLikeText(
-                          this.searchValue,
+                          `%${this.searchValue}%`,
                           {
                               id: this.messagingProductContactIdFilter,
                           },
@@ -324,7 +324,7 @@ export class ConversationStoreService {
                 ? this.messagingProductContactIdFilter
                     ? await this.conversationController.countConversationContentLike(
                           this.messagingProductContactIdFilter,
-                          this.searchValue,
+                          `%${this.searchValue}%`,
                           this.searchFilters.reduce((acc, filter) => {
                               return { ...acc, ...filter.query };
                           }, {}),
@@ -334,14 +334,17 @@ export class ConversationStoreService {
                           },
                       )
                     : await this.messageController.countContentLike(
-                          this.searchValue,
+                          `%${this.searchValue}%`,
                           this.searchFilters.reduce((acc, filter) => {
                               return { ...acc, ...filter.query };
                           }, {}),
                       )
-                : await this.messagingProductContactController.countLikeText(this.searchValue, {
-                      id: this.messagingProductContactIdFilter,
-                  });
+                : await this.messagingProductContactController.countLikeText(
+                      `%${this.searchValue}%`,
+                      {
+                          id: this.messagingProductContactIdFilter,
+                      },
+                  );
     }
 
     async addFilter(

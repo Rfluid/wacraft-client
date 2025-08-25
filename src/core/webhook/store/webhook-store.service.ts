@@ -87,12 +87,9 @@ export class WebhookStoreService {
                     this.getInitialSearchConcurrent();
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 // Handle errors if necessary
-                this.logger.error(
-                    "Error in getInitialSearchConcurrent:",
-                    error,
-                );
+                this.logger.error("Error in getInitialSearchConcurrent:", error);
                 this.isExecuting = false;
 
                 // Even if there's an error, check for pending execution
@@ -107,7 +104,7 @@ export class WebhookStoreService {
         this.searchWebhooks = [];
 
         const webhooks = await this.webhookController.contentLike(
-            this.searchValue,
+            `%${this.searchValue}%`,
             this.searchMode,
             this.searchFilters.reduce((acc, filter) => {
                 return { ...acc, ...filter.query };
@@ -129,7 +126,7 @@ export class WebhookStoreService {
 
     async getSearch(): Promise<void> {
         const webhooks = await this.webhookController.contentLike(
-            this.searchValue,
+            `%${this.searchValue}%`,
             "url",
             this.searchFilters.reduce((acc, filter) => {
                 return { ...acc, ...filter.query };
@@ -156,13 +153,13 @@ export class WebhookStoreService {
 
     async removeFilter(filter: { text: string; query?: Query }) {
         this.searchFilters = this.searchFilters.filter(
-            (searchFilter) => searchFilter.text !== filter.text,
+            searchFilter => searchFilter.text !== filter.text,
         );
         await this.getInitialSearch();
     }
 
     async addWebhooksToWebhooksById(webhooks: Webhook[]) {
-        webhooks.forEach((u) => {
+        webhooks.forEach(u => {
             this.webhooksById.set(u.id, u);
         });
     }
