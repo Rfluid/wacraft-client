@@ -48,13 +48,12 @@ export class SendCampaignComponent {
 
     async ngOnInit(): Promise<void> {
         const themeMode = this.localSettings.themeMode;
-        this.chartOptions.theme.mode =
-            themeMode === ThemeMode.system ? undefined : themeMode;
+        this.chartOptions.theme.mode = themeMode === ThemeMode.system ? undefined : themeMode;
         this.watchQueryParams();
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             this.loading = true;
 
             const campaignId = params["campaign.id"];
@@ -67,8 +66,6 @@ export class SendCampaignComponent {
                 this.success = 0;
                 this.setChartSeries();
                 this.campaignGateway.connectToCampaign(campaignId);
-
-                await this.campaignGateway.opened;
 
                 this.campaignGateway.watchCampaign(
                     (result: CampaignResults) => {

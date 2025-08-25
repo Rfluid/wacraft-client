@@ -105,12 +105,9 @@ export class UserStoreService {
                     this.getInitialSearchConcurrent();
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 // Handle errors if necessary
-                this.logger.error(
-                    "Error in getInitialSearchConcurrent:",
-                    error,
-                );
+                this.logger.error("Error in getInitialSearchConcurrent:", error);
                 this.isExecuting = false;
 
                 // Even if there's an error, check for pending execution
@@ -125,7 +122,7 @@ export class UserStoreService {
         this.searchUsers = [];
 
         const users = await this.userController.contentLike(
-            this.searchValue,
+            `%${this.searchValue}%`,
             this.searchMode,
             this.searchFilters.reduce((acc, filter) => {
                 return { ...acc, ...filter.query };
@@ -147,7 +144,7 @@ export class UserStoreService {
 
     async getSearch(): Promise<void> {
         const users = await this.userController.contentLike(
-            this.searchValue,
+            `%${this.searchValue}%`,
             "url",
             this.searchFilters.reduce((acc, filter) => {
                 return { ...acc, ...filter.query };
@@ -174,13 +171,13 @@ export class UserStoreService {
 
     async removeFilter(filter: { text: string; query?: Query }) {
         this.searchFilters = this.searchFilters.filter(
-            (searchFilter) => searchFilter.text !== filter.text,
+            searchFilter => searchFilter.text !== filter.text,
         );
         await this.getInitialSearch();
     }
 
     async addUsersToUsersById(users: User[]) {
-        users.forEach((u) => {
+        users.forEach(u => {
             this.usersById.set(u.id, u);
         });
     }

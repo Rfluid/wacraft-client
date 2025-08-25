@@ -12,16 +12,12 @@ import { NGXLogger } from "ngx-logger";
 export class StatusGatewayService extends MainServerGatewayService {
     constructor(auth: AuthService, logger: NGXLogger) {
         super(auth, logger);
-        this.setPath(
-            ServerEndpoints.websocket,
-            ServerEndpoints.status,
-            ServerEndpoints.new,
-        );
+        this.setPath(ServerEndpoints.websocket, ServerEndpoints.status, ServerEndpoints.new);
         this.setWs();
     }
 
     watchNewStatus(callback: (message: Status) => void) {
-        (this.ws as WebSocket).addEventListener("message", (event) => {
+        this.messageSubject.subscribe(event => {
             if (event.data === WebsocketReceivedMessage.pong) return;
 
             const message = JSON.parse(event.data);

@@ -12,16 +12,12 @@ import { NGXLogger } from "ngx-logger";
 export class MessageGatewayService extends MainServerGatewayService {
     constructor(auth: AuthService, logger: NGXLogger) {
         super(auth, logger);
-        this.setPath(
-            ServerEndpoints.websocket,
-            ServerEndpoints.message,
-            ServerEndpoints.new,
-        );
+        this.setPath(ServerEndpoints.websocket, ServerEndpoints.message, ServerEndpoints.new);
         this.setWs();
     }
 
     watchNewMessage(callback: (message: Conversation) => void) {
-        (this.ws as WebSocket).addEventListener("message", (event) => {
+        this.messageSubject.subscribe(event => {
             // Ignore heartbeat replies
             if (event.data === WebsocketReceivedMessage.pong) return;
 

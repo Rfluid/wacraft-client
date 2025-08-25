@@ -1,10 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import {
-    MessageType,
-    ReceivedMessageType,
-} from "../../../core/message/model/message-type.model";
+import { MessageType, ReceivedMessageType } from "../../../core/message/model/message-type.model";
 import { LocalSettingsService } from "../../local-settings.service";
 import { UseMedia } from "../../../core/message/model/media-data.model";
 import { MediaStoreService } from "../../../core/media/store/media-store.service";
@@ -27,7 +24,6 @@ export class MessageMediaContentComponent implements OnInit {
     @Output("asyncContentLoaded") asyncContentLoaded = new EventEmitter();
 
     mediaSafeUrl: SafeUrl = ""; // Safe URL for media
-    options: boolean = false;
 
     constructor(
         private mediaStore: MediaStoreService,
@@ -49,9 +45,7 @@ export class MessageMediaContentComponent implements OnInit {
             return;
         }
         if (!this.mediaData.id) return;
-        this.mediaSafeUrl = await this.mediaStore.downloadMediaById(
-            this.mediaData.id,
-        );
+        this.mediaSafeUrl = await this.mediaStore.downloadMediaById(this.mediaData.id);
     }
 
     async downloadMedia() {
@@ -68,9 +62,7 @@ export class MessageMediaContentComponent implements OnInit {
         }
 
         if (!this.mediaData.id) return;
-        const safeUrl: SafeUrl = await this.mediaStore.downloadMediaById(
-            this.mediaData.id,
-        );
+        const safeUrl: SafeUrl = await this.mediaStore.downloadMediaById(this.mediaData.id);
 
         // Convert SafeUrl to a plain string
         const urlString = this.sanitizer.sanitize(4, safeUrl); // 4 represents the URL context
@@ -94,10 +86,10 @@ export class MessageMediaContentComponent implements OnInit {
         this.downloadMedia();
     }
 
+    options: boolean = false;
     showOptions() {
         this.options = true;
     }
-
     hideOptions() {
         this.options = false;
     }
@@ -112,8 +104,7 @@ export class MessageMediaContentComponent implements OnInit {
             )
         )
             return;
-        const autoPreview =
-            this.localSettings.autoPreview[`${this.messageType}`];
+        const autoPreview = this.localSettings.autoPreview[`${this.messageType}`];
         if (!autoPreview) return;
         return await this.setMediaUrl();
     }

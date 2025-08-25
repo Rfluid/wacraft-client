@@ -23,16 +23,19 @@ export class MainServerGatewayService {
     private path: string[] = [];
 
     /* ───── Socket instance ───── */
-    ws?: WebSocket;
+    private ws?: WebSocket;
 
     /* ───── Reactive once-only events ───── */
     openSubject = new Subject<Event>();
-    closedSubject = new Subject<CloseEvent>();
     errorSubject = new Subject<Event>();
 
     opened = firstValueFrom(this.openSubject);
-    closed = firstValueFrom(this.closedSubject);
     error = firstValueFrom(this.errorSubject);
+
+    /* ───── Message subject ───── */
+    /* The message event is used to avoid monitoring the WebSocket directly,
+    as this may lead to unexpected behavior when the WebSocket reconnects. */
+    messageSubject = new Subject<MessageEvent<any>>();
 
     /* ───── Reconnection knobs ───── */
     autoReconnect = true;
@@ -45,7 +48,7 @@ export class MainServerGatewayService {
     /* ───── Ping / keep-alive knobs ───── */
     sendPing = true; // disable if backend already handles ping/pong
     pingInterval = environment?.webSocketBasePingInterval ?? 30 * 1000; // use ping interval from environment variables
-    private pingTimer?: ReturnType<typeof setInterval>;
+    private pingTimers = new WeakMap<WebSocket, ReturnType<typeof setInterval>>(); // One timer per socket
 
     /* ───── ctor ───── */
     constructor(
@@ -68,54 +71,50 @@ export class MainServerGatewayService {
      *──────────────────────────────────────────────────────────────────────────*/
     setWs(token: string | null = localStorage.getItem("accessToken")): void {
         this.clearReconnectTimer();
-        this.stopPing(); // make sure ping loop is cleared
-
-        /* Gracefully close previous socket (if any) */
-        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-            this.ws.close();
-        }
-
-        /* Reset one-shot Subjects */
-        this.openSubject = new Subject<Event>();
-        this.closedSubject = new Subject<CloseEvent>();
-        this.errorSubject = new Subject<Event>();
-        this.opened = firstValueFrom(this.openSubject);
-        this.closed = firstValueFrom(this.closedSubject);
-        this.error = firstValueFrom(this.errorSubject);
 
         /* Build URL:  ws(s)://host/a/b?Authorization=Bearer xxxx */
-        const address = [this.prefix, ...this.path].join("/");
-        const url = `${address}?Authorization=${"Bearer " + token}`;
+        const base = `${this.prefix}/${this.path.map(p => encodeURIComponent(p)).join("/")}`;
+        const u = new URL(base);
+        u.search = new URLSearchParams({ Authorization: `Bearer ${token!}` }).toString();
+        const url = u.toString();
 
-        this.ws = new WebSocket(url);
+        const ws = new WebSocket(url);
 
         /* ── Callbacks ── */
-        this.ws.onopen = (ev: Event) => {
+        ws.onopen = (ev: Event) => {
             this.logger.info("[WS] connected", { url });
+
+            const previousWebsocket = this.ws;
+
+            // Setup wegbsocket and watch for messages.
+            this.ws = ws;
+            this.bindSubjectToWebSocketNewMessage();
+
+            /* Gracefully close previous socket (if any) */
+            if (previousWebsocket && previousWebsocket !== ws) previousWebsocket.close();
+
             this.reconnectAttempts = 0;
             this.openSubject.next(ev);
-            this.startPing(); // start keep-alive loop
+            this.startPing(ws); // start keep-alive loop
         };
 
-        this.ws.onclose = (ev: CloseEvent) => {
+        ws.onclose = (ev: CloseEvent) => {
             this.logger.warn("[WS] closed", { ev });
-            this.closedSubject.next(ev);
-            this.stopPing();
-            // Do not reconnect if closed without error
-            // this.scheduleReconnect();
+            this.stopPing(ws);
         };
 
-        this.ws.onerror = (ev: Event) => {
+        ws.onerror = (ev: Event) => {
             this.logger.error("[WS] error", { ev });
+            this.stopPing(ws);
+            if (ws !== this.ws) return; // old socket: ignore errors and reconnect schedule
             this.errorSubject.next(ev);
-            this.stopPing();
             this.scheduleReconnect();
         };
     }
 
     /* ───── Token watcher ───── */
     private watchToken(): void {
-        this.auth.token.subscribe((tok) => this.setWs(tok));
+        this.auth.token.subscribe(tok => this.setWs(tok));
     }
 
     /* ───── Reconnection helpers ───── */
@@ -127,7 +126,9 @@ export class MainServerGatewayService {
         }
         const delay = Math.min(this.baseDelay * 2 ** this.reconnectAttempts, this.maxDelay);
         this.reconnectAttempts += 1;
-        this.logger.info(`[WS] retry ${this.reconnectAttempts}/${this.maxReconnectAttempts} in ${delay / 1000}s`);
+        this.logger.info(
+            `[WS] retry ${this.reconnectAttempts}/${this.maxReconnectAttempts} in ${delay / 1000}s`,
+        );
         this.reconnectTimeout = setTimeout(() => this.setWs(), delay);
     }
 
@@ -139,19 +140,49 @@ export class MainServerGatewayService {
     }
 
     /* ───── Ping helpers ───── */
-    private startPing(): void {
-        if (!this.sendPing || !this.ws) return;
-        this.pingTimer = setInterval(() => {
-            if (this.ws!.readyState === WebSocket.OPEN) {
-                this.ws!.send(WebsocketSentMessage.ping);
+    private startPing(ws: WebSocket): void {
+        if (!this.sendPing) return;
+        // clear any leftover timer for this ws (defensive)
+        this.stopPing(ws);
+
+        const t = setInterval(() => {
+            if (this.isOpen(ws)) {
+                ws.send(WebsocketSentMessage.ping);
             }
         }, this.pingInterval);
+
+        this.pingTimers.set(ws, t);
+    }
+    private stopPing(ws?: WebSocket): void {
+        const key = ws ?? this.ws;
+        if (!key) return;
+        const t = this.pingTimers.get(key);
+        if (t) {
+            clearInterval(t);
+            this.pingTimers.delete(key);
+        }
     }
 
-    private stopPing(): void {
-        if (this.pingTimer) {
-            clearInterval(this.pingTimer);
-            this.pingTimer = undefined;
-        }
+    /* ───── Message helpers ──── */
+    private bindSubjectToWebSocketNewMessage() {
+        const ws = this.ws as WebSocket;
+        ws.addEventListener("message", event => {
+            if (ws !== this.ws) return; // Check if socket is the current socket to determine if the message will pass through (avoid message double forward).
+            this.messageSubject.next(event);
+        });
+    }
+    public async sendWebSocketMessage(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
+        await this.opened;
+        if (!this.ws) throw Error("WebSocket isn't available");
+        if (!this.isOpen) throw Error("WebSocket isn't open");
+        this.ws.send(data);
+    }
+
+    /* ───── State helpers ───── */
+    private isOpen(ws?: WebSocket): ws is WebSocket {
+        return !!ws && ws.readyState === WebSocket.OPEN;
+    }
+    private isConnecting(ws?: WebSocket): ws is WebSocket {
+        return !!ws && ws.readyState === WebSocket.CONNECTING;
     }
 }

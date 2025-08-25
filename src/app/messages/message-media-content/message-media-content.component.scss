@@ -1,18 +1,27 @@
 button.options {
-    @apply inline-flex items-center justify-center w-14 aspect-square rounded-l-full rounded-r-full hover:bg-gray-900/50;
+    @apply inline-flex aspect-square w-14 items-center justify-center rounded-l-full rounded-r-full hover:bg-gray-900/50;
 }
 
 button.options {
 }
 
 mat-icon {
-    @apply flex justify-center items-center;
+    @apply flex items-center justify-center;
 }
 
 img.options {
-    @apply w-10 aspect-square;
+    @apply aspect-square w-10;
 }
 
 button {
     pointer-events: auto;
+}
+
+.simple-media {
+    @apply w-full rounded-lg;
+}
+
+#caption {
+    @apply mt-1 w-80 whitespace-pre-wrap break-words text-sm font-normal;
+    overflow-wrap: break-word;
 }
