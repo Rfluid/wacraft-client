@@ -3,6 +3,7 @@ import { TemplateControllerService } from "../controller/template-controller.ser
 import { Template } from "../model/template.model";
 import { TemplateQueryParams } from "../model/template-query-params.model";
 import { TemplateSummary } from "../model/template-summary.model";
+import { MutexSwapper } from "../../synch/mutex-swapper/mutex-swapper";
 
 @Injectable({
     providedIn: "root",
@@ -12,6 +13,8 @@ export class TemplateStoreService {
     private templatesPaginationLimit: number = 15;
     private nextAfterTemplate?: string;
     private nextAfterTemplateSearch?: string;
+
+    private templateMutexSwapper = new MutexSwapper<string>();
 
     public searchMode: "name" | "category" | "language" | "content" = "name";
 
@@ -31,8 +34,12 @@ export class TemplateStoreService {
     constructor(private templateController: TemplateControllerService) {}
 
     async getByName(templateName: string): Promise<Template> {
+        await this.templateMutexSwapper.acquire(templateName);
         const template = this.templatesByName.get(templateName);
-        if (template) return template;
+        if (template) {
+            await this.templateMutexSwapper.release(templateName);
+            return template;
+        }
         const newTemplate = (
             await this.templateController.get({
                 name: templateName,
@@ -40,6 +47,7 @@ export class TemplateStoreService {
             })
         ).data[0];
         this.templatesByName.set(templateName, newTemplate);
+        await this.templateMutexSwapper.release(templateName);
         return newTemplate;
     }
 
@@ -52,8 +60,7 @@ export class TemplateStoreService {
         const templates = data.data;
         if (
             !data.summary?.total_count ||
-            (data.summary?.total_count &&
-                this.templates.length >= data?.summary?.total_count)
+            (data.summary?.total_count && this.templates.length >= data?.summary?.total_count)
         )
             return;
         this.nextAfterTemplate = data.paging.cursors.after;
@@ -76,8 +83,7 @@ export class TemplateStoreService {
         const templates = data.data;
         if (
             !data.summary?.total_count ||
-            (data.summary?.total_count &&
-                this.searchTemplates.length >= data?.summary?.total_count)
+            (data.summary?.total_count && this.searchTemplates.length >= data?.summary?.total_count)
         ) {
             return;
         }
@@ -103,8 +109,7 @@ export class TemplateStoreService {
         const templates = data.data;
         if (
             !data.summary?.total_count ||
-            (data.summary?.total_count &&
-                this.searchTemplates.length >= data?.summary?.total_count)
+            (data.summary?.total_count && this.searchTemplates.length >= data?.summary?.total_count)
         )
             return;
         this.nextAfterTemplateSearch = data.paging.cursors.after;
@@ -119,7 +124,7 @@ export class TemplateStoreService {
 
     async removeFilter(filter: { text: string; query?: TemplateQueryParams }) {
         this.searchFilters = this.searchFilters.filter(
-            (searchFilter) => searchFilter.text !== filter.text,
+            searchFilter => searchFilter.text !== filter.text,
         );
         await this.getInitialSearchTemplates();
     }
@@ -148,7 +153,7 @@ export class TemplateStoreService {
                     this.getInitialSearchTemplatesConcurrent();
                 }
             })
-            .catch((error) => {
+            .catch(error => {
                 this.isExecuting = false;
 
                 // Even if there's an error, check for pending execution
@@ -160,8 +165,10 @@ export class TemplateStoreService {
     }
 
     async addTemplatesToTemplatesByName(templates: Template[]) {
-        templates.forEach((template) => {
+        templates.forEach(async template => {
+            await this.templateMutexSwapper.acquire(template.name);
             this.templatesByName.set(template.name, template);
+            await this.templateMutexSwapper.release(template.name);
         });
     }
 }
