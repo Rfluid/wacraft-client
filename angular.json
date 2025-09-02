@@ -5,11 +5,15 @@
     "projects": {
         "wacraft-client": {
             "i18n": {
-                "sourceLocale": "en",
+                "sourceLocale": { "code": "en", "baseHref": "/en/" },
                 "locales": {
                     "pt-BR": {
                         "translation": "src/locale/messages.pt-BR.xlf",
                         "baseHref": "/pt-BR/"
+                    },
+                    "es-CL": {
+                        "translation": "src/locale/messages.es-CL.xlf",
+                        "baseHref": "/es-CL/"
                     }
                 }
             },
@@ -58,6 +62,10 @@
                     "configurations": {
                         "pt-BR": {
                             "localize": ["pt-BR"],
+                            "aot": true
+                        },
+                        "es-CL": {
+                            "localize": ["es-CL"],
                             "aot": true
                         },
                         "production": {
@@ -111,7 +119,7 @@
                         "buildTarget": "wacraft-client:build",
                         "format": "xlf",
                         "outputPath": "src/locale",
-                        "targetFiles": ["messages.pt-BR.xlf"]
+                        "targetFiles": ["messages.pt-BR.xlf", "messages.es-CL.xlf"]
                     }
                 },
                 "test": {
