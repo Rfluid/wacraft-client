@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" target-language="es-CL" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="1410978112566738410" datatype="html">
+        <source> Account settings </source>
+        <target> Configuración de la cuenta </target>
+      </trans-unit>
+      <trans-unit id="8953033926734869941" datatype="html">
+        <source>Name</source>
+        <target>Nombre</target>
+      </trans-unit>
+      <trans-unit id="1431416938026210429" datatype="html">
+        <source>Password</source>
+        <target>Contraseña</target>
+      </trans-unit>
+      <trans-unit id="5377078063439833222" datatype="html">
+        <source> Edit </source>
+        <target> Editar </target>
+      </trans-unit>
+      <trans-unit id="2330577642930707695" datatype="html">
+        <source> Cancel </source>
+        <target> Cancelar </target>
+      </trans-unit>
+      <trans-unit id="3620188369327429839" datatype="html">
+        <source> Save </source>
+        <target> Guardar </target>
+      </trans-unit>
+      <trans-unit id="7493868697410114420" datatype="html">
+        <source> Local settings </source>
+        <target> Configuración local </target>
+      </trans-unit>
+      <trans-unit id="4757941663738549598" datatype="html">
+        <source>Auto Preview</source>
+        <target state="new">Previsualización automática</target>
+      </trans-unit>
+      <trans-unit id="5160229478047652977" datatype="html">
+        <source>Choose options</source>
+        <target>Selecciona opciones</target>
+      </trans-unit>
+      <trans-unit id="3012906865384504293" datatype="html">
+        <source>Image</source>
+        <target>Imagen</target>
+      </trans-unit>
+      <trans-unit id="6549265851868599441" datatype="html">
+        <source>Video</source>
+        <target>Video</target>
+      </trans-unit>
+      <trans-unit id="347407180135731058" datatype="html">
+        <source>Audio</source>
+        <target>Audio</target>
+      </trans-unit>
+      <trans-unit id="1992801119633304393" datatype="html">
+        <source>Sticker</source>
+        <target>Sticker</target>
+      </trans-unit>
+      <trans-unit id="6252070156626006029" datatype="html">
+        <source>None</source>
+        <target>Ninguno</target>
+      </trans-unit>
+      <trans-unit id="2188854519574316630" datatype="html">
+        <source>Server</source>
+        <target>Servidor</target>
+      </trans-unit>
+      <trans-unit id="2906587845957718064" datatype="html">
+        <source>Local</source>
+        <target>Local</target>
+      </trans-unit>
+      <trans-unit id="7708270344948043036" datatype="html">
+        <source>
+          <x id="INTERPOLATION" equiv-text="{{ messagingProductContact.contact.email || &quot;Email not available&quot; }}"/>
+        </source>
+        <target state="new">
+          <x id="INTERPOLATION" equiv-text="{{ messagingProductContact.contact.email || &quot;Correo no disponible&quot; }}"/>
+        </target>
+      </trans-unit>
+      <trans-unit id="1378667119726634696" datatype="html">
+        <source> Auto mark as read </source>
+        <target state="new"> Marcar como leído automáticamente </target>
+      </trans-unit>
+      <trans-unit id="7581323695994806382" datatype="html">
+        <source> Campaign settings </source>
+        <target> Configuración de la campaña </target>
+      </trans-unit>
+      <trans-unit id="4149946407013624127" datatype="html">
+        <source> Successes: <x id="INTERPOLATION" equiv-text="{{ successes }}"/> </source>
+        <target> Éxitos: <x id="INTERPOLATION" equiv-text="{{ successes }}"/> </target>
+      </trans-unit>
+      <trans-unit id="7863725525046685709" datatype="html">
+        <source> Errors due to invalid object: <x id="INTERPOLATION" equiv-text="{{ errors }}"/> </source>
+        <target> Errores por objeto inválido: <x id="INTERPOLATION" equiv-text="{{ errors }}"/> </target>
+      </trans-unit>
+      <trans-unit id="577038887888857351" datatype="html">
+        <source> Add </source>
+        <target> Agregar </target>
+      </trans-unit>
+      <trans-unit id="7530965177276291749" datatype="html">
+        <source> Campaigns </source>
+        <target> Campañas </target>
+      </trans-unit>
+      <trans-unit id="4580988005648117665" datatype="html">
+        <source>Search</source>
+        <target>Buscar</target>
+      </trans-unit>
+      <trans-unit id="7922989125096435449" datatype="html">
+        <source>Contact</source>
+        <target>Contacto</target>
+      </trans-unit>
+      <trans-unit id="8066608938393600549" datatype="html">
+        <source>Message</source>
+        <target>Mensaje</target>
+      </trans-unit>
+      <trans-unit id="996433680894356794" datatype="html">
+        <source>Media and docs</source>
+        <target>Medios y documentos</target>
+      </trans-unit>
+      <trans-unit id="8605421971099461066" datatype="html">
+        <source>Upload file</source>
+        <target>Subir archivo</target>
+      </trans-unit>
+      <trans-unit id="4180374702588082219" datatype="html">
+        <source>Send link</source>
+        <target>Enviar enlace</target>
+      </trans-unit>
+      <trans-unit id="5245885537204283295" datatype="html">
+        <source>Media link</source>
+        <target>Enlace de multimedia</target>
+      </trans-unit>
+      <trans-unit id="780171311544519471" datatype="html">
+        <source>Caption (optional)</source>
+        <target>Leyenda (opcional)</target>
+      </trans-unit>
+      <trans-unit id="3489957268654931751" datatype="html">
+        <source>Type a message...</source>
+        <target>Escribe un mensaje...</target>
+      </trans-unit>
+      <trans-unit id="7504733845501654372" datatype="html">
+        <source>Interactive Type</source>
+        <target>Tipo interactivo</target>
+      </trans-unit>
+      <trans-unit id="7301100839831612889" datatype="html">
+        <source>Header Type</source>
+        <target>Tipo de encabezado</target>
+      </trans-unit>
+      <trans-unit id="3597932961286677186" datatype="html">
+        <source>Header</source>
+        <target>Encabezado</target>
+      </trans-unit>
+      <trans-unit id="1157630416437993334" datatype="html">
+        <source>Body</source>
+        <target>Cuerpo</target>
+      </trans-unit>
+      <trans-unit id="2520992826005008677" datatype="html">
+        <source>Interactive message body...</source>
+        <target>Cuerpo del mensaje interactivo...</target>
+      </trans-unit>
+      <trans-unit id="4636291172448223646" datatype="html">
+        <source>Footer</source>
+        <target>Pie de página</target>
+      </trans-unit>
+      <trans-unit id="9016892844846492142" datatype="html">
+        <source>Footer text...</source>
+        <target>Texto del pie de página...</target>
+      </trans-unit>
+      <trans-unit id="7084378498770243742" datatype="html">
+        <source>Button</source>
+        <target>Botón</target>
+      </trans-unit>
+      <trans-unit id="1926858095448136592" datatype="html">
+        <source>List sections</source>
+        <target>Secciones de la lista</target>
+      </trans-unit>
+      <trans-unit id="3795029841604666695" datatype="html">
+        <source>Buttons</source>
+        <target>Botones</target>
+      </trans-unit>
+      <trans-unit id="4282269331448011107" datatype="html">
+        <source>Self</source>
+        <target>Propio</target>
+      </trans-unit>
+      <trans-unit id="5813867925497374051" datatype="html">
+        <source>Map</source>
+        <target>Mapa</target>
+      </trans-unit>
+      <trans-unit id="5696578547712505713" datatype="html">
+        <source>Name (optional)</source>
+        <target>Nombre (opcional)</target>
+      </trans-unit>
+      <trans-unit id="2041939447608272512" datatype="html">
+        <source>Address (optional)</source>
+        <target>Dirección (opcional)</target>
+      </trans-unit>
+      <trans-unit id="6162693758764653365" datatype="html">
+        <source>Text</source>
+        <target>Texto</target>
+      </trans-unit>
+      <trans-unit id="894965666917873756" datatype="html">
+        <source>Document</source>
+        <target>Documento</target>
+      </trans-unit>
+      <trans-unit id="7759619609150755464" datatype="html">
+        <source>Interactive</source>
+        <target>Interactivo</target>
+      </trans-unit>
+      <trans-unit id="471816275243265264" datatype="html">
+        <source>Location</source>
+        <target>Ubicación</target>
+      </trans-unit>
+      <trans-unit id="2091295268977103253" datatype="html">
+        <source>Raw</source>
+        <target>Sin formato</target>
+      </trans-unit>
+      <trans-unit id="6181907632373133266" datatype="html">
+        <source>Chats</source>
+        <target>Chats</target>
+      </trans-unit>
+      <trans-unit id="5433675495457939071" datatype="html">
+        <source>Templates</source>
+        <target>Plantillas</target>
+      </trans-unit>
+      <trans-unit id="8864658120410603626" datatype="html">
+        <source>Campaigns</source>
+        <target>Campañas</target>
+      </trans-unit>
+      <trans-unit id="6112696339048270378" datatype="html">
+        <source>Automations</source>
+        <target>Automatizaciones</target>
+      </trans-unit>
+      <trans-unit id="3888993997380000721" datatype="html">
+        <source>Webhooks</source>
+        <target>Webhooks</target>
+      </trans-unit>
+      <trans-unit id="4555457172864212828" datatype="html">
+        <source>Users</source>
+        <target>Usuarios</target>
+      </trans-unit>
+      <trans-unit id="1344813883591844650" datatype="html">
+        <source>Account configuration</source>
+        <target>Configuración de la cuenta</target>
+      </trans-unit>
+      <trans-unit id="8872967683654128393" datatype="html">
+        <source>Template details</source>
+        <target>Detalles de la plantilla</target>
+      </trans-unit>
+      <trans-unit id="2826581353496868063" datatype="html">
+        <source>Language</source>
+        <target>Idioma</target>
+      </trans-unit>
+      <trans-unit id="1806667489382256324" datatype="html">
+        <source>Category</source>
+        <target>Categoría</target>
+      </trans-unit>
+      <trans-unit id="5611592591303869712" datatype="html">
+        <source>Status</source>
+        <target>Estado</target>
+      </trans-unit>
+      <trans-unit id="3222304635400239443" datatype="html">
+        <source>Message builder</source>
+        <target>Constructor de mensajes</target>
+      </trans-unit>
+      <trans-unit id="4313544752013453805" datatype="html">
+        <source> Upload file </source>
+        <target> Subir archivo </target>
+      </trans-unit>
+      <trans-unit id="3874932175248518277" datatype="html">
+        <source>Copy data to send message as raw</source>
+        <target>Copiar datos para enviar el mensaje sin formato</target>
+      </trans-unit>
+      <trans-unit id="3652294927062564443" datatype="html">
+        <source>Send template to users</source>
+        <target>Enviar plantilla a usuarios</target>
+      </trans-unit>
+      <trans-unit id="4065257875696168354" datatype="html">
+        <source>Download CSV data to fill and add messages to campaign</source>
+        <target>Descargar los datos CSV para completar y agregar mensajes a la campaña</target>
+      </trans-unit>
+      <trans-unit id="110381562001284660" datatype="html">
+        <source> User settings </source>
+        <target> Configuración del usuario </target>
+      </trans-unit>
+      <trans-unit id="4145496584631696119" datatype="html">
+        <source>Role</source>
+        <target>Rol</target>
+      </trans-unit>
+      <trans-unit id="4228319514212568219" datatype="html">
+        <source> Users </source>
+        <target> Usuarios </target>
+      </trans-unit>
+      <trans-unit id="3325180562659478330" datatype="html">
+        <source>name</source>
+        <target>nombre</target>
+      </trans-unit>
+      <trans-unit id="122114774689391224" datatype="html">
+        <source>role</source>
+        <target>rol</target>
+      </trans-unit>
+      <trans-unit id="4312076893369530530" datatype="html">
+        <source>Photo URL</source>
+        <target state="new">URL de la foto</target>
+      </trans-unit>
+      <trans-unit id="935187492052582731" datatype="html">
+        <source>Submit</source>
+        <target state="new">Enviar</target>
+      </trans-unit>
+      <trans-unit id="7906458871395232033" datatype="html">
+        <source>List</source>
+        <target state="new">Lista</target>
+      </trans-unit>
+      <trans-unit id="5945590258286868068" datatype="html">
+        <source>Button <x id="INTERPOLATION" equiv-text="{{ i }}"/></source>
+        <target state="new">Botón <x id="INTERPOLATION" equiv-text="{{ i }}"/></target>
+      </trans-unit>
+      <trans-unit id="4910631867841099191" datatype="html">
+        <source>Add option</source>
+        <target state="new">Agregar opción</target>
+      </trans-unit>
+      <trans-unit id="420763834450076269" datatype="html">
+        <source>Block</source>
+        <target state="new">Bloquear</target>
+      </trans-unit>
+      <trans-unit id="7022070615528435141" datatype="html">
+        <source>Delete</source>
+        <target state="new">Eliminar</target>
+      </trans-unit>
+      <trans-unit id="5028777105388019087" datatype="html">
+        <source>Details</source>
+        <target state="new">Detalles</target>
+      </trans-unit>
+      <trans-unit id="3250391385569692601" datatype="html">
+        <source>Media</source>
+        <target state="new">Multimedia</target>
+      </trans-unit>
+      <trans-unit id="3788223467829427155" datatype="html">
+        <source><x id="START_TAG_NG_CONTAINER" ctype="x-ng_container" equiv-text="&lt;ng-container [ngSwitch]=&quot;mode&quot;&gt;"/><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngSwitchCase=&quot;MediaMode.image&quot;&gt;"/>Image<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngSwitchCase=&quot;MediaMode.video&quot;&gt;"/>Video<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_2" ctype="x-span_2" equiv-text="&lt;span *ngSwitchCase=&quot;MediaMode.audio&quot;&gt;"/>Audio<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_3" ctype="x-span_3" equiv-text="&lt;span *ngSwitchCase=&quot;MediaMode.sticker&quot;&gt;"/>Sticker<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_4" ctype="x-span_4" equiv-text="&lt;span *ngSwitchCase=&quot;MediaMode.document&quot;&gt;"/>Document<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_5" ctype="x-span_5" equiv-text="&lt;span *ngSwitchDefault&gt;"/><x id="INTERPOLATION" equiv-text="{{ mode | capitalizeFirstLetter }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="CLOSE_TAG_NG_CONTAINER" ctype="x-ng_container" equiv-text="&lt;/ng-container&gt;"/></source>
+        <target state="new"><x id="START_TAG_NG_CONTAINER" ctype="x-ng_container" equiv-text="&lt;ng-container [ngSwitch]=&quot;mode&quot;&gt;"/><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span *ngSwitchCase=&quot;MediaMode.image&quot;&gt;"/>Imagen<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_1" ctype="x-span_1" equiv-text="&lt;span *ngSwitchCase=&quot;MediaMode.video&quot;&gt;"/>Video<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_2" ctype="x-span_2" equiv-text="&lt;span *ngSwitchCase=&quot;MediaMode.audio&quot;&gt;"/>Audio<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_3" ctype="x-span_3" equiv-text="&lt;span *ngSwitchCase=&quot;MediaMode.sticker&quot;&gt;"/>Sticker<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_4" ctype="x-span_4" equiv-text="&lt;span *ngSwitchCase=&quot;MediaMode.document&quot;&gt;"/>Documento<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_TAG_SPAN_5" ctype="x-span_5" equiv-text="&lt;span *ngSwitchDefault&gt;"/><x id="INTERPOLATION" equiv-text="{{ mode | capitalizeFirstLetter }}"/><x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="CLOSE_TAG_NG_CONTAINER" ctype="x-ng_container" equiv-text="&lt;/ng-container&gt;"/></target>
+      </trans-unit>
+      <trans-unit id="4498980736130456955" datatype="html">
+        <source>Interactive message header...</source>
+        <target state="new">Encabezado del mensaje interactivo...</target>
+      </trans-unit>
+      <trans-unit id="950338657895578107" datatype="html">
+        <source> Image </source>
+        <target state="new"> Imagen </target>
+      </trans-unit>
+      <trans-unit id="6021926196500860373" datatype="html">
+        <source> Video </source>
+        <target state="new"> Video </target>
+      </trans-unit>
+      <trans-unit id="8317092845662281711" datatype="html">
+        <source> Audio </source>
+        <target state="new"> Audio </target>
+      </trans-unit>
+      <trans-unit id="113453605867064051" datatype="html">
+        <source> Document </source>
+        <target state="new"> Documento </target>
+      </trans-unit>
+      <trans-unit id="6490688569532630280" datatype="html">
+        <source>Send</source>
+        <target state="new">Enviar</target>
+      </trans-unit>
+      <trans-unit id="1781426626227834604" datatype="html">
+        <source>Select contacts</source>
+        <target state="new">Seleccionar contactos</target>
+      </trans-unit>
+      <trans-unit id="6981830104215014781" datatype="html">
+        <source>category</source>
+        <target state="new">categoría</target>
+      </trans-unit>
+      <trans-unit id="2347724151568473592" datatype="html">
+        <source>language</source>
+        <target state="new">idioma</target>
+      </trans-unit>
+      <trans-unit id="7522557240209303660" datatype="html">
+        <source>content</source>
+        <target state="new">contenido</target>
+      </trans-unit>
+      <trans-unit id="816133379157038472" datatype="html">
+        <source>Total messages</source>
+        <target state="new">Total de mensajes</target>
+      </trans-unit>
+      <trans-unit id="1237454417488072736" datatype="html">
+        <source>Messages sent</source>
+        <target state="new">Mensajes enviados</target>
+      </trans-unit>
+      <trans-unit id="5673230718654324625" datatype="html">
+        <source>Unsent messages</source>
+        <target state="new">Mensajes no enviados</target>
+      </trans-unit>
+      <trans-unit id="6660925946511264619" datatype="html">
+        <source> Delete </source>
+        <target state="new"> Eliminar </target>
+      </trans-unit>
+      <trans-unit id="7838270342502908017" datatype="html">
+        <source>Send campaign</source>
+        <target state="new">Enviar campaña</target>
+      </trans-unit>
+      <trans-unit id="4817460679030375794" datatype="html">
+        <source> Add messages to campaign </source>
+        <target state="new"> Agregar mensajes a la campaña </target>
+      </trans-unit>
+      <trans-unit id="6452372740127749380" datatype="html">
+        <source>Messages</source>
+        <target state="new">Mensajes</target>
+      </trans-unit>
+      <trans-unit id="5661038859247240836" datatype="html">
+        <source>Total messages to be processed:</source>
+        <target state="new">Total de mensajes a procesar:</target>
+      </trans-unit>
+      <trans-unit id="6667243164818342579" datatype="html">
+        <source> Upload new messages using a file. Only template messages can initiate a conversation (lasting 24 hours). If you attempt to send another type of message, it may take too long and result in an error. </source>
+        <target state="new">Sube nuevos mensajes usando un archivo. Solo los mensajes de plantilla pueden iniciar una conversación (dura 24 horas). Si intentas enviar otro tipo de mensaje, puede tardar demasiado y provocar un error. </target>
+      </trans-unit>
+      <trans-unit id="4448087870578974349" datatype="html">
+        <source> Upload a JSON file containing message specifications. The JSON should be an array of objects similar to the sender_data used to send raw messages. Copy a sender_data object from the templates section to create a new message. </source>
+        <target state="new"> Sube un archivo JSON que contenga las especificaciones del mensaje. El JSON debe ser un arreglo de objetos similar al sender_data usado para enviar mensajes sin formato. Copia un objeto sender_data de la sección de plantillas para crear un nuevo mensaje. </target>
+      </trans-unit>
+      <trans-unit id="5041945428247238943" datatype="html">
+        <source>Upload a CSV file with message specifications. Download the CSV template to complete it in the templates section.</source>
+        <target state="new">Sube un archivo CSV con las especificaciones del mensaje. Descarga la plantilla CSV para completarla en la sección de plantillas.</target>
+      </trans-unit>
+      <trans-unit id="7103588127254721505" datatype="html">
+        <source>Theme</source>
+        <target state="new">Tema</target>
+      </trans-unit>
+      <trans-unit id="4816216590591222133" datatype="html">
+        <source>Enabled</source>
+        <target state="new">Habilitado</target>
+      </trans-unit>
+      <trans-unit id="5769292297914455214" datatype="html">
+        <source>Disabled</source>
+        <target state="new">Deshabilitado</target>
+      </trans-unit>
+      <trans-unit id="1616968388083998795" datatype="html">
+        <source>Mark as read</source>
+        <target state="new">Marcar como leído</target>
+      </trans-unit>
+      <trans-unit id="137077169546539097" datatype="html">
+        <source>Message data</source>
+        <target state="new">Datos del mensaje</target>
+      </trans-unit>
+      <trans-unit id="4502286564339177240" datatype="html">
+        <source>Reply</source>
+        <target state="new">Responder</target>
+      </trans-unit>
+      <trans-unit id="5747579300914625788" datatype="html">
+        <source>Message details</source>
+        <target state="new">Detalles del mensaje</target>
+      </trans-unit>
+      <trans-unit id="720557322859638078" datatype="html">
+        <source>You</source>
+        <target state="new">Tú</target>
+      </trans-unit>
+      <trans-unit id="5248717555542428023" datatype="html">
+        <source>Username</source>
+        <target state="new">Nombre de usuario</target>
+      </trans-unit>
+      <trans-unit id="4943998242904350511" datatype="html">
+        <source> Submit </source>
+        <target state="new"> Enviar </target>
+      </trans-unit>
+      <trans-unit id="205186163515786593" datatype="html">
+        <source>Forwarded</source>
+        <target state="new">Reenviado</target>
+      </trans-unit>
+      <trans-unit id="7561273264199874409" datatype="html">
+        <source>Frequetly forwarded</source>
+        <target state="new">Reenviado con frecuencia</target>
+      </trans-unit>
+      <trans-unit id="425634559412949745" datatype="html">
+        <source>Add row</source>
+        <target state="new">Agregar fila</target>
+      </trans-unit>
+      <trans-unit id="1357848114610913352" datatype="html">
+        <source>Add section</source>
+        <target state="new">Agregar sección</target>
+      </trans-unit>
+      <trans-unit id="3499697918872116089" datatype="html">
+        <source>Defines where your message read will be registered. Used to track messages you didn&apos;t read yet.</source>
+        <target state="new">Define dónde se registrará que leíste el mensaje. Se usa para rastrear los mensajes que aún no leíste.</target>
+      </trans-unit>
+      <trans-unit id="265658160238489310" datatype="html">
+        <source>&quot;None&quot; means that will not track messages read. &quot;Server&quot; means that will track messages read at the server, synched with other users. &quot;Local&quot; means that will track messages read only in your session locally.</source>
+        <target state="new">&quot;Ninguno&quot; significa que no se registrarán los mensajes leídos. &quot;Servidor&quot; significa que se registrarán en el servidor y se sincronizarán con otros usuarios. &quot;Local&quot; significa que se registrarán solo en tu sesión local.</target>
+      </trans-unit>
+      <trans-unit id="5846976123417004220" datatype="html">
+        <source>Read control</source>
+        <target state="new">Control de lectura</target>
+      </trans-unit>
+      <trans-unit id="626781142089573549" datatype="html">
+        <source>Click to upload</source>
+        <target state="new">Haz clic para subir</target>
+      </trans-unit>
+      <trans-unit id="8553821068513277979" datatype="html">
+        <source>or drag and drop</source>
+        <target state="new">o arrastra y suelta</target>
+      </trans-unit>
+      <trans-unit id="3087245697907079876" datatype="html">
+        <source>📁 Upload file</source>
+        <target state="new">📁 Subir archivo</target>
+      </trans-unit>
+      <trans-unit id="3618320480978185544" datatype="html">
+        <source>🔗 Send link</source>
+        <target state="new">🔗 Enviar por enlace</target>
+      </trans-unit>
+      <trans-unit id="1614991601298392832" datatype="html">
+        <source>File uploaded:</source>
+        <target state="new">Archivo subido:</target>
+      </trans-unit>
+      <trans-unit id="6597755120494388551" datatype="html">
+        <source> Remove file </source>
+        <target state="new"> Eliminar archivo </target>
+      </trans-unit>
+      <trans-unit id="8777876005321924624" datatype="html">
+        <source>Contact <x id="INTERPOLATION" equiv-text="{{ i + 1 }}"/></source>
+        <target>Contacto <x id="INTERPOLATION" equiv-text="{{ i + 1 }}"/></target>
+      </trans-unit>
+      <trans-unit id="6028371114637047813" datatype="html">
+        <source>First Name</source>
+        <target>Nombre</target>
+      </trans-unit>
+      <trans-unit id="4407559560004943843" datatype="html">
+        <source>Last Name</source>
+        <target>Apellido</target>
+      </trans-unit>
+      <trans-unit id="4456600014400387676" datatype="html">
+        <source>Formatted Name</source>
+        <target>Nombre formateado</target>
+      </trans-unit>
+      <trans-unit id="5762151072276461448" datatype="html">
+        <source>Phones</source>
+        <target>Teléfonos</target>
+      </trans-unit>
+      <trans-unit id="2641814217326987367" datatype="html">
+        <source>WA</source>
+        <target>WhatsApp</target>
+      </trans-unit>
+      <trans-unit id="665798924888164847" datatype="html">
+        <source>Add Phone</source>
+        <target>Agregar teléfono</target>
+      </trans-unit>
+      <trans-unit id="6786637141307824568" datatype="html">
+        <source>Emails</source>
+        <target>Correos electrónicos</target>
+      </trans-unit>
+      <trans-unit id="8608255812134805029" datatype="html">
+        <source>Add Email</source>
+        <target>Agregar correo</target>
+      </trans-unit>
+      <trans-unit id="3076687427621376223" datatype="html">
+        <source>Organization</source>
+        <target>Organización</target>
+      </trans-unit>
+      <trans-unit id="1826215573205981970" datatype="html">
+        <source>Company</source>
+        <target>Empresa</target>
+      </trans-unit>
+      <trans-unit id="3955967824702499842" datatype="html">
+        <source>Department</source>
+        <target>Departamento</target>
+      </trans-unit>
+      <trans-unit id="5701618810648052610" datatype="html">
+        <source>Title</source>
+        <target>Cargo</target>
+      </trans-unit>
+      <trans-unit id="2883859734114302285" datatype="html">
+        <source>URLs</source>
+        <target>URLs</target>
+      </trans-unit>
+      <trans-unit id="3330719799429457265" datatype="html">
+        <source>Add URL</source>
+        <target>Agregar URL</target>
+      </trans-unit>
+      <trans-unit id="4467990164108770021" datatype="html">
+        <source>Add Contact</source>
+        <target>Agregar contacto</target>
+      </trans-unit>
+      <trans-unit id="29767780071958964" datatype="html">
+        <source> and <x id="INTERPOLATION" equiv-text="{{ contacts.length - 1 }}"/> more contacts</source>
+        <target> y <x id="INTERPOLATION" equiv-text="{{ contacts.length - 1 }}"/> contactos más</target>
+      </trans-unit>
+      <trans-unit id="412337078276683092" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ contacts.length }}"/> contacts</source>
+        <target><x id="INTERPOLATION" equiv-text="{{ contacts.length }}"/> contactos</target>
+      </trans-unit>
+      <trans-unit id="3768927257183755959" datatype="html">
+        <source>Save</source>
+        <target>Guardar</target>
+      </trans-unit>
+      <trans-unit id="3527397396272421601" datatype="html">
+        <source>Add reaction</source>
+        <target>Agregar reacción</target>
+      </trans-unit>
+      <trans-unit id="5945986349492910662" datatype="html">
+        <source>Contacts</source>
+        <target>Contactos</target>
+      </trans-unit>
+      <trans-unit id="8344427131876198378" datatype="html">
+        <source> Keyboard shortcuts </source>
+        <target> Atajos de teclado </target>
+      </trans-unit>
+      <trans-unit id="7819314041543176992" datatype="html">
+        <source>Close</source>
+        <target>Cerrar</target>
+      </trans-unit>
+      <trans-unit id="1348774649041038169" datatype="html">
+        <source>Navigation</source>
+        <target>Navegación</target>
+      </trans-unit>
+      <trans-unit id="2924426478692870428" datatype="html">
+        <source>Jump to sidebar buttons</source>
+        <target>Ir a los botones de la barra lateral</target>
+      </trans-unit>
+      <trans-unit id="2346024984047785710" datatype="html">
+        <source>Toggle sidebar</source>
+        <target>Alternar barra lateral</target>
+      </trans-unit>
+      <trans-unit id="6439365426343089851" datatype="html">
+        <source>General</source>
+        <target>General</target>
+      </trans-unit>
+      <trans-unit id="8308560471171358725" datatype="html">
+        <source>Open help</source>
+        <target>Abrir ayuda</target>
+      </trans-unit>
+      <trans-unit id="6398969587818603892" datatype="html">
+        <source>Close dialog</source>
+        <target>Cerrar diálogo</target>
+      </trans-unit>
+      <trans-unit id="7559846727306844936" datatype="html">
+        <source>Focus chats list</source>
+        <target>Enfocar lista de chats</target>
+      </trans-unit>
+      <trans-unit id="1289200136647215485" datatype="html">
+        <source>Move selection up / down</source>
+        <target>Mover selección arriba / abajo</target>
+      </trans-unit>
+      <trans-unit id="3424859174110346498" datatype="html">
+        <source>Open selected chat</source>
+        <target>Abrir chat seleccionado</target>
+      </trans-unit>
+      <trans-unit id="3137599440665086165" datatype="html">
+        <source>Focus templates list</source>
+        <target>Enfocar lista de plantillas</target>
+      </trans-unit>
+      <trans-unit id="8650684650239260630" datatype="html">
+        <source>Open selected template</source>
+        <target>Abrir plantilla seleccionada</target>
+      </trans-unit>
+      <trans-unit id="7909832491975819067" datatype="html">
+        <source>Focus campaigns list</source>
+        <target>Enfocar lista de campañas</target>
+      </trans-unit>
+      <trans-unit id="4311086947531633683" datatype="html">
+        <source>Open selected campaign</source>
+        <target>Abrir campaña seleccionada</target>
+      </trans-unit>
+      <trans-unit id="7602674453136730486" datatype="html">
+        <source>Focus webhooks list</source>
+        <target>Enfocar lista de webhooks</target>
+      </trans-unit>
+      <trans-unit id="7250907400509970989" datatype="html">
+        <source>Open selected webhook</source>
+        <target>Abrir webhook seleccionado</target>
+      </trans-unit>
+      <trans-unit id="5521719604636467989" datatype="html">
+        <source>Focus users list</source>
+        <target>Enfocar lista de usuarios</target>
+      </trans-unit>
+      <trans-unit id="4717491147966397069" datatype="html">
+        <source>Conversation</source>
+        <target>Conversación</target>
+      </trans-unit>
+      <trans-unit id="7078237045277975063" datatype="html">
+        <source>Open message type selector</source>
+        <target>Abrir selector de tipo de mensaje</target>
+      </trans-unit>
+      <trans-unit id="5002586829803800530" datatype="html">
+        <source>Select message type</source>
+        <target>Seleccionar tipo de mensaje</target>
+      </trans-unit>
+      <trans-unit id="1074613951806286019" datatype="html">
+        <source>Focus messages list</source>
+        <target state="new">Enfocar la lista de mensajes</target>
+      </trans-unit>
+      <trans-unit id="6257928832200603790" datatype="html">
+        <source>Open message options</source>
+        <target state="new">Abrir opciones del mensaje</target>
+      </trans-unit>
+      <trans-unit id="3347045600678860291" datatype="html">
+        <source>Message type selector</source>
+        <target state="new">Selector de tipo de mensaje</target>
+      </trans-unit>
+      <trans-unit id="7301382007278668178" datatype="html">
+        <source>Move message type selection up / down</source>
+        <target state="new">Mover selección de tipo de mensaje arriba / abajo</target>
+      </trans-unit>
+      <trans-unit id="7054231182944686314" datatype="html">
+        <source>Message options</source>
+        <target state="new">Opciones de mensaje</target>
+      </trans-unit>
+      <trans-unit id="1349920970794534452" datatype="html">
+        <source>Reply to message</source>
+        <target state="new">Responder al mensaje</target>
+      </trans-unit>
+      <trans-unit id="3860882842879485037" datatype="html">
+        <source>Open message data</source>
+        <target state="new">Mostrar datos del mensaje</target>
+      </trans-unit>
+      <trans-unit id="4192095172071895326" datatype="html">
+        <source>Mark message as read</source>
+        <target state="new">Marcar mensaje como leído</target>
+      </trans-unit>
+      <trans-unit id="5374976605311621535" datatype="html">
+        <source>Focus search</source>
+        <target state="new">Enfocar la barra de búsqueda</target>
+      </trans-unit>
+      <trans-unit id="5617024237584628219" datatype="html">
+        <source>Focus text message area</source>
+        <target state="new">Enfocar el área de mensaje de texto</target>
+      </trans-unit>
+      <trans-unit id="8604695045343743097" datatype="html">
+        <source>Forward</source>
+        <target state="new">Reenviar</target>
+      </trans-unit>
+      <trans-unit id="3797570084942068182" datatype="html">
+        <source>Select</source>
+        <target state="new">Seleccionar</target>
+      </trans-unit>
+      <trans-unit id="3578402141509624800" datatype="html">
+        <source>Campaigns are available to supporters. Visit the supporter area to learn more.</source>
+        <target state="new">Las campañas están disponibles para colaboradores. Visita el área de colaboradores para saber más.</target>
+      </trans-unit>
+      <trans-unit id="7558837930434347172" datatype="html">
+        <source>Automations are available to supporters. Visit the supporter area to learn more.</source>
+        <target state="new">Las automatizaciones están disponibles para colaboradores. Visita el área de colaboradores para saber más.</target>
+      </trans-unit>
+      <trans-unit id="5378103679051455581" datatype="html">
+        <source>Click to view error details</source>
+        <target state="new">Haz clic para ver los detalles del error</target>
+      </trans-unit>
+      <trans-unit id="4793952596010266372" datatype="html">
+        <source>Code:</source>
+        <target state="new">Código:</target>
+      </trans-unit>
+      <trans-unit id="7858060057068625943" datatype="html">
+        <source>Message:</source>
+        <target state="new">Mensaje:</target>
+      </trans-unit>
+      <trans-unit id="4361568045684156139" datatype="html">
+        <source>Details:</source>
+        <target state="new">Detalles:</target>
+      </trans-unit>
+      <trans-unit id="3323415564519831786" datatype="html">
+        <source> Name is required. </source>
+        <target state="new"> El nombre es obligatorio. </target>
+      </trans-unit>
+      <trans-unit id="214161068628107607" datatype="html">
+        <source> A valid email is required. </source>
+        <target state="new"> Un correo válido es obligatorio. </target>
+      </trans-unit>
+      <trans-unit id="2159130950882492111" datatype="html">
+        <source>Cancel</source>
+        <target state="new">Cancelar</target>
+      </trans-unit>
+      <trans-unit id="187187500641108332" datatype="html">
+        <source>
+          <x id="INTERPOLATION" equiv-text="{{ messagingProductContact.contact.name || &quot;Unknown&quot; }}"/>
+        </source>
+        <target state="new">
+          <x id="INTERPOLATION" equiv-text="{{ messagingProductContact.contact.name || &quot;Desconocido&quot; }}"/>
+        </target>
+      </trans-unit>
+      <trans-unit id="7585826646011739428" datatype="html">
+        <source>Edit</source>
+        <target state="new">Editar</target>
+      </trans-unit>
+      <trans-unit id="6562715443570244595" datatype="html">
+        <source>Message delivery failed</source>
+        <target state="new">Error en la entrega del mensaje</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
