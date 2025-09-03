@@ -14,6 +14,10 @@
         {
             "source": "/pt-BR/:path*",
             "destination": "/pt-BR/index.html"
+        },
+        {
+            "source": "/es-CL/:path*",
+            "destination": "/es-CL/index.html"
         }
     ]
 }
