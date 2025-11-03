@@ -37,12 +37,17 @@ export class ConversationComponent implements OnInit {
 
     contactInfoEnabled: boolean = false;
     contactMediaEnabled: boolean = false;
+    isTyping: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
         public userConversationStore: UserConversationsStoreService,
         private logger: NGXLogger,
     ) {}
+
+    onTypingStateChange(isTyping: boolean): void {
+        this.isTyping = isTyping;
+    }
 
     ngOnInit() {
         this.route.queryParams.subscribe(params => {

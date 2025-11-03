@@ -21,6 +21,7 @@
                 messagingProductContact.contact.name ||
                 messagingProductContact.product_details.phone_number
             "
+            [isTyping]="isTyping"
             (reply)="conversationFooter.setReplyToMessage($event)"
             (reactionSent)="userConversationStore.addUnsent($event, messagingProductContact.id)"
             #body
@@ -34,6 +35,7 @@
             }"
             [toId]="messagingProductContact.id"
             (sent)="userConversationStore.addUnsent($event, messagingProductContact.id)"
+            (typingStateChange)="onTypingStateChange($event)"
             [contactName]="
                 messagingProductContact.contact.name ||
                 messagingProductContact.product_details.phone_number

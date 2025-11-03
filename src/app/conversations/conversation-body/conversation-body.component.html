@@ -3,6 +3,11 @@
     (scroll)="onScroll($event)"
     #mainList
 >
+    <!-- Typing indicator balloon (appears at bottom due to flex-col-reverse) -->
+    <li *ngIf="isTyping" class="message-container typing-indicator">
+        <app-typing-balloon></app-typing-balloon>
+    </li>
+
     <li
         *ngFor="
             let message of userConversationStore.unsentMessages.get(messagingProductContact.id) ||

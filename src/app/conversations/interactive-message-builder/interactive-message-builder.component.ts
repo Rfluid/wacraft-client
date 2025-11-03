@@ -51,6 +51,7 @@ export class InteractiveMessageBuilderComponent {
     @Input("toId") toIdInput!: string;
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
     @Output("sent") sent = new EventEmitter<SenderData>();
+    @Output("typing") typing = new EventEmitter<void>();
 
     // Interactive Message Fields
     interactiveType: InteractiveType = InteractiveType.button; // default interactive type
@@ -85,6 +86,13 @@ export class InteractiveMessageBuilderComponent {
         if (!area) return;
         area.style.height = "auto"; // Reset height to auto to get the correct scrollHeight
         area.style.height = `${area.scrollHeight}px`; // Set height to scrollHeight
+    }
+
+    /**
+     * Notifies parent component that user is typing
+     */
+    onTyping(): void {
+        this.typing.emit();
     }
 
     async buildInteractive() {
