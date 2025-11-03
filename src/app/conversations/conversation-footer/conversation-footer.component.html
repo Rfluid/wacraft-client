@@ -93,7 +93,7 @@
                         [ngClass]="{ 'border-red-500 border': errors['media'] }"
                         [(ngModel)]="caption"
                         (ngModelChange)="onMessageChange()"
-                        (input)="adjustHeight(mediaCaptionArea)"
+                        (input)="adjustHeight(mediaCaptionArea); handleTyping()"
                         name="mediaCaption"
                         #mediaCaptionArea
                     ></textarea>
@@ -106,6 +106,7 @@
 
             <app-interactive-message-builder
                 (sent)="sent.emit($event)"
+                (typing)="handleTyping()"
                 [toId]="toIdInput"
                 [toPhoneNumber]="toPhoneNumberInput"
                 class="ml-2 mt-2 w-full"

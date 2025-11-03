@@ -22,13 +22,14 @@ import { LocalSettingsService } from "../../local-settings.service";
 import { UserConversationsStoreService } from "../../../core/message/store/user-conversations-store.service";
 import { Subject } from "rxjs";
 import { ConversationMessageComponent } from "../../messages/conversation-message/conversation-message.component";
+import { TypingBalloonComponent } from "../../messages/typing-balloon/typing-balloon.component";
 import { NGXLogger } from "ngx-logger";
 import { SenderData } from "../../../core/message/model/sender-data.model";
 import { KeyboardNavigableList } from "../../common/keyboard/keyboard-navigable-list.base";
 
 @Component({
     selector: "app-conversation-body",
-    imports: [CommonModule, ConversationMessageComponent],
+    imports: [CommonModule, ConversationMessageComponent, TypingBalloonComponent],
     templateUrl: "./conversation-body.component.html",
     styleUrl: "./conversation-body.component.scss",
     standalone: true,
@@ -42,6 +43,7 @@ export class ConversationBodyComponent extends KeyboardNavigableList implements 
     @Input("messagingProductContact")
     messagingProductContact!: ConversationMessagingProductContact;
     @Input("contactName") contactName!: string;
+    @Input("isTyping") isTyping: boolean = false;
 
     @Output("reply") reply = new EventEmitter<Conversation>();
     @Output("reactionSent") reactionSent = new EventEmitter<SenderData>();

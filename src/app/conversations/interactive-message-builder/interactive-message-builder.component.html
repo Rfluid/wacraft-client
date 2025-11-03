@@ -65,6 +65,7 @@
                 rows="1"
                 maxlength="60"
                 [(ngModel)]="interactiveHeaderString"
+                (input)="onTyping()"
                 required
             ></textarea>
             <div
@@ -151,7 +152,7 @@
                 i18n-placeholder
                 rows="2"
                 [(ngModel)]="interactiveBody"
-                (input)="adjustHeight(interactiveBodyArea)"
+                (input)="adjustHeight(interactiveBodyArea); onTyping()"
                 name="interactiveBody"
                 maxlength="1024"
                 required
@@ -169,6 +170,7 @@
                 rows="1"
                 maxlength="60"
                 [(ngModel)]="interactiveFooter"
+                (input)="onTyping()"
                 name="interactiveFooter"
             ></textarea>
         </div>

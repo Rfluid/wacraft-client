@@ -1,10 +1,13 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { Injectable, Pipe, PipeTransform } from "@angular/core";
 import {
     Conversation,
     ConversationMessagingProductContact,
 } from "../model/conversation.model";
 import { NIL as NilUUID } from "uuid";
 
+@Injectable({
+    providedIn: "root",
+})
 @Pipe({
     name: "messagingProductContactFromMessage",
     standalone: true,

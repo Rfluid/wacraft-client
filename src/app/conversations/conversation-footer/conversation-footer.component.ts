@@ -26,6 +26,7 @@ import { MediaMessageFileUploadComponent } from "../../messages/media-message-fi
 import { MessageTypeSelectorComponent } from "../../messages/message-type-selector/message-type-selector.component";
 import { NGXLogger } from "ngx-logger";
 import { ContactsMessageBuilderComponent } from "../contacts-message-builder/contacts-message-builder.component";
+import { TypingIndicatorService } from "../../../core/message/service/typing-indicator.service";
 
 @Component({
     selector: "app-conversation-footer",
@@ -73,6 +74,7 @@ export class ConversationFooterComponent {
     @Input("buildMessageOnChanges") buildMessageOnChanges: boolean = false;
     @Output("sent") sent = new EventEmitter<SenderData>();
     @Output("change") change = new EventEmitter();
+    @Output("typingStateChange") typingStateChange = new EventEmitter<boolean>();
     @ViewChild("area") area!: ElementRef<HTMLTextAreaElement>;
     @ViewChild("mediaLinkArea") mediaLinkArea!: ElementRef<HTMLTextAreaElement>;
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
@@ -138,7 +140,17 @@ export class ConversationFooterComponent {
         private messageController: MessageControllerService,
         private mediaController: MediaControllerService,
         private logger: NGXLogger,
+        private typingIndicator: TypingIndicatorService,
     ) {}
+
+    ngOnInit(): void {
+        // Subscribe to typing state changes and emit to parent
+        this.typingIndicator
+            .getTypingStateObservable(this.toIdInput)
+            .subscribe(isTyping => {
+                this.typingStateChange.emit(isTyping);
+            });
+    }
 
     adjustHeight(area: HTMLTextAreaElement): void {
         if (!area) return;
@@ -344,6 +356,9 @@ export class ConversationFooterComponent {
         this.mediaByUrl = false;
         this.selectedFile = undefined;
         this.errors = {};
+
+        // Stop typing indicator when message is sent
+        this.typingIndicator.stopTyping(this.toIdInput);
     }
 
     isMediaType = isMediaType;
@@ -414,9 +429,21 @@ export class ConversationFooterComponent {
     }
 
     onMessageChange() {
+        // Trigger typing indicator when user types
+        this.handleTyping();
+
         if (!this.buildMessageOnChanges) return this.change.emit();
         this.buildMessage();
         this.change.emit();
+    }
+
+    /**
+     * Handles typing indicator logic when user types in text fields
+     */
+    handleTyping() {
+        // Trigger typing for any text input in the message composer
+        // This includes text messages, captions, interactive messages, etc.
+        this.typingIndicator.triggerTyping(this.toIdInput);
     }
 
     async buildMessage() {

@@ -215,6 +215,21 @@ export class UserConversationsStoreService {
         );
     }
 
+    async sendTyping(messagingProductContactId: string) {
+        await this.messageController.sendTypingToUser(
+            {
+                from_id: messagingProductContactId,
+            },
+            {
+                offset: 0,
+                limit: 1,
+            },
+            {
+                created_at: DateOrderEnum.desc,
+            },
+        );
+    }
+
     private createBottomMsgSubMu = new MutexSwapper<string>();
     private async createBottomMessageSubjectIfNotExists(
         messagingProductContactId: string,
