@@ -95,6 +95,10 @@ export class AccountComponent implements OnInit {
         this.localSettings.setAutoMarkAsRead(autoMarkAsRead);
     }
 
+    toggleSendTyping(sendTyping: boolean) {
+        this.localSettings.setSendTyping(sendTyping);
+    }
+
     errorStr: string = "";
     errorData: any;
     handleErr(message: string, err: any) {

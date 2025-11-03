@@ -101,4 +101,12 @@ export class LocalSettingsService {
         this.autoMarkAsRead = value;
         localStorage.setItem("autoMarkAsRead", String(value));
     }
+
+    sendTyping =
+        localStorage.getItem("sendTyping") === "true" ||
+        localStorage.getItem("sendTyping") === null;
+    setSendTyping(value: boolean) {
+        this.sendTyping = value;
+        localStorage.setItem("sendTyping", String(value));
+    }
 }

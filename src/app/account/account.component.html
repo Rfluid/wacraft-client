@@ -2,293 +2,420 @@
     <app-sidebar class="grow-0" [activePage]="RoutePath.account" #sidebar></app-sidebar>
 
     <div
-        class="grow-1 scrollable mx-auto h-full w-full overflow-y-scroll p-6 dark:bg-gray-900 dark:text-gray-100"
+        class="grow-1 scrollable mx-auto h-full w-full overflow-y-scroll p-4 dark:bg-gray-900 dark:text-gray-100 sm:p-6"
     >
-        <h3 class="mb-4 text-xl font-semibold text-gray-600 dark:text-gray-200" i18n>
-            Account settings
-        </h3>
-
-        <div
-            *ngIf="userStore.currentUser"
-            class="mb-6 grid grid-cols-12 gap-4 rounded-lg bg-gray-100 p-6 dark:bg-gray-700"
-        >
-            <!-- Display user information -->
-            <div
-                [ngClass]="{
-                    'col-span-12': true,
-                    'sm:col-span-5': !isEditing,
-                    'sm:col-span-3': isEditing,
-                }"
-            >
-                <label class="mb-2 block text-sm font-medium" i18n>Name</label>
-                <input
-                    type="text"
-                    [(ngModel)]="userStore.currentUser.name"
-                    [disabled]="!isEditing"
-                    class="w-full rounded bg-gray-200 p-2 outline-none dark:bg-gray-600 dark:text-white"
-                />
-            </div>
-
-            <div
-                [ngClass]="{
-                    'col-span-12': true,
-                    'sm:col-span-5': !isEditing,
-                    'sm:col-span-3': isEditing,
-                }"
-            >
-                <label class="mb-2 block text-sm font-medium">Email</label>
-                <input
-                    type="email"
-                    [(ngModel)]="userStore.currentUser.email"
-                    [disabled]="!isEditing"
-                    class="w-full rounded bg-gray-200 p-2 outline-none dark:bg-gray-600 dark:text-white"
-                />
-            </div>
-
-            <div
-                [ngClass]="{
-                    'col-span-12 sm:col-span-2': true,
-                }"
-                *ngIf="isEditing"
-            >
-                <label class="mb-2 block text-sm font-medium" i18n>Password</label>
-                <input
-                    [(ngModel)]="userStore.currentUser.password"
-                    [disabled]="!isEditing"
-                    class="w-full rounded bg-gray-200 p-2 outline-none dark:bg-gray-600 dark:text-white"
-                />
-            </div>
-
-            <!-- Button section -->
-            <div
-                class="col-span-12 flex flex-col items-center sm:col-span-2 sm:mt-7"
-                *ngIf="!isEditing"
-            >
-                <!-- Initially a Start Editing button -->
-                <button
-                    (click)="toggleEdit()"
-                    class="w-full rounded bg-green-600 py-2 font-bold text-white hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600"
-                    i18n
-                >
-                    Edit
-                </button>
-            </div>
-
-            <!-- When editing, show Cancel and Save buttons -->
-            <div
-                class="col-span-6 flex flex-col items-center sm:col-span-2 sm:mt-7"
-                *ngIf="isEditing"
-            >
-                <button
-                    (click)="cancelEdit()"
-                    class="w-full rounded bg-red-600 py-2 font-bold hover:bg-red-700 dark:bg-red-500 dark:text-white dark:hover:bg-red-600"
-                    i18n
-                >
-                    Cancel
-                </button>
-            </div>
-
-            <div
-                class="col-span-6 flex flex-col items-center sm:col-span-2 sm:mt-7"
-                *ngIf="isEditing"
-            >
-                <button
-                    (click)="saveChanges()"
-                    class="w-full rounded bg-blue-600 py-2 font-bold hover:bg-blue-700 dark:bg-blue-500 dark:text-white dark:hover:bg-blue-600"
-                    i18n
-                >
-                    Save
-                </button>
-            </div>
+        <!-- Page Header -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 sm:text-3xl" i18n>
+                Account Settings
+            </h1>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400" i18n>
+                Manage your profile and application preferences
+            </p>
         </div>
 
-        <h3 class="mb-4 text-xl font-semibold text-gray-600 dark:text-gray-200" i18n>
-            Local settings
-        </h3>
+        <!-- Account Information Section -->
+        <div class="mb-6">
+            <h2 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-200" i18n>
+                Profile Information
+            </h2>
 
-        <div class="grid w-full grid-cols-12 gap-4 rounded-lg bg-gray-100 p-6 dark:bg-gray-700">
-            <!-- Multi-Select for Auto-Preview -->
-            <div id="auto-preview-multi-select">
-                <label class="mb-2 block text-sm font-medium" i18n>Auto Preview</label>
-                <div class="relative">
-                    <div class="relative inline-block w-full">
+            <div
+                *ngIf="userStore.currentUser"
+                class="relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+            >
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 p-6 lg:grid-cols-3">
+                    <!-- Name Field -->
+                    <div class="col-span-1">
+                        <label
+                            class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            i18n
+                            >Name</label
+                        >
+                        <input
+                            type="text"
+                            [(ngModel)]="userStore.currentUser.name"
+                            [disabled]="!isEditing"
+                            class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="col-span-1">
+                        <label
+                            class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            i18n
+                            >Email</label
+                        >
+                        <input
+                            type="email"
+                            [(ngModel)]="userStore.currentUser.email"
+                            [disabled]="!isEditing"
+                            class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                        />
+                    </div>
+
+                    <!-- Password Field (only when editing) -->
+                    <div class="col-span-1" *ngIf="isEditing">
+                        <label
+                            class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
+                            i18n
+                            >New Password</label
+                        >
+                        <input
+                            type="password"
+                            [(ngModel)]="userStore.currentUser.password"
+                            placeholder="Leave empty to keep current"
+                            i18n-placeholder
+                            class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                        />
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col gap-3 border-t border-gray-200 pt-6 dark:border-gray-700 sm:flex-row p-6">
+                    <button
+                        *ngIf="!isEditing"
+                        (click)="toggleEdit()"
+                        [disabled]="loading"
+                        class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+                        i18n
+                    >
+                        <mat-icon class="mr-2 !h-5 !w-5 text-sm">edit</mat-icon>
+                        Edit Profile
+                    </button>
+
+                    <div *ngIf="isEditing" class="flex gap-3">
                         <button
-                            class="flex w-full items-center justify-between rounded bg-gray-200 p-2 dark:bg-gray-600 dark:text-white"
-                            type="button"
-                            (click)="isDropdownOpen = !isDropdownOpen"
+                            (click)="cancelEdit()"
+                            [disabled]="loading"
+                            class="inline-flex flex-1 items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:focus:ring-gray-700 sm:flex-initial"
+                            i18n
                         >
-                            <span i18n>Choose options</span>
-                            <svg
-                                class="ml-2 h-4 w-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M19 9l-7 7-7-7"
-                                ></path>
-                            </svg>
+                            <mat-icon class="mr-2 !h-5 !w-5 text-sm">close</mat-icon>
+                            Cancel
                         </button>
-                        <ul
-                            *ngIf="isDropdownOpen"
-                            class="absolute z-10 mt-2 w-full rounded-lg bg-gray-200 shadow-lg dark:bg-gray-600"
+                        <button
+                            (click)="saveChanges()"
+                            [disabled]="loading"
+                            class="inline-flex flex-1 items-center justify-center rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-800 sm:flex-initial"
+                            i18n
                         >
-                            <li class="p-2">
-                                <label class="inline-flex cursor-pointer items-center">
-                                    <input
-                                        type="checkbox"
-                                        class="form-checkbox rounded-sm bg-gray-200 text-blue-600 focus:ring-blue-300 dark:bg-gray-600"
-                                        [(ngModel)]="localSettings.autoPreview.image"
-                                        (ngModelChange)="
-                                            localSettings.setAutoPreviewSettings('image', $event)
-                                        "
-                                    />
-                                    <span class="ml-2 dark:text-gray-300" i18n>Image</span>
-                                </label>
-                            </li>
-                            <li class="p-2">
-                                <label class="inline-flex cursor-pointer items-center">
-                                    <input
-                                        type="checkbox"
-                                        class="form-checkbox rounded-sm bg-gray-200 text-blue-600 focus:ring-blue-300 dark:bg-gray-600"
-                                        [(ngModel)]="localSettings.autoPreview.video"
-                                        (ngModelChange)="
-                                            localSettings.setAutoPreviewSettings('video', $event)
-                                        "
-                                    />
-                                    <span class="ml-2 dark:text-gray-300" i18n>Video</span>
-                                </label>
-                            </li>
-                            <li class="p-2">
-                                <label class="inline-flex cursor-pointer items-center">
-                                    <input
-                                        type="checkbox"
-                                        class="form-checkbox rounded-sm bg-gray-200 text-blue-600 focus:ring-blue-300 dark:bg-gray-600"
-                                        [(ngModel)]="localSettings.autoPreview.audio"
-                                        (ngModelChange)="
-                                            localSettings.setAutoPreviewSettings('audio', $event)
-                                        "
-                                    />
-                                    <span class="ml-2 dark:text-gray-300" i18n>Audio</span>
-                                </label>
-                            </li>
-                            <li class="p-2">
-                                <label class="inline-flex cursor-pointer items-center">
-                                    <input
-                                        type="checkbox"
-                                        class="form-checkbox rounded-sm bg-gray-200 text-blue-600 focus:ring-blue-300 dark:bg-gray-600"
-                                        [(ngModel)]="localSettings.autoPreview.sticker"
-                                        (ngModelChange)="
-                                            localSettings.setAutoPreviewSettings('sticker', $event)
-                                        "
-                                    />
-                                    <span class="ml-2 dark:text-gray-300" i18n>Sticker</span>
-                                </label>
-                            </li>
-                        </ul>
+                            <mat-icon class="mr-2 !h-5 !w-5 text-sm">{{
+                                loading ? 'hourglass_empty' : 'save'
+                            }}</mat-icon>
+                            {{ loading ? 'Saving...' : 'Save Changes' }}
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Unread Mode -->
-            <div id="unread-mode-selector">
-                <label
-                    class="mb-2 block text-sm font-medium"
-                    matTooltip="Defines where your message read will be registered. Used to track messages you didn't read yet."
-                    i18n-matTooltip
-                    ><span i18n>Read control</span>
-                    <mat-icon
-                        class="material-icons-outlined ml-1 !h-4 !w-4 text-sm brightness-50 dark:brightness-100"
-                        >info</mat-icon
-                    >
-                </label>
+        <!-- Application Settings Section -->
+        <div class="mb-6">
+            <h2 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-200" i18n>
+                Application Settings
+            </h2>
 
-                <select
-                    class="col-span-4 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                    matTooltip='"None" means that will not track messages read. "Server" means that will track messages read at the server, synched with other users. "Local" means that will track messages read only in your session locally.'
-                    i18n-matTooltip
-                    [(ngModel)]="localSettings.unreadMode"
-                    (ngModelChange)="localSettings.setUnreadMode($event)"
-                >
-                    <option [value]="UnreadMode.NONE" i18n>None</option>
-                    <option [value]="UnreadMode.SERVER" i18n>Server</option>
-                    <option [value]="UnreadMode.LOCAL" i18n>Local</option>
-                </select>
-            </div>
-
-            <!-- Dark and light modes -->
-            <div id="theme-mode-selector">
-                <label class="mb-2 block text-sm font-medium" i18n>Theme</label>
-                <div
-                    class="flex w-fit space-x-2 rounded-xl bg-gray-400 p-2 text-white dark:bg-gray-800"
-                >
-                    <button
-                        (click)="toggleTheme(ThemeMode.light)"
-                        [class.bg-blue-500]="localSettings.themeMode === ThemeMode.light"
-                        class="rounded px-2 py-1 transition hover:bg-blue-600"
-                    >
-                        ☀️
-                    </button>
-                    <button
-                        (click)="toggleTheme(ThemeMode.dark)"
-                        [class.bg-blue-500]="localSettings.themeMode === ThemeMode.dark"
-                        class="rounded px-2 py-1 transition hover:bg-blue-600"
-                    >
-                        🌙
-                    </button>
-                    <button
-                        (click)="toggleTheme(ThemeMode.system)"
-                        [class.bg-blue-500]="localSettings.themeMode === ThemeMode.system"
-                        class="rounded px-2 py-1 transition hover:bg-blue-600"
-                    >
-                        💻
-                    </button>
-                </div>
-            </div>
-
-            <!-- Auto mark as read -->
-            <div id="auto-read-selector">
-                <label class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-200" i18n>
-                    Auto mark as read
-                </label>
-
-                <div class="flex items-center">
-                    <button
-                        role="switch"
-                        type="button"
-                        [attr.aria-checked]="localSettings.autoMarkAsRead"
-                        (click)="toggleMarkAsRead(!localSettings.autoMarkAsRead)"
-                        class="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-300 transition-colors duration-300 dark:bg-gray-600"
-                        [ngClass]="{
-                            'bg-blue-600 dark:bg-blue-500': localSettings.autoMarkAsRead,
-                        }"
-                    >
-                        <span
-                            class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ease-in-out"
-                            [ngClass]="{
-                                'translate-x-5': localSettings.autoMarkAsRead,
-                                'translate-x-1': !localSettings.autoMarkAsRead,
-                            }"
-                        ></span>
-                    </button>
-
-                    <span class="ml-3 text-sm font-medium text-gray-600 dark:text-gray-300">
-                        <span *ngIf="localSettings.autoMarkAsRead" i18n>Enabled</span>
-                        <span *ngIf="!localSettings.autoMarkAsRead" i18n>Disabled</span>
-                    </span>
-                </div>
-            </div>
-
-            <button
-                class="absolute bottom-2 right-3 flex items-center justify-center rounded-full p-2 hover:bg-gray-300 hover:bg-opacity-10 dark:hover:bg-gray-500"
-                (click)="auth.logout()"
+            <div
+                class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
             >
-                <mat-icon>logout</mat-icon>
-            </button>
+                <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <!-- Auto Preview Setting -->
+                    <div class="p-6">
+                        <div class="mb-3 flex items-start justify-between">
+                            <div>
+                                <label
+                                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    i18n
+                                    >Auto Preview</label
+                                >
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
+                                    Select media types to preview automatically
+                                </p>
+                            </div>
+                        </div>
+                        <div class="relative" id="auto-preview-multi-select">
+                            <button
+                                class="flex w-full items-center justify-between rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors hover:bg-gray-100 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:border-blue-500"
+                                type="button"
+                                (click)="isDropdownOpen = !isDropdownOpen"
+                            >
+                                <span i18n>Choose options</span>
+                                <svg
+                                    class="h-4 w-4 transition-transform"
+                                    [class.rotate-180]="isDropdownOpen"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M19 9l-7 7-7-7"
+                                    ></path>
+                                </svg>
+                            </button>
+                            <ul
+                                *ngIf="isDropdownOpen"
+                                class="absolute z-10 mt-2 w-full divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white shadow-lg dark:divide-gray-600 dark:border-gray-600 dark:bg-gray-700"
+                            >
+                                <li class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <label class="flex cursor-pointer items-center">
+                                        <input
+                                            type="checkbox"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                                            [(ngModel)]="localSettings.autoPreview.image"
+                                            (ngModelChange)="
+                                                localSettings.setAutoPreviewSettings('image', $event)
+                                            "
+                                        />
+                                        <span
+                                            class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            i18n
+                                            >Image</span
+                                        >
+                                    </label>
+                                </li>
+                                <li class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <label class="flex cursor-pointer items-center">
+                                        <input
+                                            type="checkbox"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                                            [(ngModel)]="localSettings.autoPreview.video"
+                                            (ngModelChange)="
+                                                localSettings.setAutoPreviewSettings('video', $event)
+                                            "
+                                        />
+                                        <span
+                                            class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            i18n
+                                            >Video</span
+                                        >
+                                    </label>
+                                </li>
+                                <li class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <label class="flex cursor-pointer items-center">
+                                        <input
+                                            type="checkbox"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                                            [(ngModel)]="localSettings.autoPreview.audio"
+                                            (ngModelChange)="
+                                                localSettings.setAutoPreviewSettings('audio', $event)
+                                            "
+                                        />
+                                        <span
+                                            class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            i18n
+                                            >Audio</span
+                                        >
+                                    </label>
+                                </li>
+                                <li class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <label class="flex cursor-pointer items-center">
+                                        <input
+                                            type="checkbox"
+                                            class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                                            [(ngModel)]="localSettings.autoPreview.sticker"
+                                            (ngModelChange)="
+                                                localSettings.setAutoPreviewSettings('sticker', $event)
+                                            "
+                                        />
+                                        <span
+                                            class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300"
+                                            i18n
+                                            >Sticker</span
+                                        >
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Read Control Setting -->
+                    <div class="p-6" id="unread-mode-selector">
+                        <div class="mb-3">
+                            <label
+                                class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-300"
+                                matTooltip="Defines where your message read will be registered. Used to track messages you didn't read yet."
+                                i18n-matTooltip
+                            >
+                                <span i18n>Read Control</span>
+                                <mat-icon
+                                    class="material-icons-outlined ml-1 !h-4 !w-4 cursor-help text-sm text-gray-500 dark:text-gray-400"
+                                    >info</mat-icon
+                                >
+                            </label>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
+                                Choose how message read status is tracked
+                            </p>
+                        </div>
+                        <select
+                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                            matTooltip='"None" means that will not track messages read. "Server" means that will track messages read at the server, synched with other users. "Local" means that will track messages read only in your session locally.'
+                            i18n-matTooltip
+                            [(ngModel)]="localSettings.unreadMode"
+                            (ngModelChange)="localSettings.setUnreadMode($event)"
+                        >
+                            <option [value]="UnreadMode.NONE" i18n>None</option>
+                            <option [value]="UnreadMode.SERVER" i18n>Server</option>
+                            <option [value]="UnreadMode.LOCAL" i18n>Local</option>
+                        </select>
+                    </div>
+
+                    <!-- Theme Setting -->
+                    <div class="p-6" id="theme-mode-selector">
+                        <div class="mb-3">
+                            <label
+                                class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                i18n
+                                >Theme</label
+                            >
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
+                                Choose your preferred color scheme
+                            </p>
+                        </div>
+                        <div class="inline-flex rounded-lg border border-gray-200 p-1 dark:border-gray-600">
+                            <button
+                                (click)="toggleTheme(ThemeMode.light)"
+                                [class.bg-blue-600]="localSettings.themeMode === ThemeMode.light"
+                                [class.text-white]="localSettings.themeMode === ThemeMode.light"
+                                class="rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+                                [class.hover:!bg-blue-700]="localSettings.themeMode === ThemeMode.light"
+                                type="button"
+                            >
+                                <span class="mr-1">☀️</span>
+                                <span i18n>Light</span>
+                            </button>
+                            <button
+                                (click)="toggleTheme(ThemeMode.dark)"
+                                [class.bg-blue-600]="localSettings.themeMode === ThemeMode.dark"
+                                [class.text-white]="localSettings.themeMode === ThemeMode.dark"
+                                class="rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+                                [class.hover:!bg-blue-700]="localSettings.themeMode === ThemeMode.dark"
+                                type="button"
+                            >
+                                <span class="mr-1">🌙</span>
+                                <span i18n>Dark</span>
+                            </button>
+                            <button
+                                (click)="toggleTheme(ThemeMode.system)"
+                                [class.bg-blue-600]="localSettings.themeMode === ThemeMode.system"
+                                [class.text-white]="localSettings.themeMode === ThemeMode.system"
+                                class="rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+                                [class.hover:!bg-blue-700]="localSettings.themeMode === ThemeMode.system"
+                                type="button"
+                            >
+                                <span class="mr-1">💻</span>
+                                <span i18n>System</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Auto Mark as Read Setting -->
+                    <div class="p-6" id="auto-read-selector">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <label
+                                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    i18n
+                                    >Auto Mark as Read</label
+                                >
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
+                                    Automatically mark messages as read when viewed
+                                </p>
+                            </div>
+                            <button
+                                role="switch"
+                                type="button"
+                                [attr.aria-checked]="localSettings.autoMarkAsRead"
+                                (click)="toggleMarkAsRead(!localSettings.autoMarkAsRead)"
+                                class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                [ngClass]="{
+                                    'bg-blue-600 dark:bg-blue-500': localSettings.autoMarkAsRead,
+                                    'bg-gray-200 dark:bg-gray-700': !localSettings.autoMarkAsRead,
+                                }"
+                            >
+                                <span class="sr-only" i18n>Toggle auto mark as read</span>
+                                <span
+                                    class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                                    [ngClass]="{
+                                        'translate-x-5': localSettings.autoMarkAsRead,
+                                        'translate-x-0': !localSettings.autoMarkAsRead,
+                                    }"
+                                ></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Send Typing Setting -->
+                    <div class="p-6" id="send-typing-selector">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <label
+                                    class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                                    i18n
+                                    >Send Typing Indicator</label
+                                >
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
+                                    Send typing notifications to users when composing messages
+                                </p>
+                            </div>
+                            <button
+                                role="switch"
+                                type="button"
+                                [attr.aria-checked]="localSettings.sendTyping"
+                                (click)="toggleSendTyping(!localSettings.sendTyping)"
+                                class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                [ngClass]="{
+                                    'bg-blue-600 dark:bg-blue-500': localSettings.sendTyping,
+                                    'bg-gray-200 dark:bg-gray-700': !localSettings.sendTyping,
+                                }"
+                            >
+                                <span class="sr-only" i18n>Toggle send typing indicator</span>
+                                <span
+                                    class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                                    [ngClass]="{
+                                        'translate-x-5': localSettings.sendTyping,
+                                        'translate-x-0': !localSettings.sendTyping,
+                                    }"
+                                ></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="mb-6">
+            <h2 class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-200" i18n>
+                Account Actions
+            </h2>
+            <div
+                class="overflow-hidden rounded-xl border border-red-200 bg-red-50 shadow-sm dark:border-red-900/50 dark:bg-red-900/20"
+            >
+                <div class="p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-sm font-medium text-red-800 dark:text-red-400" i18n>
+                                Sign Out
+                            </h3>
+                            <p class="mt-1 text-xs text-red-600 dark:text-red-500" i18n>
+                                End your current session and return to login
+                            </p>
+                        </div>
+                        <button
+                            class="inline-flex items-center rounded-lg border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-100 focus:outline-none focus:ring-4 focus:ring-red-200 dark:border-red-800 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 dark:focus:ring-red-900"
+                            (click)="auth.logout()"
+                        >
+                            <mat-icon class="mr-2 !h-5 !w-5 text-sm">logout</mat-icon>
+                            <span i18n>Sign Out</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
