@@ -5,10 +5,10 @@
 }
 
 .typing-dot {
+    @apply bg-blue-500 dark:bg-blue-600;
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: #1e3a8a; /* blue-900 - darker blue for contrast on blue-300 background */
     animation: typing-bounce 1.4s infinite ease-in-out;
 }
 
