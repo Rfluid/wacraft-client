@@ -8,12 +8,12 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: #6b7280; /* gray-500 */
+    background-color: #1e3a8a; /* blue-900 - darker blue for contrast on blue-300 background */
     animation: typing-bounce 1.4s infinite ease-in-out;
 }
 
 .dark .typing-dot {
-    background-color: #9ca3af; /* gray-400 */
+    background-color: #93c5fd; /* blue-300 - lighter blue for contrast on dark blue-800 background */
 }
 
 .typing-dot:nth-child(1) {

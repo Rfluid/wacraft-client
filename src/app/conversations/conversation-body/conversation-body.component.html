@@ -4,8 +4,10 @@
     #mainList
 >
     <!-- Typing indicator balloon (appears at bottom due to flex-col-reverse) -->
-    <li *ngIf="isTyping" class="message-container typing-indicator">
-        <app-typing-balloon></app-typing-balloon>
+    <li *ngIf="isTyping" class="message-container">
+        <div class="message-container">
+            <app-typing-balloon></app-typing-balloon>
+        </div>
     </li>
 
     <li
