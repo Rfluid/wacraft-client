@@ -20,15 +20,8 @@ export class MessageControllerService extends MainServerControllerService {
         this.setHttp();
     }
 
-    async sendWhatsAppMessage(
-        payload: SendWhatsAppMessage,
-    ): Promise<MessageFields> {
-        return (
-            await this.http.post<MessageFields>(
-                ServerEndpoints.whatsapp,
-                payload,
-            )
-        ).data;
+    async sendWhatsAppMessage(payload: SendWhatsAppMessage): Promise<MessageFields> {
+        return (await this.http.post<MessageFields>(ServerEndpoints.whatsapp, payload)).data;
     }
 
     async contentLike(
@@ -105,6 +98,28 @@ export class MessageControllerService extends MainServerControllerService {
         return (
             await this.http.post<{ success: boolean }>(
                 `${ServerEndpoints.whatsapp}/mark-as-read`,
+                undefined,
+                {
+                    params: {
+                        ...query,
+                        ...pagination,
+                        ...order,
+                        ...whereDate,
+                    },
+                },
+            )
+        ).data;
+    }
+
+    async sendTypingToUser(
+        query: Query = {},
+        pagination: Paginate = { limit: 10, offset: 0 },
+        order: DateOrderWithDeletedAt = {},
+        whereDate: WhereDateWithDeletedAt = {},
+    ): Promise<{ success: boolean }> {
+        return (
+            await this.http.post<{ success: boolean }>(
+                `${ServerEndpoints.whatsapp}/send-typing`,
                 undefined,
                 {
                     params: {
