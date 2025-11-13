@@ -52,7 +52,7 @@ export class TemplateInterpolatorService {
                     footerText = this.loadFooter(component);
                     break;
                 case TemplateComponentType.buttons.toLowerCase():
-                    buttons = this.loadButtons(component);
+                    buttons = this.loadButtons(component, getTemplateData);
                     break;
             }
         });
@@ -115,7 +115,11 @@ export class TemplateInterpolatorService {
         ) {
             headerText = component.text;
 
-            if (example?.header_text) {
+            // Extract all variables from the header text
+            const variables = this.extractVariables(headerText);
+
+            if (example?.header_text && example.header_text.length > 0) {
+                // If example data exists, use the traditional numeric replacement
                 example.header_text.forEach((_, i) => {
                     const replaceAtIndex = this.findComponentParameter(
                         TemplateComponentType.header,
@@ -125,6 +129,23 @@ export class TemplateInterpolatorService {
                     if (replaceAtIndex) {
                         headerText = headerText.replace(
                             new RegExp(`\\{\\{${i + 1}\\}\\}`, "g"),
+                            replaceAtIndex,
+                        );
+                    }
+                });
+            } else if (variables.length > 0) {
+                // If no example data, replace variables by their actual names
+                variables.forEach((variable, i) => {
+                    const replaceAtIndex = this.findComponentParameter(
+                        TemplateComponentType.header,
+                        i,
+                        getTemplateData,
+                    ).text;
+                    if (replaceAtIndex) {
+                        // Escape special regex characters in the variable name
+                        const escapedVariable = variable.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        headerText = headerText.replace(
+                            new RegExp(`\\{\\{${escapedVariable}\\}\\}`, "g"),
                             replaceAtIndex,
                         );
                     }
@@ -143,7 +164,11 @@ export class TemplateInterpolatorService {
         const example = component.example;
         let bodyText = component.text;
 
+        // Extract all variables from the text
+        const variables = this.extractVariables(bodyText);
+
         if (example?.body_text) {
+            // If example data exists, use the traditional numeric replacement
             example.body_text.forEach((_, i) => {
                 const replaceAtIndex = this.findComponentParameter(
                     TemplateComponentType.body,
@@ -157,6 +182,23 @@ export class TemplateInterpolatorService {
                     );
                 }
             });
+        } else if (variables.length > 0) {
+            // If no example data, replace variables by their actual names
+            variables.forEach((variable, i) => {
+                const replaceAtIndex = this.findComponentParameter(
+                    TemplateComponentType.body,
+                    i,
+                    getTemplateData,
+                ).text;
+                if (replaceAtIndex) {
+                    // Escape special regex characters in the variable name
+                    const escapedVariable = variable.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    bodyText = bodyText.replace(
+                        new RegExp(`\\{\\{${escapedVariable}\\}\\}`, "g"),
+                        replaceAtIndex,
+                    );
+                }
+            });
         }
 
         return bodyText;
@@ -166,8 +208,64 @@ export class TemplateInterpolatorService {
         return component.text || "";
     }
 
-    private loadButtons(component: TemplateComponent): TemplateButton[] {
-        return component.buttons || [];
+    private loadButtons(
+        component: TemplateComponent,
+        getTemplateData?: () => UseTemplate,
+    ): TemplateButton[] {
+        if (!component.buttons) return [];
+
+        // If no template data getter, return buttons as-is
+        if (!getTemplateData) return component.buttons;
+
+        // Clone buttons to avoid modifying the original
+        const buttons = JSON.parse(JSON.stringify(component.buttons)) as TemplateButton[];
+
+        // Track parameter index across all buttons
+        let parameterIndex = 0;
+
+        buttons.forEach(button => {
+            if (button.url) {
+                const variables = this.extractVariables(button.url);
+
+                if (variables.length > 0) {
+                    // Check if we have example data
+                    const hasExample = button.example && button.example.length > 0;
+
+                    variables.forEach((variable, i) => {
+                        try {
+                            const replaceAtIndex = this.findComponentParameter(
+                                TemplateComponentType.buttons,
+                                parameterIndex,
+                                getTemplateData,
+                            ).text;
+
+                            if (replaceAtIndex) {
+                                if (hasExample) {
+                                    // Use numeric replacement for templates with examples
+                                    button.url = button.url!.replace(
+                                        new RegExp(`\\{\\{${i + 1}\\}\\}`, "g"),
+                                        replaceAtIndex,
+                                    );
+                                } else {
+                                    // Use named variable replacement
+                                    const escapedVariable = variable.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                    button.url = button.url!.replace(
+                                        new RegExp(`\\{\\{${escapedVariable}\\}\\}`, "g"),
+                                        replaceAtIndex,
+                                    );
+                                }
+                            }
+                            parameterIndex++;
+                        } catch (error) {
+                            // If component not found or parameter doesn't exist, skip replacement
+                            console.warn('Failed to replace button variable:', error);
+                        }
+                    });
+                }
+            }
+        });
+
+        return buttons;
     }
 
     private findComponentParameter(
@@ -182,5 +280,22 @@ export class TemplateInterpolatorService {
             throw new Error(`Component not found for ${componentType}`);
         }
         return component.parameters[index];
+    }
+
+    /**
+     * Extracts all variables from a text string, supporting both {{number}} and {{name}} formats
+     * @param text The text to extract variables from
+     * @returns Array of variable names/numbers found in the text
+     */
+    private extractVariables(text: string): string[] {
+        const variableRegex = /\{\{([^}]+)\}\}/g;
+        const variables: string[] = [];
+        let match;
+
+        while ((match = variableRegex.exec(text)) !== null) {
+            variables.push(match[1].trim());
+        }
+
+        return variables;
     }
 }

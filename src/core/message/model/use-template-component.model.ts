@@ -2,10 +2,18 @@ import { TemplateComponentType } from "../../template/model/template-component-t
 import { ButtonSubtype } from "./button-subtype.model";
 import { UseMedia } from "./media-data.model";
 
+export enum UseTemplateComponentType {
+    header = "HEADER",
+    body = "BODY",
+    footer = "FOOTER",
+    button = "BUTTON",
+}
+
 export interface UseTemplateComponent {
-    type: TemplateComponentType;
+    type: UseTemplateComponentType;
     parameters: ComponentParameters[];
-    sub_type?: ButtonSubtype;
+    sub_type?: ButtonSubtype; // Required for button components
+    index?: string; // Required for button components
 }
 
 export interface ComponentParameters {

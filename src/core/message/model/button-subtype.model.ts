@@ -1,4 +1,12 @@
 export enum ButtonSubtype {
-    quick_reply = "quick_reply",
-    call_to_action = "call_to_action",
+    booking_confirmation = "BOOKING_CONFIRMATION",
+    catalog = "CATALOG",
+    copy_code = "COPY_CODE",
+    flow = "FLOW",
+    mpm = "MPM",
+    order_details = "ORDER_DETAILS",
+    quick_reply = "QUICK_REPLY",
+    reminder = "REMINDER",
+    url = "URL",
+    voice_call = "VOICE_CALL",
 }

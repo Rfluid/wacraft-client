@@ -30,6 +30,9 @@ import { MediaMessageFileUploadComponent } from "../../messages/media-message-fi
 import { ContactsModalComponent } from "../../contacts/contact-modal/contacts-modal.component";
 import { NGXLogger } from "ngx-logger";
 import { UserConversationsStoreService } from "../../../core/message/store/user-conversations-store.service";
+import { TemplateComponentTypeConverterPipe } from "../../../core/template/pipe/template-component-type-converter.pipe";
+import { TemplateModule } from "../../../core/template/template.module";
+import { ButtonSubtype } from "../../../core/message/model/button-subtype.model";
 
 @Component({
     selector: "app-template-message-builder",
@@ -40,6 +43,7 @@ import { UserConversationsStoreService } from "../../../core/message/store/user-
         MessageTemplateContentComponent,
         MatTooltipModule,
         TimeoutErrorModalComponent,
+        TemplateModule,
         MatIconModule,
         MediaMessageFileUploadComponent,
     ],
@@ -92,6 +96,7 @@ export class TemplateMessageBuilderComponent {
         private messageController: MessageControllerService,
         private logger: NGXLogger,
         private userConversationStore: UserConversationsStoreService,
+        private typeConverter: TemplateComponentTypeConverterPipe,
     ) {}
 
     adjustHeight(area: HTMLTextAreaElement): void {
@@ -120,18 +125,46 @@ export class TemplateMessageBuilderComponent {
 
     generateComponents() {
         this.components = this.template.components
-            .map(component => this.generateComponent(component))
+            .flatMap(component => {
+                // For BUTTONS components, create separate entries for each button with variables
+                if (component.type.toLowerCase() === TemplateComponentType.buttons.toLowerCase() && component.buttons) {
+                    return component.buttons
+                        .map((button, buttonIndex) => {
+                            if (button.url && this.extractVariables(button.url).length > 0) {
+                                return this.generateComponent(component, buttonIndex);
+                            }
+                            return null;
+                        })
+                        .filter((comp): comp is UseTemplateComponent => comp !== null && comp.parameters.length > 0);
+                }
+
+                // For other components, generate normally
+                return this.generateComponent(component);
+            })
             .filter(generatedComponent => generatedComponent.parameters.length !== 0);
     }
 
-    generateComponent(component: TemplateComponent): UseTemplateComponent {
+    generateComponent(component: TemplateComponent, buttonIndex?: number): UseTemplateComponent {
+        // Convert TemplateComponentType to UseTemplateComponentType (handles BUTTONS -> BUTTON)
+        const useComponentType = this.typeConverter.transform(component.type);
+
         let useComponent: UseTemplateComponent = {
-            type: component.type,
+            type: useComponentType,
             parameters: [],
         };
 
-        if (!component.example) return useComponent;
-        const example = component.example;
+        // For BUTTONS component, example data is on individual buttons, not on the component
+        const isButtonComponent =
+            component.type.toLowerCase() === TemplateComponentType.buttons.toLowerCase();
+
+        if (!component.example && !isButtonComponent) return useComponent;
+
+        if (isButtonComponent && buttonIndex !== undefined) {
+            useComponent.sub_type = ButtonSubtype.url;
+            useComponent.index = String(buttonIndex);
+        }
+
+        const example = component.example || {};
 
         switch (component.type.toLowerCase()) {
             case TemplateComponentType.header.toLowerCase():
@@ -144,7 +177,7 @@ export class TemplateMessageBuilderComponent {
                 this.handleFooterComponent(component, useComponent, example);
                 break;
             case TemplateComponentType.buttons.toLowerCase():
-                this.handleButtonsComponent(component, useComponent, example);
+                this.handleButtonsComponent(component, useComponent, example, buttonIndex);
                 break;
         }
 
@@ -164,11 +197,28 @@ export class TemplateMessageBuilderComponent {
                 type: component.format?.toLowerCase() as ParameterType,
                 [component.format?.toLowerCase() as ParameterType]: this.headerUseMedia,
             });
-        } else if (example.header_text)
-            useComponent.parameters.push({
-                type: ParameterType.text,
-                text: "",
+        } else if (example.header_text && example.header_text.length > 0) {
+            example.header_text.forEach((exampleValue) => {
+                useComponent.parameters.push({
+                    type: ParameterType.text,
+                    text: "",
+                    placeholder: exampleValue || undefined,
+                } as any);
             });
+        } else if (
+            component.format?.toLowerCase() === TemplateComponentFormat.Text.toLowerCase() &&
+            component.text
+        ) {
+            // If no example data, extract variables directly from the header text
+            const variables = this.extractVariables(component.text);
+            variables.forEach((variableName) => {
+                useComponent.parameters.push({
+                    type: ParameterType.text,
+                    text: "",
+                    placeholder: `Enter ${variableName}`,
+                } as any);
+            });
+        }
     }
 
     handleBodyComponent(
@@ -176,13 +226,47 @@ export class TemplateMessageBuilderComponent {
         useComponent: UseTemplateComponent,
         example: ComponentExample,
     ) {
-        if (!example.body_text) return;
-        example.body_text.forEach(text => {
-            useComponent.parameters.push({
-                type: ParameterType.text,
-                text: "",
+        // First, try to use example.body_text if it exists
+        if (example.body_text && example.body_text.length > 0) {
+            example.body_text.forEach(exampleGroup => {
+                const exampleValue = Array.isArray(exampleGroup) ? exampleGroup[0] : exampleGroup;
+                useComponent.parameters.push({
+                    type: ParameterType.text,
+                    text: "",
+                    placeholder: exampleValue || undefined,
+                } as any);
             });
-        });
+            return;
+        }
+
+        // If no example data, extract variables directly from the component text
+        if (component.text) {
+            const variables = this.extractVariables(component.text);
+            variables.forEach((variableName) => {
+                useComponent.parameters.push({
+                    type: ParameterType.text,
+                    text: "",
+                    placeholder: `Enter ${variableName}`,
+                } as any);
+            });
+        }
+    }
+
+    /**
+     * Extracts all variables from a text string, supporting both {{number}} and {{name}} formats
+     * @param text The text to extract variables from
+     * @returns Array of variable names/numbers found in the text
+     */
+    extractVariables(text: string): string[] {
+        const variableRegex = /\{\{([^}]+)\}\}/g;
+        const variables: string[] = [];
+        let match;
+
+        while ((match = variableRegex.exec(text)) !== null) {
+            variables.push(match[1].trim());
+        }
+
+        return variables;
     }
 
     handleFooterComponent(
@@ -197,8 +281,89 @@ export class TemplateMessageBuilderComponent {
         component: TemplateComponent,
         useComponent: UseTemplateComponent,
         example: ComponentExample,
+        buttonIndex?: number,
     ) {
-        return;
+        // Check if any button has variables in their URLs
+        if (!component.buttons) return;
+
+        // If buttonIndex is provided, only process that specific button
+        if (buttonIndex !== undefined) {
+            const button = component.buttons[buttonIndex];
+            if (button && button.url) {
+                // Extract variables from the URL template
+                const variables = this.extractVariables(button.url);
+                const exampleValues = this.extractButtonExampleValues(button.url, button.example);
+
+                variables.forEach((variableName, index) => {
+                    const placeholder = exampleValues[index] || `Enter ${variableName}`;
+                    useComponent.parameters.push({
+                        type: ParameterType.text,
+                        text: "",
+                        placeholder,
+                    } as any);
+                });
+            }
+            return;
+        }
+
+        // Otherwise, process all buttons (fallback for backwards compatibility)
+        component.buttons.forEach(button => {
+            if (button.url) {
+                // Extract variables from the URL template
+                const variables = this.extractVariables(button.url);
+                const exampleValues = this.extractButtonExampleValues(button.url, button.example);
+
+                variables.forEach((variableName, index) => {
+                    const placeholder = exampleValues[index] || `Enter ${variableName}`;
+                    useComponent.parameters.push({
+                        type: ParameterType.text,
+                        text: "",
+                        placeholder,
+                    } as any);
+                });
+            }
+        });
+    }
+
+    /**
+     * Extracts example values for button URL variables
+     * @param templateUrl The template URL with variables (e.g., "https://example.com?id={{1}}")
+     * @param example The example data from the button (can be string, array, or undefined)
+     * @returns Array of example values for each variable
+     */
+    extractButtonExampleValues(templateUrl: string, example?: string | string[]): string[] {
+        if (!example) return [];
+
+        const exampleArray = Array.isArray(example) ? example : [example];
+        const variables = this.extractVariables(templateUrl);
+        const exampleValues: string[] = [];
+
+        // If example is a full URL, try to extract variable values from it
+        if (exampleArray.length > 0 && exampleArray[0].startsWith('http')) {
+            const exampleUrl = exampleArray[0];
+
+            // Create a regex pattern from the template URL
+            // Replace {{variable}} with a capture group
+            let pattern = templateUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escape special chars
+            variables.forEach(() => {
+                pattern = pattern.replace(/\\\{\\\{[^}]+\\\}\\\}/,  '(.+?)'); // Replace first variable with capture group
+            });
+
+            const regex = new RegExp(pattern);
+            const match = exampleUrl.match(regex);
+
+            if (match) {
+                // Extract captured groups (skip the first element which is the full match)
+                for (let i = 1; i < match.length; i++) {
+                    exampleValues.push(match[i]);
+                }
+            }
+        } else {
+            // Example contains direct values
+            return exampleArray;
+        }
+
+        return exampleValues;
     }
 
     setMessage() {
