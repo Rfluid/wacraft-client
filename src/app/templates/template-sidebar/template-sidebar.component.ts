@@ -107,12 +107,12 @@ export class TemplateSidebarComponent extends KeyboardNavigableList implements O
             return;
 
         if (
-            // Check if template is not searching
-            !this.templateStore.searchValue
+            // Check if not in search mode (no filters and no search text)
+            !this.isSearchMode()
         )
             this.getTemplates();
         else if (
-            this.templateStore.searchValue &&
+            this.isSearchMode() &&
             !this.templateStore.isExecuting &&
             !this.templateStore.pendingExecution
         )
@@ -231,5 +231,9 @@ export class TemplateSidebarComponent extends KeyboardNavigableList implements O
             this.templateStore.selectedCategories.size +
             this.templateStore.selectedQualityScores.size
         );
+    }
+
+    isSearchMode(): boolean {
+        return this.templateStore.hasActiveFilters();
     }
 }

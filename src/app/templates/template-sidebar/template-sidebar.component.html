@@ -432,7 +432,7 @@
         <ul
             class="flex-1 overflow-y-auto scrollable"
             (scroll)="onScroll($event)"
-            *ngIf="!templateStore.searchValue"
+            *ngIf="!isSearchMode()"
         >
             <li *ngFor="let template of templateStore.templates">
                 <app-template-preview
@@ -444,7 +444,7 @@
         <ul
             class="flex-1 overflow-y-auto scrollable"
             (scroll)="onScroll($event)"
-            *ngIf="templateStore.searchValue"
+            *ngIf="isSearchMode()"
         >
             <li *ngFor="let template of templateStore.searchTemplates">
                 <app-template-preview

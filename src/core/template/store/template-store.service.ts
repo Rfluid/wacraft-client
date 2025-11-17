@@ -137,7 +137,8 @@ export class TemplateStoreService {
     }
 
     getInitialSearchTemplatesConcurrent() {
-        if (!this.searchValue) return;
+        // Only run if there are active filters or search value
+        if (!this.hasActiveFilters()) return;
 
         if (this.isExecuting) {
             // If an execution is already in progress, mark that another execution is pending
@@ -240,7 +241,7 @@ export class TemplateStoreService {
         this.selectedCategories.clear();
         this.selectedQualityScores.clear();
         this.searchValue = "";
-        this.getInitialSearchTemplatesConcurrent();
+        this.searchTemplates = [];
     }
 
     hasActiveFilters(): boolean {
