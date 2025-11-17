@@ -1,4 +1,12 @@
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    HostListener,
+    OnInit,
+    QueryList,
+    ViewChild,
+    ViewChildren,
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { TemplatePreviewComponent } from "../template-preview/template-preview.component";
@@ -12,7 +20,13 @@ import { NGXLogger } from "ngx-logger";
 
 @Component({
     selector: "app-template-sidebar",
-    imports: [FormsModule, TemplatePreviewComponent, CommonModule, MatIconModule, TimeoutErrorModalComponent],
+    imports: [
+        FormsModule,
+        TemplatePreviewComponent,
+        CommonModule,
+        MatIconModule,
+        TimeoutErrorModalComponent,
+    ],
     templateUrl: "./template-sidebar.component.html",
     styleUrl: "./template-sidebar.component.scss",
     standalone: true,
