@@ -1,0 +1,48 @@
+// Advanced filters container animations
+.advanced-filters-container {
+    transition:
+        max-height 0.3s ease-in-out,
+        opacity 0.3s ease-in-out;
+
+    &.max-h-0 {
+        opacity: 0;
+    }
+
+    &.max-h-\[800px\] {
+        opacity: 1;
+    }
+}
+
+// Filter section animations and styles
+.filter-section {
+    .filter-options {
+        transition: max-height 0.3s ease-in-out;
+
+        &.max-h-0 {
+            opacity: 0;
+        }
+
+        &.max-h-96 {
+            opacity: 1;
+        }
+    }
+
+    button {
+        outline: none;
+
+        &:focus-visible {
+            ring: 2px;
+            ring-color: rgb(59 130 246); // blue-500
+        }
+    }
+}
+
+// Smooth rotation for expand icons
+mat-icon.rotate-180 {
+    transform: rotate(180deg);
+}
+
+// Custom scrollbar for category filter
+.filter-options {
+    @apply scrollable;
+}
