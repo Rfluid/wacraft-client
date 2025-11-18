@@ -14,7 +14,7 @@ import { QueryParamsService } from "../../../core/navigation/service/query-param
 })
 export class MessageContactsModalComponent {
     @Input() contacts!: ContactData[];
-    @Output("close") close = new EventEmitter();
+    @Output() close = new EventEmitter();
 
     constructor(
         public queryParamsService: QueryParamsService,

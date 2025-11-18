@@ -13,7 +13,7 @@ import { UserModule } from "../../core/user/user.module";
     standalone: true,
 })
 export class LoginComponent {
-    isLoading: boolean = false;
+    isLoading = false;
 
     @ViewChild("username") username!: ElementRef;
     @ViewChild("password") password!: ElementRef;
@@ -41,7 +41,7 @@ export class LoginComponent {
         }
     }
 
-    showPassword: boolean = false;
+    showPassword = false;
     togglePasswordVisibility(): void {
         this.showPassword = !this.showPassword;
     }

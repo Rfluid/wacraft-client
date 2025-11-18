@@ -9,15 +9,15 @@ import { NGXLogger } from "ngx-logger";
     providedIn: "root",
 })
 export class UserStoreService {
-    private paginationLimit: number = 15;
+    private paginationLimit = 15;
 
-    public reachedMaxLimit: boolean = false;
-    public reachedMaxSearchLimit: boolean = false;
+    public reachedMaxLimit = false;
+    public reachedMaxSearchLimit = false;
     currentUser!: User;
 
     searchMode: "email" | "name" | "role" = "email";
 
-    searchValue: string = "";
+    searchValue = "";
     searchFilters: {
         text: string;
         query?: Query;

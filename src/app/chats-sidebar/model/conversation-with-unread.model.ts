@@ -2,7 +2,7 @@ import { Conversation } from "../../../core/message/model/conversation.model";
 
 export class ConversationWithUnread {
     message: Conversation;
-    unread: number = 0;
+    unread = 0;
 
     constructor(message: Conversation) {
         this.message = message;

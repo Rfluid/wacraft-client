@@ -40,10 +40,10 @@ export class MessageInteractiveContentComponent {
 
     listOptionsModalOpen = false;
 
-    @Input("message") message!: Conversation;
-    @Input("isSent") isSent!: boolean;
-    @Input("sent") sent: boolean = true;
-    @Input("contactName") contactName?: string;
+    @Input() message!: Conversation;
+    @Input() isSent!: boolean;
+    @Input() sent = true;
+    @Input() contactName?: string;
 
     constructor(private messageDataPipe: MessageDataPipe) {}
 

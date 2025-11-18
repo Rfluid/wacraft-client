@@ -14,7 +14,7 @@ import { NGXLogger } from "ngx-logger";
 export class MessageTypeSelectorComponent {
     MessageType = MessageType;
 
-    @Input("messageType") messageType!: MessageType | "raw";
+    @Input() messageType!: MessageType | "raw";
     @Output() selectedType = new EventEmitter<MessageType | "raw">();
     @Output() close = new EventEmitter<void>();
 

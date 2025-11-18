@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Output, ViewChild, OnInit } from "@angular/core";
 import { CampaignMessageControllerService } from "../../../core/campaign/controller/campaign-message-controller.service";
 import { ActivatedRoute } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -22,15 +22,15 @@ import { NGXLogger } from "ngx-logger";
     styleUrl: "./campaign-message-builder.component.scss",
     standalone: true,
 })
-export class CampaignMessageBuilderComponent {
+export class CampaignMessageBuilderComponent implements OnInit {
     campaignId?: string;
     selectedFile?: File;
     error?: string;
-    successes: number = 0;
-    errors: number = 0;
+    successes = 0;
+    errors = 0;
     uploadFileType: "json" | "csv" = "csv";
 
-    @Output("messagesAdded") messagesAdded = new EventEmitter();
+    @Output() messagesAdded = new EventEmitter();
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
 
     constructor(
@@ -244,7 +244,7 @@ export class CampaignMessageBuilderComponent {
         });
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

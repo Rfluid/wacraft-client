@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { Component, ElementRef, ViewChild, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { SmallButtonComponent } from "../../common/small-button/small-button.component";
 import { CampaignMessage } from "../../../core/campaign/entity/campaign-message.entity";
@@ -27,7 +27,7 @@ import { NgxJsonViewerModule } from "ngx-json-viewer";
     styleUrl: "./campaign-messages.component.scss",
     standalone: true,
 })
-export class CampaignMessagesComponent {
+export class CampaignMessagesComponent implements OnInit {
     DateOrderEnum = DateOrderEnum; // For template access
 
     @ViewChild("scrollAnchor", { static: false }) scrollAnchor!: ElementRef;
@@ -35,11 +35,11 @@ export class CampaignMessagesComponent {
 
     campaignId?: string;
     messages: CampaignMessage[] = [];
-    errors: { [messageId: string]: CampaignMessageSendError[] } = {};
-    isLoadingError: { [messageId: string]: boolean } = {};
-    limit: number = 20;
-    isLoading: boolean = false;
-    reachedEnd: boolean = false;
+    errors: Record<string, CampaignMessageSendError[]> = {};
+    isLoadingError: Record<string, boolean> = {};
+    limit = 20;
+    isLoading = false;
+    reachedEnd = false;
     expandedMessageIndex: number | null = null; // Tracks the expanded message
     getPromise: Promise<void> = Promise.resolve();
 
@@ -191,7 +191,7 @@ export class CampaignMessagesComponent {
         });
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

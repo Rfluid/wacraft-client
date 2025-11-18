@@ -6,7 +6,7 @@ import {
     HostListener,
     Input,
     Output,
-    ViewChild,
+    ViewChild, OnInit,
 } from "@angular/core";
 import { SenderData } from "../../../core/message/model/sender-data.model";
 import { isMediaType, MessageType } from "../../../core/message/model/message-type.model";
@@ -47,16 +47,16 @@ import { TypingIndicatorService } from "../../../core/message/service/typing-ind
     styleUrl: "./conversation-footer.component.scss",
     standalone: true,
 })
-export class ConversationFooterComponent {
+export class ConversationFooterComponent implements OnInit {
     MessageType = MessageType;
-    mediaByUrl: boolean = false;
+    mediaByUrl = false;
     selectedFile?: File;
-    textBody: string = "";
-    caption: string = "";
-    filename: string = "";
-    link: string = "";
+    textBody = "";
+    caption = "";
+    filename = "";
+    link = "";
     replyToMessage?: Conversation;
-    messageTypeSelectorOpen: boolean = false;
+    messageTypeSelectorOpen = false;
 
     _messageType: MessageType | "raw" = MessageType.text;
     set messageType(type: MessageType | "raw") {
@@ -67,14 +67,14 @@ export class ConversationFooterComponent {
         return this._messageType;
     }
 
-    @Input("contactName") contactName!: string;
+    @Input() contactName!: string;
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
     @Input("toId") toIdInput!: string;
-    @Input("sendAvailable") sendAvailable: boolean = true;
-    @Input("buildMessageOnChanges") buildMessageOnChanges: boolean = false;
-    @Output("sent") sent = new EventEmitter<SenderData>();
-    @Output("change") change = new EventEmitter();
-    @Output("typingStateChange") typingStateChange = new EventEmitter<boolean>();
+    @Input() sendAvailable = true;
+    @Input() buildMessageOnChanges = false;
+    @Output() sent = new EventEmitter<SenderData>();
+    @Output() change = new EventEmitter();
+    @Output() typingStateChange = new EventEmitter<boolean>();
     @ViewChild("area") area!: ElementRef<HTMLTextAreaElement>;
     @ViewChild("mediaLinkArea") mediaLinkArea!: ElementRef<HTMLTextAreaElement>;
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
@@ -134,7 +134,7 @@ export class ConversationFooterComponent {
     }
 
     // Validation Errors
-    errors: { [key: string]: string } = {};
+    errors: Record<string, string> = {};
 
     constructor(
         private messageController: MessageControllerService,
@@ -332,7 +332,7 @@ export class ConversationFooterComponent {
     private async sendMedia(context?: Context): Promise<MessageFields> {
         await this.buildMedia();
 
-        let payload = {
+        const payload = {
             to_id: this.toIdInput,
             sender_data: {
                 ...this.senderData,
@@ -417,7 +417,7 @@ export class ConversationFooterComponent {
         this.replyToMessage = undefined;
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

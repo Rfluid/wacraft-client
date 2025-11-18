@@ -8,7 +8,7 @@ import { ServerEndpoints } from "../constant/server-endpoints.enum";
     providedIn: "root",
 })
 export class MainServerControllerService {
-    prefix: string = `http${environment.mainServerSecurity ? "s" : ""}://${environment.mainServerUrl}`;
+    prefix = `http${environment.mainServerSecurity ? "s" : ""}://${environment.mainServerUrl}`;
     path: ServerEndpoints[] = [];
 
     http: AxiosInstance = axios.create({

@@ -8,7 +8,7 @@ export abstract class KeyboardNavigableList implements AfterViewInit {
     protected abstract rows: QueryList<ElementRef<HTMLElement>>;
     private activeIndex = 0;
 
-    constructor(focusShortcutEnable: boolean = true, focusShortcutKey: string = "k") {
+    constructor(focusShortcutEnable = true, focusShortcutKey = "k") {
         this.focusShortcutEnable = focusShortcutEnable;
         this.focusShortcutKey = focusShortcutKey;
     }

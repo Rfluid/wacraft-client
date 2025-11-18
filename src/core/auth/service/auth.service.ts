@@ -14,7 +14,7 @@ import { GrantType } from "../enum/grant-type.enum";
     providedIn: "root",
 })
 export class AuthService {
-    private prefix: string = "";
+    private prefix = "";
     private http: AxiosInstance;
     private refreshTokenTimeout: any;
 

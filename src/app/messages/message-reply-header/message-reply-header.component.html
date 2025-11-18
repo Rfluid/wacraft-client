@@ -13,20 +13,20 @@
         <span *ngIf="!replyToMessage.receiver_data" i18n>You</span>
     </p>
 
-    <div class="text-gray-300" *ngIf="(replyToMessage | messageData).type == 'interactive'">
+    <div class="text-gray-300" *ngIf="(replyToMessage | messageData).type === 'interactive'">
         <div
             class="w-full"
             *ngIf="
                 replyToMessage.sender_data &&
-                (replyToMessage.sender_data.interactive?.type == 'list' ||
-                    replyToMessage.sender_data.interactive?.type == 'button')
+                (replyToMessage.sender_data.interactive?.type === 'list' ||
+                    replyToMessage.sender_data.interactive?.type === 'button')
             "
         >
             <p
                 class="w-full font-bold"
                 *ngIf="
                     replyToMessage.sender_data &&
-                    replyToMessage.sender_data.interactive?.header?.type == 'text'
+                    replyToMessage.sender_data.interactive?.header?.type === 'text'
                 "
             >
                 {{ replyToMessage.sender_data.interactive?.header?.text }}
@@ -41,7 +41,7 @@
             class="w-full"
             *ngIf="
                 replyToMessage.receiver_data &&
-                replyToMessage.receiver_data.interactive?.type == 'button_reply'
+                replyToMessage.receiver_data.interactive?.type === 'button_reply'
             "
         >
             <p class="w-full">
@@ -53,7 +53,7 @@
             class="w-full"
             *ngIf="
                 replyToMessage.receiver_data &&
-                replyToMessage.receiver_data.interactive?.type == 'list_reply'
+                replyToMessage.receiver_data.interactive?.type === 'list_reply'
             "
         >
             <p class="w-full font-bold">
@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <div class="text-gray-300" *ngIf="(replyToMessage | messageData).type == 'template'">
+    <div class="text-gray-300" *ngIf="(replyToMessage | messageData).type === 'template'">
         <p class="w-full font-bold" *ngIf="interpolatedTemplate.headerText">
             {{ interpolatedTemplate.headerText }}
         </p>
@@ -89,7 +89,7 @@
         </p>
     </div>
 
-    <div class="text-gray-300" *ngIf="(replyToMessage | messageData).type == 'text'">
+    <div class="text-gray-300" *ngIf="(replyToMessage | messageData).type === 'text'">
         <p class="mt-2 w-full truncate">
             {{ (replyToMessage | messageData).text?.body }}
         </p>

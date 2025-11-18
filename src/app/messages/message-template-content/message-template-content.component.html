@@ -49,7 +49,7 @@
                 </p>
 
                 <app-message-media-content
-                    *ngIf="headerType != 'text'"
+                    *ngIf="headerType !== 'text'"
                     [isSent]="true"
                     [mediaData]="headerUseMedia"
                     [messageType]="headerType"

@@ -21,13 +21,13 @@ import { MessageContentPreviewComponent } from "../../messages/message-content-p
     standalone: true,
 })
 export class MessageReplyHeaderComponent implements OnInit {
-    @Input("message") message?: Conversation;
-    @Input("sent") sent!: boolean;
-    @Input("backgroundColor") backgroundColor: "blue" | "gray" = this.sent ? "blue" : "gray";
-    @Input("contactName") contactName?: string;
-    @Input("replyToMessage")
+    @Input() message?: Conversation;
+    @Input() sent!: boolean;
+    @Input() backgroundColor: "blue" | "gray" = this.sent ? "blue" : "gray";
+    @Input() contactName?: string;
+    @Input()
     replyToMessage?: MessageFields;
-    @Output("asyncContentLoaded") asyncContentLoaded = new EventEmitter();
+    @Output() asyncContentLoaded = new EventEmitter();
 
     interpolatedTemplate: {
         headerText: string;

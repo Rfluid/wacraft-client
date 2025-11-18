@@ -15,9 +15,9 @@ import { GoogleMapsModule } from "@angular/google-maps";
 export class MessageLocationContentComponent implements OnInit {
     MessageType = MessageType;
 
-    @Input("message") message!: Conversation;
-    @Input("isSent") isSent!: boolean;
-    @Input("sent") sent: boolean = true;
+    @Input() message!: Conversation;
+    @Input() isSent!: boolean;
+    @Input() sent = true;
 
     options?: google.maps.MapOptions;
     markerPosition?: google.maps.LatLngLiteral;

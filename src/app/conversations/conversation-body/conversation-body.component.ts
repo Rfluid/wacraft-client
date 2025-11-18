@@ -35,18 +35,18 @@ import { KeyboardNavigableList } from "../../common/keyboard/keyboard-navigable-
     standalone: true,
 })
 export class ConversationBodyComponent extends KeyboardNavigableList implements OnInit {
-    private scrollingUp: boolean = false;
-    private scrollingDown: boolean = false;
+    private scrollingUp = false;
+    private scrollingDown = false;
 
     @ViewChild("mainList") mainList!: ElementRef;
 
-    @Input("messagingProductContact")
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
-    @Input("contactName") contactName!: string;
-    @Input("isTyping") isTyping: boolean = false;
+    @Input() contactName!: string;
+    @Input() isTyping = false;
 
-    @Output("reply") reply = new EventEmitter<Conversation>();
-    @Output("reactionSent") reactionSent = new EventEmitter<SenderData>();
+    @Output() reply = new EventEmitter<Conversation>();
+    @Output() reactionSent = new EventEmitter<SenderData>();
 
     constructor(
         private conversationController: ConversationControllerService,

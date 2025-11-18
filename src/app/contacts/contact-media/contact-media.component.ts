@@ -33,13 +33,13 @@ export class ContactMediaComponent implements OnInit {
     MediaMode = MediaMode;
     mediaModes = Object.values(MediaMode) as MediaMode[];
 
-    @Input("messagingProductContact")
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
 
     currentMediaMode: MediaMode = MediaMode.image;
 
     // Pagination parameters and media content
-    mediaLimit: number = 40;
+    mediaLimit = 40;
     media = new Map<MediaMode, Conversation[]>(Object.values(MediaMode).map(value => [value, []])); // Media content
     scrolling = new Map<MediaMode, boolean>(Object.values(MediaMode).map(value => [value, false])); // Scrolling status
     reachedMaxMediaLimit = new Map<MediaMode, boolean>(
@@ -132,7 +132,7 @@ export class ContactMediaComponent implements OnInit {
         });
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

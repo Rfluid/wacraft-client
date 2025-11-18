@@ -18,7 +18,7 @@
                         *ngIf="parameter.type === 'text'"
                     />
 
-                    <div class="w-full" *ngIf="parameter.type != 'text'">
+                    <div class="w-full" *ngIf="parameter.type !== 'text'">
                         <div class="grid grid-cols-12 gap-2">
                             <select
                                 id="media-mode"

@@ -17,17 +17,17 @@ import { MessageContentPreviewComponent } from "../../../messages/message-conten
     standalone: true,
 })
 export class ConversationPreviewComponent implements OnInit {
-    @Input("messagingProductContact")
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
 
-    @Input("messageId") messageId?: string;
-    @Input("lastMessage") lastMessage!: Conversation;
-    @Input("date") date!: Date;
-    @Input("unread") unread: number = 0;
-    @Input("selected") selected: boolean = false;
+    @Input() messageId?: string;
+    @Input() lastMessage!: Conversation;
+    @Input() date!: Date;
+    @Input() unread = 0;
+    @Input() selected = false;
 
-    @Output("select") select = new EventEmitter<ConversationMessagingProductContact>();
-    @Output("unSelect") unSelect = new EventEmitter<ConversationMessagingProductContact>();
+    @Output() select = new EventEmitter<ConversationMessagingProductContact>();
+    @Output() unSelect = new EventEmitter<ConversationMessagingProductContact>();
 
     constructor(
         private router: Router,

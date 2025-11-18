@@ -27,13 +27,13 @@ export class InteractiveMessageBuilderComponent {
     HeaderType = HeaderType;
     InteractiveType = InteractiveType;
 
-    interactiveHeaderString: string = "";
-    singleButtonText: string = "";
-    totalRows: number = 0;
+    interactiveHeaderString = "";
+    singleButtonText = "";
+    totalRows = 0;
     selectedFile?: File;
-    link: string = "";
-    caption: string = "";
-    mediaByUrl: boolean = false;
+    link = "";
+    caption = "";
+    mediaByUrl = false;
 
     @ViewChild("interactiveBodyArea")
     interactiveBodyArea!: ElementRef<HTMLTextAreaElement>;
@@ -43,16 +43,16 @@ export class InteractiveMessageBuilderComponent {
     headerMediaCaptionArea!: HTMLTextAreaElement;
     @Input("toId") toIdInput!: string;
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
-    @Output("sent") sent = new EventEmitter<SenderData>();
-    @Output("typing") typing = new EventEmitter<void>();
+    @Output() sent = new EventEmitter<SenderData>();
+    @Output() typing = new EventEmitter<void>();
 
     // Interactive Message Fields
     interactiveType: InteractiveType = InteractiveType.button; // default interactive type
     interactiveHeaderType: HeaderType = HeaderType.text;
-    interactiveBody: string = "";
-    interactiveFooter: string = "";
-    interactiveButtons: Array<{ id: string; title: string }> = [{ id: "button_1", title: "" }];
-    interactiveSections: Array<SectionData> = [
+    interactiveBody = "";
+    interactiveFooter = "";
+    interactiveButtons: { id: string; title: string }[] = [{ id: "button_1", title: "" }];
+    interactiveSections: SectionData[] = [
         {
             title: "",
             rows: [],
@@ -66,7 +66,7 @@ export class InteractiveMessageBuilderComponent {
         type: MessageType.interactive,
     };
 
-    errors: { [key: string]: string } = {};
+    errors: Record<string, string> = {};
 
     constructor(
         private messageController: MessageControllerService,

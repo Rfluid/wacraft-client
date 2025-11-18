@@ -34,7 +34,7 @@ import { TemplateQualityScore } from "../../../core/template/model/template-quer
     standalone: true,
 })
 export class TemplateSidebarComponent extends KeyboardNavigableList implements OnInit {
-    private scrolling: boolean = false;
+    private scrolling = false;
 
     @ViewChild("searchTextarea")
     searchTextarea!: ElementRef<HTMLTextAreaElement>;
@@ -204,7 +204,7 @@ export class TemplateSidebarComponent extends KeyboardNavigableList implements O
         event.preventDefault(); // Prevent text selection
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

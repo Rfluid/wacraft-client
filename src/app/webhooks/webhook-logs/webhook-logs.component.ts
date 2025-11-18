@@ -30,9 +30,9 @@ export class WebhookLogsComponent implements OnInit {
 
     webhookId?: string;
     logs: WebhookLogFields[] = [];
-    limit: number = 20;
-    isLoading: boolean = false;
-    reachedEnd: boolean = false;
+    limit = 20;
+    isLoading = false;
+    reachedEnd = false;
     expandedLogIndex: number | null = null; // Tracks the expanded log
     getPromise: Promise<void> = Promise.resolve();
 
@@ -148,7 +148,7 @@ export class WebhookLogsComponent implements OnInit {
         });
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

@@ -20,7 +20,7 @@ import { NGXLogger } from "ngx-logger";
     providedIn: "root",
 })
 export class UserConversationsStoreService {
-    public paginationLimit: number = 50;
+    public paginationLimit = 50;
 
     public newBottomMessageFromConversations = new Map<string, Subject<Conversation>>();
 
@@ -84,7 +84,7 @@ export class UserConversationsStoreService {
     private getMutex = new MutexSwapper<string>();
     async getTop(messagingProductContactId: string): Promise<void> {
         await this.offsetMu.acquire(messagingProductContactId);
-        let offset = this.offsets.get(messagingProductContactId) || 0;
+        const offset = this.offsets.get(messagingProductContactId) || 0;
         this.logger.debug("Getting top with offset", offset);
         await this.offsetMu.release(messagingProductContactId);
 

@@ -176,12 +176,12 @@ export class UserDetailsComponent implements OnInit {
         }
     }
 
-    showPassword: boolean = false;
+    showPassword = false;
     togglePasswordVisibility(): void {
         this.showPassword = !this.showPassword;
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

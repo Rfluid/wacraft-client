@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild } from "@angular/core";
+import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit } from "@angular/core";
 import { Template } from "../../../core/template/model/template.model";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -11,10 +11,10 @@ import { FormsModule } from "@angular/forms";
     styleUrl: "./template-preview.component.scss",
     standalone: true,
 })
-export class TemplatePreviewComponent {
-    @Input("template") template!: Template;
+export class TemplatePreviewComponent implements OnInit {
+    @Input() template!: Template;
 
-    isSelected: boolean = false;
+    isSelected = false;
 
     constructor(private route: ActivatedRoute) {}
 

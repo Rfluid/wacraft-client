@@ -28,15 +28,15 @@ import { NGXLogger } from "ngx-logger";
 export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
     @Input("toId") toIdInput!: string;
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
-    @Output("sent") sent = new EventEmitter<SenderData>();
+    @Output() sent = new EventEmitter<SenderData>();
 
     @ViewChild("nameArea") nameArea!: ElementRef<HTMLTextAreaElement>;
     @ViewChild("addressArea") addressArea!: ElementRef<HTMLTextAreaElement>;
     @ViewChild("searchInput") searchInput!: ElementRef<HTMLInputElement>;
 
     locationType: "self" | "map" = "self";
-    name: string = "";
-    address: string = "";
+    name = "";
+    address = "";
 
     senderData: SenderData = {
         messaging_product: "whatsapp",
@@ -53,7 +53,7 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
 
     options?: google.maps.MapOptions;
     markerPosition?: google.maps.LatLngLiteral;
-    error: string = "";
+    error = "";
 
     autocomplete?: google.maps.places.Autocomplete;
 

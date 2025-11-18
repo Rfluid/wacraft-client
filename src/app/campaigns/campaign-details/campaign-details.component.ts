@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -31,14 +31,14 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     preserveWhitespaces: false,
     standalone: true,
 })
-export class CampaignDetailsComponent {
+export class CampaignDetailsComponent implements OnInit {
     Event = Event;
 
     campaign!: CampaignFields;
     campaignId?: string;
-    totalMessages: number = 0;
-    unsentMessages: number = 0;
-    messagesSent: number = 0;
+    totalMessages = 0;
+    unsentMessages = 0;
+    messagesSent = 0;
 
     isEditing = false;
 

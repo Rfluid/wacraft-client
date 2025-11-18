@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 })
 export class QueryParamsService {
     // Global query params
-    public sidebarOpen: boolean = false; // Handled by query params.
+    public sidebarOpen = false; // Handled by query params.
     closeSidebar() {
         this.router.navigate([], {
             queryParams: {

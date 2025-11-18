@@ -9,8 +9,8 @@ import { MutexSwapper } from "../../synch/mutex-swapper/mutex-swapper";
     providedIn: "root",
 })
 export class TemplateStoreService {
-    public searchValue: string = "";
-    private templatesPaginationLimit: number = 15;
+    public searchValue = "";
+    private templatesPaginationLimit = 15;
     private nextAfterTemplate?: string;
     private nextAfterTemplateSearch?: string;
 
@@ -24,9 +24,9 @@ export class TemplateStoreService {
     }[] = [];
 
     // Enum filters
-    public selectedStatuses: Set<TemplateStatus> = new Set();
-    public selectedCategories: Set<TemplateCategory> = new Set();
-    public selectedQualityScores: Set<TemplateQualityScore> = new Set();
+    public selectedStatuses = new Set<TemplateStatus>();
+    public selectedCategories = new Set<TemplateCategory>();
+    public selectedQualityScores = new Set<TemplateQualityScore>();
 
     public templates: Template[] = [];
     public searchTemplates: Template[] = [];
@@ -270,7 +270,7 @@ export class TemplateStoreService {
      */
     private async findExactTemplateByName(
         templateName: string,
-        PAGE_SIZE: number = 20,
+        PAGE_SIZE = 20,
     ): Promise<Template> {
         let cursor: string | undefined;
 

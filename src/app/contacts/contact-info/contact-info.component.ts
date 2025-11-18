@@ -44,18 +44,18 @@ import { MessagingProductControllerService } from "../../../core/messaging-produ
 })
 export class ContactInfoComponent implements OnInit {
     // Existing properties
-    isEditing: boolean = false;
-    isLoading: boolean = false; // General loading state
+    isEditing = false;
+    isLoading = false; // General loading state
     originalContact: ConversationMessagingProductContact | null = null;
-    quantityOfMediaLinksAndDocs: number = 0;
+    quantityOfMediaLinksAndDocs = 0;
     media: Conversation[] = [];
 
     @Input() messagingProductContact!: ConversationMessagingProductContact;
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
 
-    isDeleting: boolean = false;
-    isBlocking: boolean = false;
-    isUnblocking: boolean = false;
+    isDeleting = false;
+    isBlocking = false;
+    isUnblocking = false;
 
     phoneControl = new FormControl<any>(null, [Validators.required]);
 
@@ -362,7 +362,7 @@ export class ContactInfoComponent implements OnInit {
         mode: "contact_media",
     };
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

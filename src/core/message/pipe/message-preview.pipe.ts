@@ -8,7 +8,7 @@ import { ReceiverData } from "../model/receiver-data.model";
 })
 export class MessagePreviewPipe implements PipeTransform {
     transform(data: ReceiverData | SenderData): string {
-        let lastMessageText: string = "";
+        let lastMessageText = "";
 
         switch (data.type) {
             case "text":

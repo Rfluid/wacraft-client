@@ -35,7 +35,7 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class CampaignsSidebarComponent extends KeyboardNavigableList implements OnInit {
-    private scrolling: boolean = false;
+    private scrolling = false;
 
     @ViewChild("searchTextarea")
     searchTextarea!: ElementRef<HTMLTextAreaElement>;
@@ -170,7 +170,7 @@ export class CampaignsSidebarComponent extends KeyboardNavigableList implements 
         event.preventDefault(); // Prevent text selection
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

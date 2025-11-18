@@ -34,8 +34,8 @@ export class AccountComponent implements OnInit {
     ThemeMode = ThemeMode;
     UnreadMode = UnreadMode;
 
-    isEditing: boolean = false;
-    isDropdownOpen: boolean = false;
+    isEditing = false;
+    isDropdownOpen = false;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
 
@@ -56,7 +56,7 @@ export class AccountComponent implements OnInit {
         this.isEditing = !this.isEditing;
     }
 
-    loading: boolean = false;
+    loading = false;
     async saveChanges() {
         if (!this.userStore.currentUser) return;
         this.loading = true;
@@ -99,7 +99,7 @@ export class AccountComponent implements OnInit {
         this.localSettings.setSendTyping(sendTyping);
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

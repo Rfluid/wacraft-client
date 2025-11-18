@@ -19,9 +19,9 @@ import { Webhook } from "../../../../core/webhook/entity/webhook.entity";
     standalone: true,
 })
 export class WebhookPreviewComponent implements OnInit {
-    @Input("webhook") webhook!: Webhook;
+    @Input() webhook!: Webhook;
 
-    isSelected: boolean = false;
+    isSelected = false;
 
     constructor(
         private router: Router,

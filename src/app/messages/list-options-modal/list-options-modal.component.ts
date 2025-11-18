@@ -19,9 +19,9 @@ export class ListOptionsModalComponent {
 
     constructor() {}
 
-    @Input("listName") listName!: string;
-    @Input("sections") sections!: SectionData[];
-    @Output("close") close = new EventEmitter();
+    @Input() listName!: string;
+    @Input() sections!: SectionData[];
+    @Output() close = new EventEmitter();
 
     selectRow(row: any): void {
         this.selectedRow = row;

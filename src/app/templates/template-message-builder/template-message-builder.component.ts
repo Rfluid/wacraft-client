@@ -71,10 +71,10 @@ export class TemplateMessageBuilderComponent {
     templateMessage!: MessageTemplateContentComponent;
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
 
-    isModalOpen: boolean = false;
-    mediaByUrl: boolean = false;
+    isModalOpen = false;
+    mediaByUrl = false;
     selectedFile?: File;
-    headerMediaByUrl: boolean = false;
+    headerMediaByUrl = false;
     headerUseMedia: {
         caption: string;
         id: string;
@@ -154,7 +154,7 @@ export class TemplateMessageBuilderComponent {
         // Convert TemplateComponentType to UseTemplateComponentType (handles BUTTONS -> BUTTON)
         const useComponentType = this.typeConverter.transform(component.type);
 
-        let useComponent: UseTemplateComponent = {
+        const useComponent: UseTemplateComponent = {
             type: useComponentType,
             parameters: [],
         };
@@ -410,7 +410,7 @@ export class TemplateMessageBuilderComponent {
     }
 
     // Helper function to flatten nested objects, handling arrays as JSON strings
-    flattenObject(obj: any, parentKey: string = "", result: any = {}): any {
+    flattenObject(obj: any, parentKey = "", result: any = {}): any {
         for (const key in obj) {
             if (Object.prototype.hasOwnProperty.call(obj, key)) {
                 const newKey = parentKey ? `${parentKey}.${key}` : key;
@@ -486,7 +486,7 @@ export class TemplateMessageBuilderComponent {
         await Promise.all(sendPromises);
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

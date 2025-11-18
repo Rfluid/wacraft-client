@@ -13,5 +13,5 @@ import { MatIconModule } from "@angular/material/icon";
     standalone: true,
 })
 export class MessageContentPreviewComponent {
-    @Input("message") message!: SenderData | ReceiverData;
+    @Input() message!: SenderData | ReceiverData;
 }

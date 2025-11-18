@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild } from "@angular/core";
+import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { Role } from "../../../core/user/model/role.model";
@@ -11,12 +11,12 @@ import { User } from "../../../core/user/entity/user.entity";
     styleUrl: "./user-preview.component.scss",
     standalone: true,
 })
-export class UserPreviewComponent {
+export class UserPreviewComponent implements OnInit {
     Role = Role;
 
-    @Input("user") user!: User;
+    @Input() user!: User;
 
-    isSelected: boolean = false;
+    isSelected = false;
 
     constructor(private route: ActivatedRoute) {}
 

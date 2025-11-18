@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { UserConversationsStoreService } from "../store/user-conversations-store.service";
 import { LocalSettingsService } from "../../../app/local-settings.service";
 import { Subject } from "rxjs";
@@ -19,7 +19,7 @@ import { Subject } from "rxjs";
 @Injectable({
     providedIn: "root",
 })
-export class TypingIndicatorService {
+export class TypingIndicatorService implements OnDestroy {
     // WhatsApp typing indicator expires after 25 seconds
     private readonly TYPING_DURATION_MS = 25000;
 

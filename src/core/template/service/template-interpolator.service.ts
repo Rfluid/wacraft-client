@@ -66,7 +66,7 @@ export class TemplateInterpolatorService {
 
     private loadHeader(component: TemplateComponent, getTemplateData: () => UseTemplate) {
         const example = component.example;
-        let headerType: MessageType = component?.format
+        const headerType: MessageType = component?.format
             ? (component?.format.toLowerCase() as MessageType)
             : MessageType.text;
         let headerText = "";

@@ -32,7 +32,7 @@ import { MessageReplyHeaderComponent } from "../message-reply-header/message-rep
 export class MessageTemplateContentComponent {
     MessageType = MessageType;
 
-    @Output("asyncContentLoaded") asyncContentLoaded = new EventEmitter();
+    @Output() asyncContentLoaded = new EventEmitter();
     @Input()
     get template(): Template {
         return this._template;
@@ -66,15 +66,15 @@ export class MessageTemplateContentComponent {
     }
     private _message!: Conversation;
 
-    @Input("sent") sent: boolean = true;
-    @Input("contactName") contactName?: string;
+    @Input() sent = true;
+    @Input() contactName?: string;
 
     // Template content built
-    headerText: string = "";
+    headerText = "";
     headerType: MessageType = MessageType.text;
     headerUseMedia: UseMedia = {};
-    bodyText: string = "";
-    footerText: string = "";
+    bodyText = "";
+    footerText = "";
     buttons: TemplateButton[] = [];
 
     constructor(

@@ -18,7 +18,7 @@ export class ConversationsComponent implements OnInit {
 
     messagingProductContacts: ConversationMessagingProductContact[] = [];
 
-    currentMessagingProductContactId: string = "";
+    currentMessagingProductContactId = "";
 
     constructor(
         private route: ActivatedRoute,

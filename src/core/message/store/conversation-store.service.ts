@@ -24,12 +24,12 @@ export class ConversationStoreService {
     // Handles queries, loading, filters and stuff related to data
     public isExecuting = false;
     public pendingExecution = false;
-    private paginationLimit: number = 30;
-    public reachedMaxConversationLimit: boolean = false;
-    public reachedMaxSearchConversationLimit: boolean = false;
-    public count: number = 0;
-    public searchCount: number = 0;
-    searchValue: string = "";
+    private paginationLimit = 30;
+    public reachedMaxConversationLimit = false;
+    public reachedMaxSearchConversationLimit = false;
+    public count = 0;
+    public searchCount = 0;
+    searchValue = "";
 
     messagingProductContactIdFilter?: string;
     conversations: ConversationWithUnread[] = [];
@@ -109,7 +109,7 @@ export class ConversationStoreService {
                 this.messagingProductPipe.transform(conv.message).id,
         );
         if (existingIndex !== -1) {
-            let currentConversation = this.conversations[existingIndex];
+            const currentConversation = this.conversations[existingIndex];
             this.conversations.splice(existingIndex, 1);
             conversation.replaceUnread(currentConversation.unread);
             if (

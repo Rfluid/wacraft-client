@@ -5,7 +5,7 @@ import {
     HostListener,
     Input,
     Output,
-    ViewChild,
+    ViewChild, OnInit,
 } from "@angular/core";
 import {
     Conversation,
@@ -56,28 +56,28 @@ import { MessageReplyHeaderComponent } from "../message-reply-header/message-rep
     styleUrl: "./conversation-message.component.scss",
     standalone: true,
 })
-export class ConversationMessageComponent {
+export class ConversationMessageComponent implements OnInit {
     MessageType = MessageType;
     ReceivedMessageType = ReceivedMessageType;
 
-    @Input("message") message!: Conversation;
-    @Input("contactName") contactName!: string;
-    @Input("sent") sent: boolean = true;
+    @Input() message!: Conversation;
+    @Input() contactName!: string;
+    @Input() sent = true;
 
-    @Output("reply") reply = new EventEmitter();
-    @Output("asyncContentLoaded") asyncContentLoaded = new EventEmitter();
-    @Output("reactionSent") reactionSent = new EventEmitter<SenderData>();
-    @Output("selectMessage") selectMessage = new EventEmitter();
+    @Output() reply = new EventEmitter();
+    @Output() asyncContentLoaded = new EventEmitter();
+    @Output() reactionSent = new EventEmitter<SenderData>();
+    @Output() selectMessage = new EventEmitter();
 
     @ViewChild("templateMessage")
     templateMessage!: MessageTemplateContentComponent;
     @ViewChild("options") options!: ElementRef;
-    @Input("messagingProductContact")
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
 
     mediaSafeUrl: SafeUrl = ""; // Safe URL for media
-    optionsArrow: boolean = false;
-    optionsOpen: boolean = false;
+    optionsArrow = false;
+    optionsOpen = false;
 
     constructor(private messageDataPipe: MessageDataPipe) {}
 

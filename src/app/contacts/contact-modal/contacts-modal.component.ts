@@ -35,15 +35,15 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
     standalone: true,
 })
 export class ContactsModalComponent implements OnInit {
-    private scrolling: boolean = false;
+    private scrolling = false;
 
     @ViewChild("searchTextarea")
     searchTextarea!: ElementRef<HTMLTextAreaElement>;
 
-    @Input("headerText") headerText!: string;
-    @Input("bottomText") bottomText!: string;
-    @Output("send") send = new EventEmitter<ConversationMessagingProductContact[]>();
-    @Output("close") close = new EventEmitter();
+    @Input() headerText!: string;
+    @Input() bottomText!: string;
+    @Output() send = new EventEmitter<ConversationMessagingProductContact[]>();
+    @Output() close = new EventEmitter();
 
     selectedConversations: ConversationMessagingProductContact[] = [];
     messagingProductContactIdFilter?: string;
@@ -210,7 +210,7 @@ export class ContactsModalComponent implements OnInit {
         this.searchTextarea.nativeElement.focus();
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

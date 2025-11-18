@@ -42,12 +42,12 @@ import { TimeoutErrorModalComponent } from "../common/timeout-error-modal/timeou
     standalone: true,
 })
 export class ChatsSidebarComponent extends KeyboardNavigableList implements OnInit {
-    private scrolling: boolean = false;
+    private scrolling = false;
 
     @ViewChild("searchTextarea")
     searchTextarea!: ElementRef<HTMLTextAreaElement>;
 
-    @Output("select") select = new EventEmitter<ConversationMessagingProductContact>();
+    @Output() select = new EventEmitter<ConversationMessagingProductContact>();
 
     messagingProductContactIdFilter?: string;
 
@@ -207,7 +207,7 @@ export class ChatsSidebarComponent extends KeyboardNavigableList implements OnIn
         event.preventDefault(); // Prevent text selection
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

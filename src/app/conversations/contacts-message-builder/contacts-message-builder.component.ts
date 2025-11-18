@@ -22,7 +22,7 @@ interface ContactInternal {
         first_name: string;
         last_name: string;
     };
-    phones: Array<ContactPhone & { is_wa: boolean }>;
+    phones: (ContactPhone & { is_wa: boolean })[];
     emails: ContactEmail[];
     org: ContactOrg;
     urls: ContactURL[];
@@ -43,7 +43,7 @@ interface ContactInternal {
 export class ContactsMessageBuilderComponent {
     @Input("toId") toIdInput!: string;
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
-    @Output("sent") sent = new EventEmitter<SenderData>();
+    @Output() sent = new EventEmitter<SenderData>();
 
     contacts: ContactInternal[] = [
         {

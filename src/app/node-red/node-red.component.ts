@@ -14,7 +14,7 @@ import { AuthService } from "../../core/auth/service/auth.service";
 })
 export class NodeRedComponent implements OnInit {
     environment = environment;
-    accessToken: string = "";
+    accessToken = "";
 
     constructor(public authService: AuthService) {}
 

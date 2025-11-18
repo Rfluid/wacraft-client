@@ -13,8 +13,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     standalone: true,
 })
 export class MessageInfoComponent {
-    @Input("message") message!: Conversation;
-    @Input("sent") sent: boolean = true;
+    @Input() message!: Conversation;
+    @Input() sent = true;
 
     constructor() {}
 

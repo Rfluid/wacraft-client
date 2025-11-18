@@ -10,11 +10,11 @@ import { MatIconModule } from "@angular/material/icon";
     standalone: true,
 })
 export class SmallButtonComponent {
-    @Input("src") src: string = "";
-    @Input("matIcon") matIcon: string = "";
-    @Input("matSymbol") matSymbol: string = "";
-    @Input("active") active: boolean = false;
-    @Input("width") width: string = "40px";
+    @Input() src = "";
+    @Input() matIcon = "";
+    @Input() matSymbol = "";
+    @Input() active = false;
+    @Input() width = "40px";
     @ViewChild("button") button!: HTMLButtonElement;
     @ContentChild(TemplateRef) customContent!: TemplateRef<any>;
 

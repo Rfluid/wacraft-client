@@ -18,10 +18,10 @@ import { NGXLogger } from "ngx-logger";
 export class MessageMediaContentComponent implements OnInit {
     MessageType = MessageType;
 
-    @Input("mediaData") mediaData!: UseMedia;
-    @Input("messageType") messageType!: MessageType | ReceivedMessageType;
-    @Input("isSent") isSent!: boolean;
-    @Output("asyncContentLoaded") asyncContentLoaded = new EventEmitter();
+    @Input() mediaData!: UseMedia;
+    @Input() messageType!: MessageType | ReceivedMessageType;
+    @Input() isSent!: boolean;
+    @Output() asyncContentLoaded = new EventEmitter();
 
     mediaSafeUrl: SafeUrl = ""; // Safe URL for media
 
@@ -86,7 +86,7 @@ export class MessageMediaContentComponent implements OnInit {
         this.downloadMedia();
     }
 
-    options: boolean = false;
+    options = false;
     showOptions() {
         this.options = true;
     }

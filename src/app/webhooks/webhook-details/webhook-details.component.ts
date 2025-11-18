@@ -176,7 +176,7 @@ export class WebhookDetailsComponent implements OnInit {
         await navigator.clipboard.writeText(value);
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

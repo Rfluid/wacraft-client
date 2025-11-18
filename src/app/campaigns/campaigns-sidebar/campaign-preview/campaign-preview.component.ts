@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild } from "@angular/core";
+import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit } from "@angular/core";
 import { CampaignFields } from "../../../../core/campaign/entity/campaign.entity";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -10,10 +10,10 @@ import { CommonModule } from "@angular/common";
     styleUrl: "./campaign-preview.component.scss",
     standalone: true,
 })
-export class CampaignPreviewComponent {
-    @Input("campaign") campaign!: CampaignFields;
+export class CampaignPreviewComponent implements OnInit {
+    @Input() campaign!: CampaignFields;
 
-    isSelected: boolean = false;
+    isSelected = false;
 
     constructor(private route: ActivatedRoute) {}
 

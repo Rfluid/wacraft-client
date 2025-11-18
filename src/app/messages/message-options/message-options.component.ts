@@ -40,21 +40,21 @@ import { MessageDataPipe } from "../../../core/message/pipe/message-data.pipe";
 export class MessageOptionsComponent {
     MessageType = MessageType;
 
-    @Input("message") message!: Conversation;
+    @Input() message!: Conversation;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-    @Output("reply") reply = new EventEmitter();
-    @Output("close") close = new EventEmitter();
-    @Output("reactionSent") reactionSent = new EventEmitter<SenderData>();
+    @Output() reply = new EventEmitter();
+    @Output() close = new EventEmitter();
+    @Output() reactionSent = new EventEmitter<SenderData>();
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
     @Input("toId") toIdInput!: string;
-    @Output("selectMessage") selectMessage = new EventEmitter();
+    @Output() selectMessage = new EventEmitter();
 
-    reaction: string = "";
+    reaction = "";
 
-    showMessageInfo: boolean = false;
+    showMessageInfo = false;
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
 
     get senderData(): SenderData {

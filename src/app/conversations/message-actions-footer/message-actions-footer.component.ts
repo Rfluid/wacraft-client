@@ -38,10 +38,10 @@ import { ContactsModalComponent } from "../../contacts/contact-modal/contacts-mo
 export class MessageActionsFooterComponent {
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
 
-    @Input("messages") messages!: Conversation[];
+    @Input() messages!: Conversation[];
 
-    @Output("clear") clear = new EventEmitter();
-    @Output("sent") sent = new EventEmitter<[SenderData, string]>();
+    @Output() clear = new EventEmitter();
+    @Output() sent = new EventEmitter<[SenderData, string]>();
 
     constructor(
         private messageController: MessageControllerService,
@@ -81,12 +81,12 @@ export class MessageActionsFooterComponent {
         return await Promise.all(sendPromises);
     }
 
-    isForwardModalOpen: boolean = false;
+    isForwardModalOpen = false;
     closeModal() {
         this.isForwardModalOpen = false;
     }
 
-    errorStr: string = "";
+    errorStr = "";
     errorData: any;
     handleErr(message: string, err: any) {
         this.errorData = err?.response?.data;

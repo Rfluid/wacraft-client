@@ -135,7 +135,7 @@
             <!-- Text Message -->
             <div
                 class="ml-2 flex w-full items-center"
-                *ngIf="messageType == MessageType.text || messageType == 'raw'"
+                *ngIf="messageType == MessageType.text || messageType === 'raw'"
             >
                 <textarea
                     class="min-h-10 w-full resize-none rounded-lg bg-gray-300 px-3 py-2 outline-none dark:bg-gray-600 dark:text-white"

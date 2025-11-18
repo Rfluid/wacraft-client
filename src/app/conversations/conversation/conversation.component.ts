@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit } from "@angular/core";
 import { ConversationHeaderComponent } from "../conversation-header/conversation-header.component";
 import { ConversationFooterComponent } from "../conversation-footer/conversation-footer.component";
 import { ConversationBodyComponent } from "../conversation-body/conversation-body.component";
@@ -26,8 +26,8 @@ import { MessageActionsFooterComponent } from "../message-actions-footer/message
     styleUrl: "./conversation.component.scss",
     standalone: true,
 })
-export class ConversationComponent implements OnInit {
-    @Input("messagingProductContact")
+export class ConversationComponent implements OnInit, AfterViewInit {
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
     @Output()
     searchAtContactId = new EventEmitter<string>();
@@ -35,9 +35,9 @@ export class ConversationComponent implements OnInit {
     @ViewChild("conversationFooter")
     conversationFooter!: ConversationFooterComponent;
 
-    contactInfoEnabled: boolean = false;
-    contactMediaEnabled: boolean = false;
-    isTyping: boolean = false;
+    contactInfoEnabled = false;
+    contactMediaEnabled = false;
+    isTyping = false;
 
     constructor(
         private route: ActivatedRoute,

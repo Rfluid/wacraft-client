@@ -24,7 +24,7 @@ export class MutexSwapper<T> {
     async release<R>(msgId: T) {
         await this.mu.acquire();
 
-        let mutex = this.mutexes.get(msgId);
+        const mutex = this.mutexes.get(msgId);
         if (!mutex) return this.mu.release();
 
         let qttAcquired = this.usageCount.get(msgId);

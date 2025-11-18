@@ -9,15 +9,15 @@ import { NGXLogger } from "ngx-logger";
     providedIn: "root",
 })
 export class CampaignStoreService {
-    private paginationLimit: number = 15;
+    private paginationLimit = 15;
 
-    public reachedMaxLimit: boolean = false;
-    public reachedMaxSearchLimit: boolean = false;
+    public reachedMaxLimit = false;
+    public reachedMaxSearchLimit = false;
     currentCampaign!: Campaign;
 
     searchMode: "name" = "name";
 
-    searchValue: string = "";
+    searchValue = "";
     searchFilters: {
         text: string;
         query?: Query;

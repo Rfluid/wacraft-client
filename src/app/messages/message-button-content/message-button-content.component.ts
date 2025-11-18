@@ -10,7 +10,7 @@ import { CommonModule } from "@angular/common";
     standalone: true,
 })
 export class MessageButtonContentComponent {
-    @Input("buttonData") buttonData!: ButtonData;
-    @Input("isSent") isSent!: boolean;
-    @Input("sent") sent: boolean = true;
+    @Input() buttonData!: ButtonData;
+    @Input() isSent!: boolean;
+    @Input() sent = true;
 }

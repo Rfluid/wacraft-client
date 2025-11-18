@@ -22,10 +22,10 @@ import { NGXLogger } from "ngx-logger";
 export class MediaPreviewComponent implements OnInit {
     MessageType = MessageType;
 
-    @Input("message") message!: Conversation;
+    @Input() message!: Conversation;
 
     mediaSafeUrl: SafeUrl = ""; // Safe URL for media
-    options: boolean = false;
+    options = false;
 
     constructor(
         private messageDataPipe: MessageDataPipe,
