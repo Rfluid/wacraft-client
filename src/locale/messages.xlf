@@ -2,8 +2,8 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="1410978112566738410" datatype="html">
-        <source> Account settings </source>
+      <trans-unit id="7440042659134084877" datatype="html">
+        <source> Account Settings </source>
       </trans-unit>
       <trans-unit id="8953033926734869941" datatype="html">
         <source>Name</source>
@@ -19,9 +19,6 @@
       </trans-unit>
       <trans-unit id="3620188369327429839" datatype="html">
         <source> Save </source>
-      </trans-unit>
-      <trans-unit id="7493868697410114420" datatype="html">
-        <source> Local settings </source>
       </trans-unit>
       <trans-unit id="4757941663738549598" datatype="html">
         <source>Auto Preview</source>
@@ -53,14 +50,8 @@
       <trans-unit id="7103588127254721505" datatype="html">
         <source>Theme</source>
       </trans-unit>
-      <trans-unit id="1378667119726634696" datatype="html">
-        <source> Auto mark as read </source>
-      </trans-unit>
-      <trans-unit id="4816216590591222133" datatype="html">
-        <source>Enabled</source>
-      </trans-unit>
-      <trans-unit id="5769292297914455214" datatype="html">
-        <source>Disabled</source>
+      <trans-unit id="560220846094018377" datatype="html">
+        <source>Auto Mark as Read</source>
       </trans-unit>
       <trans-unit id="7581323695994806382" datatype="html">
         <source> Campaign settings </source>
@@ -307,9 +298,6 @@
       <trans-unit id="3222304635400239443" datatype="html">
         <source>Message builder</source>
       </trans-unit>
-      <trans-unit id="4313544752013453805" datatype="html">
-        <source> Upload file </source>
-      </trans-unit>
       <trans-unit id="3874932175248518277" datatype="html">
         <source>Copy data to send message as raw</source>
       </trans-unit>
@@ -324,9 +312,6 @@
       </trans-unit>
       <trans-unit id="1781426626227834604" datatype="html">
         <source>Select contacts</source>
-      </trans-unit>
-      <trans-unit id="6981830104215014781" datatype="html">
-        <source>category</source>
       </trans-unit>
       <trans-unit id="2347724151568473592" datatype="html">
         <source>language</source>
@@ -361,8 +346,8 @@
       <trans-unit id="3499697918872116089" datatype="html">
         <source>Defines where your message read will be registered. Used to track messages you didn&apos;t read yet.</source>
       </trans-unit>
-      <trans-unit id="5846976123417004220" datatype="html">
-        <source>Read control</source>
+      <trans-unit id="1918860647725438563" datatype="html">
+        <source>Read Control</source>
       </trans-unit>
       <trans-unit id="626781142089573549" datatype="html">
         <source>Click to upload</source>
@@ -570,9 +555,6 @@
       <trans-unit id="214161068628107607" datatype="html">
         <source> A valid email is required. </source>
       </trans-unit>
-      <trans-unit id="2159130950882492111" datatype="html">
-        <source>Cancel</source>
-      </trans-unit>
       <trans-unit id="3323415564519831786" datatype="html">
         <source> Name is required. </source>
       </trans-unit>
@@ -581,6 +563,89 @@
       </trans-unit>
       <trans-unit id="6562715443570244595" datatype="html">
         <source>Message delivery failed</source>
+      </trans-unit>
+      <trans-unit id="1221596867309460035" datatype="html">
+        <source>New Password</source>
+      </trans-unit>
+      <trans-unit id="1236999677840134487" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon class=&quot;mr-2 !h-5 !w-5 text-sm&quot;&gt;"/>edit<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt;"/> Edit Profile </source>
+      </trans-unit>
+      <trans-unit id="1354734441519392838" datatype="html">
+        <source> Profile Information </source>
+      </trans-unit>
+      <trans-unit id="1428384729921254001" datatype="html">
+        <source> Sign Out </source>
+      </trans-unit>
+      <trans-unit id="2408977757156721086" datatype="html">
+        <source> Choose how message read status is tracked </source>
+      </trans-unit>
+      <trans-unit id="2809718507772563864" datatype="html">
+        <source>Send Typing Indicator</source>
+      </trans-unit>
+      <trans-unit id="29832309535656200" datatype="html">
+        <source>System</source>
+      </trans-unit>
+      <trans-unit id="355857847814096936" datatype="html">
+        <source> Automatically mark messages as read when viewed </source>
+      </trans-unit>
+      <trans-unit id="3892161059518616136" datatype="html">
+        <source>Dark</source>
+      </trans-unit>
+      <trans-unit id="391473449502410604" datatype="html">
+        <source> Application Settings </source>
+      </trans-unit>
+      <trans-unit id="4071377376054753380" datatype="html">
+        <source>
+          <x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon class=&quot;mr-2 !h-5 !w-5 text-sm&quot;&gt;"/>
+          <x id="INTERPOLATION" equiv-text="{{ loading ? &apos;hourglass_empty&apos; : &apos;save&apos; }}"/>
+          <x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt;"/>
+          <x id="INTERPOLATION_1" equiv-text="{{ loading ? &apos;Saving...&apos; : &apos;Save Changes&apos; }}"/>
+        </source>
+      </trans-unit>
+      <trans-unit id="413116577994876478" datatype="html">
+        <source>Light</source>
+      </trans-unit>
+      <trans-unit id="4768749765465246664" datatype="html">
+        <source>Email</source>
+      </trans-unit>
+      <trans-unit id="5332273643663937969" datatype="html">
+        <source> Send typing notifications to users when composing messages </source>
+      </trans-unit>
+      <trans-unit id="5459516529073102135" datatype="html">
+        <source>Quality Score</source>
+      </trans-unit>
+      <trans-unit id="5481510697684376597" datatype="html">
+        <source> Account Actions </source>
+      </trans-unit>
+      <trans-unit id="622805086473721910" datatype="html">
+        <source> End your current session and return to login </source>
+      </trans-unit>
+      <trans-unit id="6648492530593728244" datatype="html">
+        <source>Leave empty to keep current</source>
+      </trans-unit>
+      <trans-unit id="6652719931015958801" datatype="html">
+        <source> Manage your profile and application preferences </source>
+      </trans-unit>
+      <trans-unit id="6762437027198020922" datatype="html">
+        <source>Toggle auto mark as read</source>
+      </trans-unit>
+      <trans-unit id="7123490720096247063" datatype="html">
+        <source>Advanced Filters</source>
+      </trans-unit>
+      <trans-unit id="7584487295874556568" datatype="html">
+        <source>Toggle send typing indicator</source>
+      </trans-unit>
+      <trans-unit id="804779251254896991" datatype="html">
+        <source> Choose your preferred color scheme </source>
+      </trans-unit>
+      <trans-unit id="8384559525885301918" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon class=&quot;mr-2 !h-5 !w-5 text-sm&quot;&gt;"/>close<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt;"/> Cancel </source>
+      </trans-unit>
+      <trans-unit id="9006510981725635081" datatype="html">
+        <source> Select media types to preview automatically </source>
+      </trans-unit>
+      <trans-unit id="935790816200474922" datatype="html">
+        <source>Sign Out</source>
       </trans-unit>
     </body>
   </file>

@@ -6,7 +6,7 @@
         <div *ngFor="let component of components; let i = index" class="mb-3">
             <label class="mb-2 block text-sm font-medium">{{ component.type }}</label>
 
-            <div *ngIf="component" class="">
+            <div *ngIf="component" class="space-y-2">
                 <div class="" *ngFor="let parameter of component.parameters; let j = index">
                     <input
                         class="w-full rounded bg-gray-200 p-2 outline-none dark:bg-gray-600 dark:text-white"

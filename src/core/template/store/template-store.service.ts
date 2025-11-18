@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { TemplateControllerService } from "../controller/template-controller.service";
-import { Template } from "../model/template.model";
-import { TemplateQueryParams } from "../model/template-query-params.model";
+import { Template, TemplateCategory, TemplateStatus } from "../model/template.model";
+import { TemplateQueryParams, TemplateQualityScore } from "../model/template-query-params.model";
 import { TemplateSummary } from "../model/template-summary.model";
 import { MutexSwapper } from "../../synch/mutex-swapper/mutex-swapper";
 
@@ -22,6 +22,11 @@ export class TemplateStoreService {
         text: string;
         query?: TemplateQueryParams;
     }[] = [];
+
+    // Enum filters
+    public selectedStatuses: Set<TemplateStatus> = new Set();
+    public selectedCategories: Set<TemplateCategory> = new Set();
+    public selectedQualityScores: Set<TemplateQualityScore> = new Set();
 
     public templates: Template[] = [];
     public searchTemplates: Template[] = [];
@@ -74,10 +79,11 @@ export class TemplateStoreService {
     }
 
     async getSearchTemplates(): Promise<void> {
+        const queryParams = this.buildSearchQueryParams();
         const data = await this.templateController.get({
+            ...queryParams,
             limit: this.templatesPaginationLimit,
             after: this.nextAfterTemplateSearch,
-            [this.searchMode]: this.searchValue,
             summary: [TemplateSummary.total_count],
         });
         const templates = data.data;
@@ -101,8 +107,9 @@ export class TemplateStoreService {
     async getInitialSearchTemplates(): Promise<void> {
         this.searchTemplates = [];
 
+        const queryParams = this.buildSearchQueryParams();
         const data = await this.templateController.get({
-            [this.searchMode]: this.searchValue,
+            ...queryParams,
             limit: this.templatesPaginationLimit,
             summary: [TemplateSummary.total_count],
         });
@@ -130,7 +137,8 @@ export class TemplateStoreService {
     }
 
     getInitialSearchTemplatesConcurrent() {
-        if (!this.searchValue) return;
+        // Only run if there are active filters or search value
+        if (!this.hasActiveFilters()) return;
 
         if (this.isExecuting) {
             // If an execution is already in progress, mark that another execution is pending
@@ -162,6 +170,87 @@ export class TemplateStoreService {
                     this.getInitialSearchTemplatesConcurrent();
                 }
             });
+    }
+
+    private buildSearchQueryParams(): Partial<TemplateQueryParams> {
+        const params: any = {};
+
+        // Add text search if exists
+        if (this.searchValue) {
+            if (this.searchMode === "name") {
+                params.name = this.searchValue;
+            } else if (this.searchMode === "content") {
+                params.content = this.searchValue;
+            } else if (this.searchMode === "language") {
+                params.language = this.searchValue;
+            }
+        }
+
+        // Note: The API might not support multiple values for these filters
+        // If it does support arrays, uncomment the array approach
+        // If not, we'll need to make multiple requests or use the first selected value
+
+        // For now, using the first selected value if any are selected
+        if (this.selectedStatuses.size > 0) {
+            params.status = Array.from(this.selectedStatuses)[0];
+        }
+
+        if (this.selectedCategories.size > 0) {
+            params.category = Array.from(this.selectedCategories)[0];
+        }
+
+        if (this.selectedQualityScores.size > 0) {
+            params.quality_score = Array.from(this.selectedQualityScores)[0];
+        }
+
+        return params as Partial<TemplateQueryParams>;
+    }
+
+    toggleStatus(status: TemplateStatus) {
+        if (this.selectedStatuses.has(status)) {
+            this.selectedStatuses.delete(status);
+        } else {
+            this.selectedStatuses.clear(); // Only one at a time
+            this.selectedStatuses.add(status);
+        }
+        this.getInitialSearchTemplatesConcurrent();
+    }
+
+    toggleCategory(category: TemplateCategory) {
+        if (this.selectedCategories.has(category)) {
+            this.selectedCategories.delete(category);
+        } else {
+            this.selectedCategories.clear(); // Only one at a time
+            this.selectedCategories.add(category);
+        }
+        this.getInitialSearchTemplatesConcurrent();
+    }
+
+    toggleQualityScore(score: TemplateQualityScore) {
+        if (this.selectedQualityScores.has(score)) {
+            this.selectedQualityScores.delete(score);
+        } else {
+            this.selectedQualityScores.clear(); // Only one at a time
+            this.selectedQualityScores.add(score);
+        }
+        this.getInitialSearchTemplatesConcurrent();
+    }
+
+    clearAllFilters() {
+        this.selectedStatuses.clear();
+        this.selectedCategories.clear();
+        this.selectedQualityScores.clear();
+        this.searchValue = "";
+        this.searchTemplates = [];
+    }
+
+    hasActiveFilters(): boolean {
+        return (
+            this.selectedStatuses.size > 0 ||
+            this.selectedCategories.size > 0 ||
+            this.selectedQualityScores.size > 0 ||
+            this.searchValue.length > 0
+        );
     }
 
     async addTemplatesToTemplatesByName(templates: Template[]) {

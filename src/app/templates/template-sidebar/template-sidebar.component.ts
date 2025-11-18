@@ -1,4 +1,12 @@
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    HostListener,
+    OnInit,
+    QueryList,
+    ViewChild,
+    ViewChildren,
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { TemplatePreviewComponent } from "../template-preview/template-preview.component";
@@ -9,10 +17,18 @@ import { MatIconModule } from "@angular/material/icon";
 import { KeyboardNavigableList } from "../../common/keyboard/keyboard-navigable-list.base";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
 import { NGXLogger } from "ngx-logger";
+import { TemplateCategory, TemplateStatus } from "../../../core/template/model/template.model";
+import { TemplateQualityScore } from "../../../core/template/model/template-query-params.model";
 
 @Component({
     selector: "app-template-sidebar",
-    imports: [FormsModule, TemplatePreviewComponent, CommonModule, MatIconModule, TimeoutErrorModalComponent],
+    imports: [
+        FormsModule,
+        TemplatePreviewComponent,
+        CommonModule,
+        MatIconModule,
+        TimeoutErrorModalComponent,
+    ],
     templateUrl: "./template-sidebar.component.html",
     styleUrl: "./template-sidebar.component.scss",
     standalone: true,
@@ -24,6 +40,26 @@ export class TemplateSidebarComponent extends KeyboardNavigableList implements O
     searchTextarea!: ElementRef<HTMLTextAreaElement>;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
+
+    // Expose enums to template
+    TemplateStatus = TemplateStatus;
+    TemplateCategory = TemplateCategory;
+    TemplateQualityScore = TemplateQualityScore;
+
+    // Get enum values as arrays
+    statusOptions = Object.values(TemplateStatus);
+    categoryOptions = Object.values(TemplateCategory);
+    qualityScoreOptions = Object.values(TemplateQualityScore);
+
+    // Track expanded state for filter sections
+    filtersExpanded = {
+        status: false,
+        category: false,
+        qualityScore: false,
+    };
+
+    // Track if advanced filters section is visible
+    showAdvancedFilters = false;
 
     constructor(
         private router: Router,
@@ -71,12 +107,12 @@ export class TemplateSidebarComponent extends KeyboardNavigableList implements O
             return;
 
         if (
-            // Check if template is not searching
-            !this.templateStore.searchValue
+            // Check if not in search mode (no filters and no search text)
+            !this.isSearchMode()
         )
             this.getTemplates();
         else if (
-            this.templateStore.searchValue &&
+            this.isSearchMode() &&
             !this.templateStore.isExecuting &&
             !this.templateStore.pendingExecution
         )
@@ -175,5 +211,29 @@ export class TemplateSidebarComponent extends KeyboardNavigableList implements O
         this.errorStr = err?.response?.data?.description || message;
         this.logger.error("Async error", err);
         this.errorModal.openModal();
+    }
+
+    toggleFilterSection(section: "status" | "category" | "qualityScore") {
+        this.filtersExpanded[section] = !this.filtersExpanded[section];
+    }
+
+    formatEnumValue(value: string): string {
+        return value
+            .toLowerCase()
+            .split("_")
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+    }
+
+    getActiveFilterCount(): number {
+        return (
+            this.templateStore.selectedStatuses.size +
+            this.templateStore.selectedCategories.size +
+            this.templateStore.selectedQualityScores.size
+        );
+    }
+
+    isSearchMode(): boolean {
+        return this.templateStore.hasActiveFilters();
     }
 }

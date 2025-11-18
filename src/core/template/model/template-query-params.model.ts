@@ -1,17 +1,23 @@
 import { GraphCursors } from "../../common/model/graph-cursors.model";
-import { TemplateFields } from "./template-fields.model";
-import { TemplateSummaryResponse } from "./template-summary-response.model";
 import { TemplateSummary } from "./template-summary.model";
+import { TemplateCategory, TemplateStatus } from "./template.model";
+
+export enum TemplateQualityScore {
+    green = "GREEN",
+    yellow = "YELLOW",
+    unknown = "UNKNOWN",
+}
 
 export interface TemplateQueryParams extends GraphCursors {
-    name?: string;
+    category?: TemplateCategory;
     content?: string;
     language?: string;
-    status?: string;
-    category?: string;
+    name?: string;
     name_or_content?: string;
+    quality_score?: TemplateQualityScore;
+    status?: TemplateStatus;
+
     limit?: number;
 
-    fields?: TemplateFields[]; // Fields to be returned.
     summary?: TemplateSummary[]; // Summary to be returned.
 }

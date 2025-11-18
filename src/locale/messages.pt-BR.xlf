@@ -2,9 +2,9 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" target-language="pt-BR" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="1410978112566738410" datatype="html">
-        <source> Account settings </source>
-        <target> Configurações da conta </target>
+      <trans-unit id="7440042659134084877" datatype="html">
+        <source> Account Settings </source>
+        <target state="new"> Configurações da conta </target>
       </trans-unit>
       <trans-unit id="8953033926734869941" datatype="html">
         <source>Name</source>
@@ -25,10 +25,6 @@
       <trans-unit id="3620188369327429839" datatype="html">
         <source> Save </source>
         <target> Salvar </target>
-      </trans-unit>
-      <trans-unit id="7493868697410114420" datatype="html">
-        <source> Local settings </source>
-        <target> Configurações locais </target>
       </trans-unit>
       <trans-unit id="4757941663738549598" datatype="html">
         <source>Auto Preview</source>
@@ -74,8 +70,8 @@
           <x id="INTERPOLATION" equiv-text="{{ messagingProductContact.contact.email || &quot;Email não disponível&quot; }}"/>
         </target>
       </trans-unit>
-      <trans-unit id="1378667119726634696" datatype="html">
-        <source> Auto mark as read </source>
+      <trans-unit id="560220846094018377" datatype="html">
+        <source>Auto Mark as Read</source>
         <target state="new"> Marcar como lido </target>
       </trans-unit>
       <trans-unit id="7581323695994806382" datatype="html">
@@ -258,10 +254,6 @@
         <source>Message builder</source>
         <target>Construtor de mensagem</target>
       </trans-unit>
-      <trans-unit id="4313544752013453805" datatype="html">
-        <source> Upload file </source>
-        <target> Enviar arquivo </target>
-      </trans-unit>
       <trans-unit id="3874932175248518277" datatype="html">
         <source>Copy data to send message as raw</source>
         <target>Copiar dados para enviar mensagem como bruta</target>
@@ -362,10 +354,6 @@
         <source>Select contacts</source>
         <target state="new">Contatos selecionados</target>
       </trans-unit>
-      <trans-unit id="6981830104215014781" datatype="html">
-        <source>category</source>
-        <target state="new">categoria</target>
-      </trans-unit>
       <trans-unit id="2347724151568473592" datatype="html">
         <source>language</source>
         <target state="new">idioma</target>
@@ -422,14 +410,6 @@
         <source>Theme</source>
         <target state="new">Tema</target>
       </trans-unit>
-      <trans-unit id="4816216590591222133" datatype="html">
-        <source>Enabled</source>
-        <target state="new">Habilitado</target>
-      </trans-unit>
-      <trans-unit id="5769292297914455214" datatype="html">
-        <source>Disabled</source>
-        <target state="new">Desabilitado</target>
-      </trans-unit>
       <trans-unit id="1616968388083998795" datatype="html">
         <source>Mark as read</source>
         <target state="new">Marcar como lido</target>
@@ -482,8 +462,8 @@
         <source>&quot;None&quot; means that will not track messages read. &quot;Server&quot; means that will track messages read at the server, synched with other users. &quot;Local&quot; means that will track messages read only in your session locally.</source>
         <target state="new">&quot;Nenhum&quot; significa que não registrará as mensagens lidas. &quot;Servidor&quot; significa que registrará as mensagens lidas no servidor, compartilhando com outros usuários. &quot;Local&quot; significa que registrará as mensagens lidas apenas na sua sessão localmente.</target>
       </trans-unit>
-      <trans-unit id="5846976123417004220" datatype="html">
-        <source>Read control</source>
+      <trans-unit id="1918860647725438563" datatype="html">
+        <source>Read Control</source>
         <target state="new">Controle de leitura</target>
       </trans-unit>
       <trans-unit id="626781142089573549" datatype="html">
@@ -758,10 +738,6 @@
         <source> A valid email is required. </source>
         <target state="new"> Um email válido é obrigatório. </target>
       </trans-unit>
-      <trans-unit id="2159130950882492111" datatype="html">
-        <source>Cancel</source>
-        <target state="new">Cancelar</target>
-      </trans-unit>
       <trans-unit id="187187500641108332" datatype="html">
         <source>
           <x id="INTERPOLATION" equiv-text="{{ messagingProductContact.contact.name || &quot;Unknown&quot; }}"/>
@@ -777,6 +753,120 @@
       <trans-unit id="6562715443570244595" datatype="html">
         <source>Message delivery failed</source>
         <target state="new">Falha no envio da mensagem</target>
+      </trans-unit>
+      <trans-unit id="6652719931015958801" datatype="html">
+        <source> Manage your profile and application preferences </source>
+        <target>Gerenciar seu perfil e preferências do aplicativo</target>
+      </trans-unit>
+      <trans-unit id="1354734441519392838" datatype="html">
+        <source> Profile Information </source>
+        <target>Informações do Perfil</target>
+      </trans-unit>
+      <trans-unit id="4768749765465246664" datatype="html">
+        <source>Email</source>
+        <target>E-mail</target>
+      </trans-unit>
+      <trans-unit id="1221596867309460035" datatype="html">
+        <source>New Password</source>
+        <target>Nova Senha</target>
+      </trans-unit>
+      <trans-unit id="6648492530593728244" datatype="html">
+        <source>Leave empty to keep current</source>
+        <target>Deixe em branco para manter a atual</target>
+      </trans-unit>
+      <trans-unit id="1236999677840134487" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon class=&quot;mr-2 !h-5 !w-5 text-sm&quot;&gt;"/>edit<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt;"/> Edit Profile </source>
+        <target><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon class=&quot;mr-2 !h-5 !w-5 text-sm&quot;&gt;"/>edit<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt;"/> Editar Perfil</target>
+      </trans-unit>
+      <trans-unit id="8384559525885301918" datatype="html">
+        <source><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon class=&quot;mr-2 !h-5 !w-5 text-sm&quot;&gt;"/>close<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt;"/> Cancel </source>
+        <target><x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon class=&quot;mr-2 !h-5 !w-5 text-sm&quot;&gt;"/>close<x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt;"/> Cancelar</target>
+      </trans-unit>
+      <trans-unit id="4071377376054753380" datatype="html">
+        <source>
+          <x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon class=&quot;mr-2 !h-5 !w-5 text-sm&quot;&gt;"/>
+          <x id="INTERPOLATION" equiv-text="{{ loading ? &apos;hourglass_empty&apos; : &apos;save&apos; }}"/>
+          <x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt;"/>
+          <x id="INTERPOLATION_1" equiv-text="{{ loading ? &apos;Saving...&apos; : &apos;Save Changes&apos; }}"/>
+        </source>
+        <target>
+          <x id="START_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;mat-icon class=&quot;mr-2 !h-5 !w-5 text-sm&quot;&gt;"/>
+          <x id="INTERPOLATION" equiv-text="{{ loading ? &apos;hourglass_empty&apos; : &apos;save&apos; }}"/>
+          <x id="CLOSE_TAG_MAT_ICON" ctype="x-mat_icon" equiv-text="&lt;/mat-icon&gt;"/>
+          <x id="INTERPOLATION_1" equiv-text="{{ loading ? &apos;Salvando...&apos; : &apos;Salvar Alterações&apos; }}"/>
+        </target>
+      </trans-unit>
+      <trans-unit id="391473449502410604" datatype="html">
+        <source> Application Settings </source>
+        <target>Configurações do Aplicativo</target>
+      </trans-unit>
+      <trans-unit id="9006510981725635081" datatype="html">
+        <source> Select media types to preview automatically </source>
+        <target>Selecione tipos de mídia para visualizar automaticamente</target>
+      </trans-unit>
+      <trans-unit id="2408977757156721086" datatype="html">
+        <source> Choose how message read status is tracked </source>
+        <target>Escolha como o status de leitura das mensagens é rastreado</target>
+      </trans-unit>
+      <trans-unit id="804779251254896991" datatype="html">
+        <source> Choose your preferred color scheme </source>
+        <target>Escolha seu esquema de cores preferido</target>
+      </trans-unit>
+      <trans-unit id="413116577994876478" datatype="html">
+        <source>Light</source>
+        <target>Claro</target>
+      </trans-unit>
+      <trans-unit id="3892161059518616136" datatype="html">
+        <source>Dark</source>
+        <target>Escuro</target>
+      </trans-unit>
+      <trans-unit id="29832309535656200" datatype="html">
+        <source>System</source>
+        <target>Sistema</target>
+      </trans-unit>
+      <trans-unit id="355857847814096936" datatype="html">
+        <source> Automatically mark messages as read when viewed </source>
+        <target>Marcar mensagens como lidas automaticamente ao visualizar</target>
+      </trans-unit>
+      <trans-unit id="6762437027198020922" datatype="html">
+        <source>Toggle auto mark as read</source>
+        <target>Alternar marcação automática como lida</target>
+      </trans-unit>
+      <trans-unit id="2809718507772563864" datatype="html">
+        <source>Send Typing Indicator</source>
+        <target>Indicador de Digitação</target>
+      </trans-unit>
+      <trans-unit id="5332273643663937969" datatype="html">
+        <source> Send typing notifications to users when composing messages </source>
+        <target>Enviar notificações de digitação aos usuários ao compor mensagens</target>
+      </trans-unit>
+      <trans-unit id="7584487295874556568" datatype="html">
+        <source>Toggle send typing indicator</source>
+        <target>Alternar envio do indicador de digitação</target>
+      </trans-unit>
+      <trans-unit id="5481510697684376597" datatype="html">
+        <source> Account Actions </source>
+        <target>Ações da Conta</target>
+      </trans-unit>
+      <trans-unit id="1428384729921254001" datatype="html">
+        <source> Sign Out </source>
+        <target>Sair</target>
+      </trans-unit>
+      <trans-unit id="622805086473721910" datatype="html">
+        <source> End your current session and return to login </source>
+        <target>Encerrar sua sessão atual e voltar para o login</target>
+      </trans-unit>
+      <trans-unit id="935790816200474922" datatype="html">
+        <source>Sign Out</source>
+        <target>Sair</target>
+      </trans-unit>
+      <trans-unit id="7123490720096247063" datatype="html">
+        <source>Advanced Filters</source>
+        <target>Filtros Avançados</target>
+      </trans-unit>
+      <trans-unit id="5459516529073102135" datatype="html">
+        <source>Quality Score</source>
+        <target>Pontuação de Qualidade</target>
       </trans-unit>
     </body>
   </file>
