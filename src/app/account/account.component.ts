@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild } from "@angular/core";
+import { Component, OnInit, Renderer2, ViewChild, inject } from "@angular/core";
 import { UserControllerService } from "../../core/user/controller/user-controller.service";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -13,6 +13,7 @@ import { SidebarComponent } from "../common/sidebar/sidebar.component";
 import { RoutePath } from "../app.routes";
 import { NGXLogger } from "ngx-logger";
 import { TimeoutErrorModalComponent } from "../common/timeout-error-modal/timeout-error-modal.component";
+import { isHttpError } from "../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-account",
@@ -29,6 +30,13 @@ import { TimeoutErrorModalComponent } from "../common/timeout-error-modal/timeou
     standalone: true,
 })
 export class AccountComponent implements OnInit {
+    private userController = inject(UserControllerService);
+    userStore = inject(UserStoreService);
+    auth = inject(AuthService);
+    localSettings = inject(LocalSettingsService);
+    private renderer = inject(Renderer2);
+    private logger = inject(NGXLogger);
+
     RoutePath = RoutePath;
 
     ThemeMode = ThemeMode;
@@ -38,15 +46,6 @@ export class AccountComponent implements OnInit {
     isDropdownOpen = false;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        private userController: UserControllerService,
-        public userStore: UserStoreService,
-        public auth: AuthService,
-        public localSettings: LocalSettingsService,
-        private renderer: Renderer2,
-        private logger: NGXLogger,
-    ) {}
 
     async ngOnInit(): Promise<void> {
         await this.userStore.loadCurrent();
@@ -100,10 +99,16 @@ export class AccountComponent implements OnInit {
     }
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, inject } from "@angular/core";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { MessageType, ReceivedMessageType } from "../../../core/message/model/message-type.model";
 import { LocalSettingsService } from "../../local-settings.service";
@@ -16,6 +16,11 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class MessageMediaContentComponent implements OnInit {
+    private mediaStore = inject(MediaStoreService);
+    private sanitizer = inject(DomSanitizer);
+    private localSettings = inject(LocalSettingsService);
+    private logger = inject(NGXLogger);
+
     MessageType = MessageType;
 
     @Input() mediaData!: UseMedia;
@@ -23,14 +28,7 @@ export class MessageMediaContentComponent implements OnInit {
     @Input() isSent!: boolean;
     @Output() asyncContentLoaded = new EventEmitter();
 
-    mediaSafeUrl: SafeUrl = ""; // Safe URL for media
-
-    constructor(
-        private mediaStore: MediaStoreService,
-        private sanitizer: DomSanitizer, // Inject DomSanitizer
-        private localSettings: LocalSettingsService,
-        private logger: NGXLogger,
-    ) {}
+    mediaSafeUrl: SafeUrl = "";
 
     async ngOnInit(): Promise<void> {
         await this.handleAutoPreview();

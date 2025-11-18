@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, inject } from "@angular/core";
 import { SidebarComponent } from "../common/sidebar/sidebar.component";
 import { ChatsSidebarComponent } from "../chats-sidebar/chats-sidebar.component";
 import { CommonModule } from "@angular/common";
@@ -31,6 +31,10 @@ import { environment } from "../../environments/environment";
     standalone: true,
 })
 export class HomeComponent implements OnInit {
+    queryParamsService = inject(QueryParamsService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+
     HomeFragment = HomeFragment;
     environment = environment;
 
@@ -38,12 +42,6 @@ export class HomeComponent implements OnInit {
     @ViewChild("conversations") conversations!: ConversationsComponent;
 
     currentFragment!: HomeFragment;
-
-    constructor(
-        public queryParamsService: QueryParamsService,
-        private route: ActivatedRoute,
-        private router: Router,
-    ) {}
 
     async ngOnInit() {
         this.watchQueryParams();

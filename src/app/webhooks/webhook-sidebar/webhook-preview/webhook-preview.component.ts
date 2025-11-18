@@ -6,6 +6,7 @@ import {
     Input,
     OnInit,
     ViewChild,
+    inject,
 } from "@angular/core";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -19,14 +20,12 @@ import { Webhook } from "../../../../core/webhook/entity/webhook.entity";
     standalone: true,
 })
 export class WebhookPreviewComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+
     @Input() webhook!: Webhook;
 
     isSelected = false;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-    ) {}
 
     ngOnInit() {
         this.watchQueryParams();

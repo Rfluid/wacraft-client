@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HeaderType } from "../../../core/message/model/header-type.model";
 import { InteractiveType } from "../../../core/message/model/interactive-type.model";
@@ -24,6 +24,9 @@ import { FileUploadComponent } from "../../common/file-upload/file-upload.compon
     standalone: true,
 })
 export class InteractiveMessageBuilderComponent {
+    private messageController = inject(MessageControllerService);
+    private mediaController = inject(MediaControllerService);
+
     HeaderType = HeaderType;
     InteractiveType = InteractiveType;
 
@@ -67,11 +70,6 @@ export class InteractiveMessageBuilderComponent {
     };
 
     errors: Record<string, string> = {};
-
-    constructor(
-        private messageController: MessageControllerService,
-        private mediaController: MediaControllerService,
-    ) {}
 
     adjustHeight(area: HTMLTextAreaElement): void {
         if (!area) return;

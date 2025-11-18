@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit } from "@angular/core";
+import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit, inject } from "@angular/core";
 import { CampaignFields } from "../../../../core/campaign/entity/campaign.entity";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -11,11 +11,11 @@ import { CommonModule } from "@angular/common";
     standalone: true,
 })
 export class CampaignPreviewComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+
     @Input() campaign!: CampaignFields;
 
     isSelected = false;
-
-    constructor(private route: ActivatedRoute) {}
 
     ngOnInit() {
         this.watchQueryParams();

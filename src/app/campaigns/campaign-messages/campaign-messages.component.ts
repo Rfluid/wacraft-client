@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, ViewChild, OnInit } from "@angular/core";
+import { Component, ElementRef, ViewChild, OnInit, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { SmallButtonComponent } from "../../common/small-button/small-button.component";
 import { CampaignMessage } from "../../../core/campaign/entity/campaign-message.entity";
@@ -13,6 +13,7 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
 import { CampaignMessageSendError } from "../../../core/campaign/entity/campaign-message-send-error.model";
 import { NGXLogger } from "ngx-logger";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-campaign-messages",
@@ -28,6 +29,11 @@ import { NgxJsonViewerModule } from "ngx-json-viewer";
     standalone: true,
 })
 export class CampaignMessagesComponent implements OnInit {
+    private campaignMessagesController = inject(CampaignMessageControllerService);
+    private messageSendErrorController = inject(CampaignMessageSendErrorControllerService);
+    private route = inject(ActivatedRoute);
+    private logger = inject(NGXLogger);
+
     DateOrderEnum = DateOrderEnum; // For template access
 
     @ViewChild("scrollAnchor", { static: false }) scrollAnchor!: ElementRef;
@@ -49,13 +55,6 @@ export class CampaignMessagesComponent implements OnInit {
     createdAtLte?: string;
     dateOrder: DateOrderEnum = DateOrderEnum.desc;
     messageState: "all" | "sent" | "unsent" = "all";
-
-    constructor(
-        private campaignMessagesController: CampaignMessageControllerService,
-        private messageSendErrorController: CampaignMessageSendErrorControllerService,
-        private route: ActivatedRoute,
-        private logger: NGXLogger,
-    ) {}
 
     async ngOnInit(): Promise<void> {
         this.watchQueryParams();
@@ -192,10 +191,16 @@ export class CampaignMessagesComponent implements OnInit {
     }
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

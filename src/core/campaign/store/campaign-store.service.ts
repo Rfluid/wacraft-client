@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { Campaign, CampaignFields } from "../entity/campaign.entity";
 import { Query } from "../model/query.model";
 import { CampaignControllerService } from "../controller/campaign-controller.service";
@@ -9,6 +9,9 @@ import { NGXLogger } from "ngx-logger";
     providedIn: "root",
 })
 export class CampaignStoreService {
+    private campaignController = inject(CampaignControllerService);
+    private logger = inject(NGXLogger);
+
     private paginationLimit = 15;
 
     public reachedMaxLimit = false;
@@ -29,11 +32,6 @@ export class CampaignStoreService {
 
     public isExecuting = false;
     public pendingExecution = false;
-
-    constructor(
-        private campaignController: CampaignControllerService,
-        private logger: NGXLogger,
-    ) {}
 
     async get(): Promise<void> {
         const campaigns = await this.campaignController.get(

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { Component, ElementRef, ViewChild, inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "../../core/auth/service/auth.service";
 import { AuthModule } from "../../core/auth/auth.module";
@@ -13,17 +13,15 @@ import { UserModule } from "../../core/user/user.module";
     standalone: true,
 })
 export class LoginComponent {
+    private authService = inject(AuthService);
+    private router = inject(Router);
+
     isLoading = false;
 
     @ViewChild("username") username!: ElementRef;
     @ViewChild("password") password!: ElementRef;
 
     errorMessage?: string;
-
-    constructor(
-        private authService: AuthService,
-        private router: Router,
-    ) {}
 
     async login(): Promise<void> {
         this.isLoading = true;

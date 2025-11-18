@@ -1,4 +1,3 @@
-import { TemplateComponentType } from "../../template/model/template-component-type.model";
 import { ButtonSubtype } from "./button-subtype.model";
 import { UseMedia } from "./media-data.model";
 

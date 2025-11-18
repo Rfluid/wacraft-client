@@ -1,12 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostListener,
-    Input,
-    Output,
-    ViewChild, OnInit,
-} from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, OnInit, inject } from "@angular/core";
 import {
     Conversation,
     ConversationMessagingProductContact,
@@ -57,6 +49,8 @@ import { MessageReplyHeaderComponent } from "../message-reply-header/message-rep
     standalone: true,
 })
 export class ConversationMessageComponent implements OnInit {
+    private messageDataPipe = inject(MessageDataPipe);
+
     MessageType = MessageType;
     ReceivedMessageType = ReceivedMessageType;
 
@@ -78,8 +72,6 @@ export class ConversationMessageComponent implements OnInit {
     mediaSafeUrl: SafeUrl = ""; // Safe URL for media
     optionsArrow = false;
     optionsOpen = false;
-
-    constructor(private messageDataPipe: MessageDataPipe) {}
 
     async ngOnInit() {}
 

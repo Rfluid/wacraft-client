@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from "@angular/core";
+import { Component, Input, ViewChild, inject } from "@angular/core";
 import { Template } from "../../../core/template/model/template.model";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -29,6 +29,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MediaMessageFileUploadComponent } from "../../messages/media-message-file-upload/media-message-file-upload.component";
 import { ContactsModalComponent } from "../../contacts/contact-modal/contacts-modal.component";
 import { NGXLogger } from "ngx-logger";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 import { UserConversationsStoreService } from "../../../core/message/store/user-conversations-store.service";
 import { TemplateComponentTypeConverterPipe } from "../../../core/template/pipe/template-component-type-converter.pipe";
 import { TemplateModule } from "../../../core/template/template.module";
@@ -52,6 +53,12 @@ import { ButtonSubtype } from "../../../core/message/model/button-subtype.model"
     standalone: true,
 })
 export class TemplateMessageBuilderComponent {
+    private mediaController = inject(MediaControllerService);
+    private messageController = inject(MessageControllerService);
+    private logger = inject(NGXLogger);
+    private userConversationStore = inject(UserConversationsStoreService);
+    private typeConverter = inject(TemplateComponentTypeConverterPipe);
+
     TemplateComponentType = TemplateComponentType;
 
     @Input()
@@ -90,14 +97,6 @@ export class TemplateMessageBuilderComponent {
         text: "",
         type: ParameterType.text,
     };
-
-    constructor(
-        private mediaController: MediaControllerService,
-        private messageController: MessageControllerService,
-        private logger: NGXLogger,
-        private userConversationStore: UserConversationsStoreService,
-        private typeConverter: TemplateComponentTypeConverterPipe,
-    ) {}
 
     adjustHeight(area: HTMLTextAreaElement): void {
         if (!area) return;
@@ -487,10 +486,16 @@ export class TemplateMessageBuilderComponent {
     }
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

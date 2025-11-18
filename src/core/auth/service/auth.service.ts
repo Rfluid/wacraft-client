@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import axios, { AxiosInstance } from "axios";
 import { ServerEndpoints } from "../../common/constant/server-endpoints.enum";
 import { Subject } from "rxjs";
@@ -14,17 +14,17 @@ import { GrantType } from "../enum/grant-type.enum";
     providedIn: "root",
 })
 export class AuthService {
+    private router = inject(Router);
+    private cookieService = inject(CookieService);
+    private logger = inject(NGXLogger);
+
     private prefix = "";
     private http: AxiosInstance;
-    private refreshTokenTimeout: any;
+    private refreshTokenTimeout!: NodeJS.Timeout;
 
     token: Subject<string> = new Subject<string>();
 
-    constructor(
-        private router: Router,
-        private cookieService: CookieService,
-        private logger: NGXLogger,
-    ) {
+    constructor() {
         this.prefix = `http${environment.mainServerSecurity ? "s" : ""}://${
             environment.mainServerUrl
         }/${ServerEndpoints.user}/${ServerEndpoints.oauth}`;

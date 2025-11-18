@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { MainServerControllerService } from "../../common/controller/main-server-controller.service";
-import { AuthService } from "../../auth/service/auth.service";
 import { ServerEndpoints } from "../../common/constant/server-endpoints.enum";
 import {
     MessagingProductContact,
@@ -17,8 +16,8 @@ import { ConversationMessagingProductContact } from "../../message/model/convers
     providedIn: "root",
 })
 export class MessagingProductContactControllerService extends MainServerControllerService {
-    constructor(auth: AuthService) {
-        super(auth);
+    constructor() {
+        super();
         this.setPath(ServerEndpoints.messaging_product, ServerEndpoints.contact);
         this.setHttp();
     }

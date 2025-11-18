@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Input, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, Output, ViewChild, inject } from "@angular/core";
 import { SenderData } from "../../../core/message/model/sender-data.model";
 import { MessageType } from "../../../core/message/model/message-type.model";
 import { MessageControllerService } from "../../../core/message/controller/message-controller.service";
@@ -20,6 +20,7 @@ import { MediaMessageFileUploadComponent } from "../../messages/media-message-fi
 import { MessageTypeSelectorComponent } from "../../messages/message-type-selector/message-type-selector.component";
 import { NGXLogger } from "ngx-logger";
 import { ContactsMessageBuilderComponent } from "../contacts-message-builder/contacts-message-builder.component";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 import { ContactsModalComponent } from "../../contacts/contact-modal/contacts-modal.component";
 
 @Component({
@@ -36,18 +37,16 @@ import { ContactsModalComponent } from "../../contacts/contact-modal/contacts-mo
     styleUrl: "./message-actions-footer.component.scss",
 })
 export class MessageActionsFooterComponent {
+    private messageController = inject(MessageControllerService);
+    private mediaController = inject(MediaControllerService);
+    private logger = inject(NGXLogger);
+
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
 
     @Input() messages!: Conversation[];
 
     @Output() clear = new EventEmitter();
     @Output() sent = new EventEmitter<[SenderData, string]>();
-
-    constructor(
-        private messageController: MessageControllerService,
-        private mediaController: MediaControllerService,
-        private logger: NGXLogger,
-    ) {}
 
     async sendMessagesToContacts(contacts: ConversationMessagingProductContact[]) {
         const sendPromises = Promise.all(
@@ -87,10 +86,16 @@ export class MessageActionsFooterComponent {
     }
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

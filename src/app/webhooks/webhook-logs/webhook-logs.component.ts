@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
 import { FormsModule } from "@angular/forms";
@@ -11,6 +11,7 @@ import { WhereDate } from "../../../core/common/model/where-date.model";
 import { NGXLogger } from "ngx-logger";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-webhook-logs",
@@ -26,6 +27,10 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
     standalone: true,
 })
 export class WebhookLogsComponent implements OnInit {
+    private whLogsController = inject(WebhookLogsControllerService);
+    private route = inject(ActivatedRoute);
+    private logger = inject(NGXLogger);
+
     @ViewChild("scrollAnchor", { static: false }) scrollAnchor!: ElementRef;
 
     webhookId?: string;
@@ -45,12 +50,6 @@ export class WebhookLogsComponent implements OnInit {
     DateOrderEnum = DateOrderEnum; // For template access
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        private whLogsController: WebhookLogsControllerService,
-        private route: ActivatedRoute,
-        private logger: NGXLogger,
-    ) {}
 
     async ngOnInit(): Promise<void> {
         this.watchQueryParams();
@@ -127,7 +126,7 @@ export class WebhookLogsComponent implements OnInit {
     }
 
     // Format JSON data for display with indentation
-    formatJson(data: any): string {
+    formatJson(data: unknown): string {
         return data ? JSON.stringify(data, null, 4) : "null";
     }
 
@@ -149,10 +148,16 @@ export class WebhookLogsComponent implements OnInit {
     }
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

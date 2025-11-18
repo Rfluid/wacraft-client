@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { ConversationControllerService } from "../controller/conversation-controller.service";
 import { Query } from "../model/query.model";
 import { ConversationWithUnread } from "../../../app/chats-sidebar/model/conversation-with-unread.model";
@@ -21,6 +21,15 @@ import { NGXLogger } from "ngx-logger";
     providedIn: "root",
 })
 export class ConversationStoreService {
+    private messageController = inject(MessageControllerService);
+    private conversationController = inject(ConversationControllerService);
+    private messagingProductPipe = inject(MessagingProductContactFromMessagePipe);
+    private messageGateway = inject(MessageGatewayService);
+    private statusGateway = inject(StatusGatewayService);
+    private localSettings = inject(LocalSettingsService);
+    private messagingProductContactController = inject(MessagingProductContactControllerService);
+    private logger = inject(NGXLogger);
+
     // Handles queries, loading, filters and stuff related to data
     public isExecuting = false;
     public pendingExecution = false;
@@ -40,17 +49,6 @@ export class ConversationStoreService {
         text: string;
         query?: Query;
     }[] = [];
-
-    constructor(
-        private messageController: MessageControllerService,
-        private conversationController: ConversationControllerService,
-        private messagingProductPipe: MessagingProductContactFromMessagePipe,
-        private messageGateway: MessageGatewayService,
-        private statusGateway: StatusGatewayService,
-        private localSettings: LocalSettingsService,
-        private messagingProductContactController: MessagingProductContactControllerService,
-        private logger: NGXLogger,
-    ) {}
 
     private initPromise: Promise<void> | null = null;
     public initConditionally(route: ActivatedRoute): Promise<void> {

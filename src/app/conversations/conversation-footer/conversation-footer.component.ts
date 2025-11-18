@@ -1,13 +1,5 @@
 import { CommonModule } from "@angular/common";
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostListener,
-    Input,
-    Output,
-    ViewChild, OnInit,
-} from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, OnInit, inject } from "@angular/core";
 import { SenderData } from "../../../core/message/model/sender-data.model";
 import { isMediaType, MessageType } from "../../../core/message/model/message-type.model";
 import { MessageControllerService } from "../../../core/message/controller/message-controller.service";
@@ -27,6 +19,7 @@ import { MessageTypeSelectorComponent } from "../../messages/message-type-select
 import { NGXLogger } from "ngx-logger";
 import { ContactsMessageBuilderComponent } from "../contacts-message-builder/contacts-message-builder.component";
 import { TypingIndicatorService } from "../../../core/message/service/typing-indicator.service";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-conversation-footer",
@@ -48,6 +41,11 @@ import { TypingIndicatorService } from "../../../core/message/service/typing-ind
     standalone: true,
 })
 export class ConversationFooterComponent implements OnInit {
+    private messageController = inject(MessageControllerService);
+    private mediaController = inject(MediaControllerService);
+    private logger = inject(NGXLogger);
+    private typingIndicator = inject(TypingIndicatorService);
+
     MessageType = MessageType;
     mediaByUrl = false;
     selectedFile?: File;
@@ -135,13 +133,6 @@ export class ConversationFooterComponent implements OnInit {
 
     // Validation Errors
     errors: Record<string, string> = {};
-
-    constructor(
-        private messageController: MessageControllerService,
-        private mediaController: MediaControllerService,
-        private logger: NGXLogger,
-        private typingIndicator: TypingIndicatorService,
-    ) {}
 
     ngOnInit(): void {
         // Subscribe to typing state changes and emit to parent
@@ -418,10 +409,16 @@ export class ConversationFooterComponent implements OnInit {
     }
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

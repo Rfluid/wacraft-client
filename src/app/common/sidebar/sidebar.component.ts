@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, HostListener, Input, OnInit } from "@angular/core";
+import { Component, HostListener, Input, OnInit, inject } from "@angular/core";
 import { SmallButtonComponent } from "../small-button/small-button.component";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { UserControllerService } from "../../../core/user/controller/user-controller.service";
@@ -27,6 +27,12 @@ import { environment } from "../../../environments/environment";
     standalone: true,
 })
 export class SidebarComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    queryParamsService = inject(QueryParamsService);
+    userController = inject(UserControllerService);
+    userStore = inject(UserStoreService);
+    private router = inject(Router);
+
     // Global variables that are used in HTML and we need to define here.
     environment = environment;
     Role = Role;
@@ -34,16 +40,6 @@ export class SidebarComponent implements OnInit {
     RoutePath = RoutePath;
 
     @Input() activePage: RoutePath | HomeFragment = RoutePath.home;
-
-    // URL handled variables.
-
-    constructor(
-        private route: ActivatedRoute,
-        public queryParamsService: QueryParamsService,
-        public userController: UserControllerService,
-        public userStore: UserStoreService,
-        private router: Router,
-    ) {}
 
     async ngOnInit() {
         this.watchQueryParams();

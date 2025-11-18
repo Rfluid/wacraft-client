@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { MainServerControllerService } from "../../common/controller/main-server-controller.service";
 import { AuthService } from "../../auth/service/auth.service";
 import { ServerEndpoints } from "../../common/constant/server-endpoints.enum";
@@ -9,11 +9,10 @@ import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
     providedIn: "root",
 })
 export class MediaControllerService extends MainServerControllerService {
-    constructor(
-        auth: AuthService,
-        private sanitizer: DomSanitizer,
-    ) {
-        super(auth);
+    private sanitizer = inject(DomSanitizer);
+
+    constructor() {
+        super();
         this.setPath(ServerEndpoints.media, ServerEndpoints.whatsapp);
         this.setHttp();
     }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output, ViewChild, inject } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Template } from "../../../core/template/model/template.model";
 import { CommonModule } from "@angular/common";
@@ -8,6 +8,7 @@ import { TemplateStoreService } from "../../../core/template/store/template-stor
 import { MatIconModule } from "@angular/material/icon";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
 import { NGXLogger } from "ngx-logger";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-template-details",
@@ -23,16 +24,14 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class TemplateDetailsComponent implements OnInit {
+    private templateStore = inject(TemplateStoreService);
+    private route = inject(ActivatedRoute);
+    private logger = inject(NGXLogger);
+
     template?: Template;
     templateName?: string;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        private templateStore: TemplateStoreService,
-        private route: ActivatedRoute,
-        private logger: NGXLogger,
-    ) {}
 
     ngOnInit(): void {
         this.watchQueryParams();
@@ -65,10 +64,16 @@ export class TemplateDetailsComponent implements OnInit {
     }
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

@@ -1,14 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    Output,
-    ViewChild,
-    OnInit,
-    AfterViewInit,
-    NgZone,
-} from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, OnInit, AfterViewInit, NgZone, inject } from "@angular/core";
 import { SenderData } from "../../../core/message/model/sender-data.model";
 import { MessageType } from "../../../core/message/model/message-type.model";
 import { MessageControllerService } from "../../../core/message/controller/message-controller.service";
@@ -26,6 +16,10 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
+    private messageController = inject(MessageControllerService);
+    private ngZone = inject(NgZone);
+    private logger = inject(NGXLogger);
+
     @Input("toId") toIdInput!: string;
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
     @Output() sent = new EventEmitter<SenderData>();
@@ -56,12 +50,6 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
     error = "";
 
     autocomplete?: google.maps.places.Autocomplete;
-
-    constructor(
-        private messageController: MessageControllerService,
-        private ngZone: NgZone,
-        private logger: NGXLogger,
-    ) {}
 
     ngOnInit() {
         this.initializeMap();

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { TemplateControllerService } from "../controller/template-controller.service";
 import { Template, TemplateCategory, TemplateStatus } from "../model/template.model";
 import { TemplateQueryParams, TemplateQualityScore } from "../model/template-query-params.model";
@@ -9,6 +9,8 @@ import { MutexSwapper } from "../../synch/mutex-swapper/mutex-swapper";
     providedIn: "root",
 })
 export class TemplateStoreService {
+    private templateController = inject(TemplateControllerService);
+
     public searchValue = "";
     private templatesPaginationLimit = 15;
     private nextAfterTemplate?: string;
@@ -35,8 +37,6 @@ export class TemplateStoreService {
     public pendingExecution = false;
 
     public templatesByName = new Map<string, Template>();
-
-    constructor(private templateController: TemplateControllerService) {}
 
     async getByName(templateName: string): Promise<Template> {
         await this.templateMutexSwapper.acquire(templateName);
@@ -165,6 +165,7 @@ export class TemplateStoreService {
                 }
             })
             .catch(error => {
+                console.error("Error getting initial search templates", error);
                 this.isExecuting = false;
 
                 // Even if there's an error, check for pending execution
@@ -176,7 +177,14 @@ export class TemplateStoreService {
     }
 
     private buildSearchQueryParams(): Partial<TemplateQueryParams> {
-        const params: any = {};
+        const params: {
+            status?: string;
+            category?: string;
+            quality_score?: string;
+            name?: string;
+            content?: string;
+            language?: string;
+        } = {};
 
         // Add text search if exists
         if (this.searchValue) {
@@ -268,10 +276,7 @@ export class TemplateStoreService {
      * Meta doesn't support exact lookups by template name or ID,
      * so we need to paginate through the results and filter manually.
      */
-    private async findExactTemplateByName(
-        templateName: string,
-        PAGE_SIZE = 20,
-    ): Promise<Template> {
+    private async findExactTemplateByName(templateName: string, PAGE_SIZE = 20): Promise<Template> {
         let cursor: string | undefined;
 
         while (true) {

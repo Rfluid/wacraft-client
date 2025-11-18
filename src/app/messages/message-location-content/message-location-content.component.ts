@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, inject } from "@angular/core";
 import { Conversation } from "../../../core/message/model/conversation.model";
 import { CommonModule } from "@angular/common";
 import { MessageDataPipe } from "../../../core/message/pipe/message-data.pipe";
@@ -13,6 +13,8 @@ import { GoogleMapsModule } from "@angular/google-maps";
     standalone: true,
 })
 export class MessageLocationContentComponent implements OnInit {
+    private messageDataPipe = inject(MessageDataPipe);
+
     MessageType = MessageType;
 
     @Input() message!: Conversation;
@@ -21,8 +23,6 @@ export class MessageLocationContentComponent implements OnInit {
 
     options?: google.maps.MapOptions;
     markerPosition?: google.maps.LatLngLiteral;
-
-    constructor(private messageDataPipe: MessageDataPipe) {}
 
     ngOnInit() {
         const latitude = this.messageDataPipe.transform(this.message)?.location?.latitude || 0;

@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, inject } from "@angular/core";
 import { MessageType } from "../../../core/message/model/message-type.model";
 import { Conversation } from "../../../core/message/model/conversation.model";
 import { CommonModule } from "@angular/common";
@@ -33,6 +33,8 @@ import { ListOptionsModalComponent } from "../list-options-modal/list-options-mo
     standalone: true,
 })
 export class MessageInteractiveContentComponent {
+    private messageDataPipe = inject(MessageDataPipe);
+
     MessageType = MessageType;
     HeaderType = HeaderType;
     InteractiveType = InteractiveType;
@@ -44,8 +46,6 @@ export class MessageInteractiveContentComponent {
     @Input() isSent!: boolean;
     @Input() sent = true;
     @Input() contactName?: string;
-
-    constructor(private messageDataPipe: MessageDataPipe) {}
 
     get messageSent(): SenderData {
         const data = this.messageDataPipe.transform(this.message);

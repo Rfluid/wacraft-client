@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { MediaInfo } from "../model/media-info.model";
 import { MediaControllerService } from "../controller/media-controller.service";
 import { SafeUrl } from "@angular/platform-browser";
@@ -7,10 +7,10 @@ import { SafeUrl } from "@angular/platform-browser";
     providedIn: "root",
 })
 export class MediaStoreService {
+    private mediaController = inject(MediaControllerService);
+
     mediaInfos = new Map<string, MediaInfo>();
     mediaSafeURLs = new Map<string, SafeUrl>();
-
-    constructor(private mediaController: MediaControllerService) {}
 
     async getMediaURL(mediaId: string): Promise<MediaInfo> {
         const info = this.mediaInfos.get(mediaId);

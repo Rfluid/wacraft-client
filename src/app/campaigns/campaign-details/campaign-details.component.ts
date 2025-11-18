@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -32,6 +32,15 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     standalone: true,
 })
 export class CampaignDetailsComponent implements OnInit {
+    private campaignController = inject(CampaignControllerService);
+    private campaignStore = inject(CampaignStoreService);
+    private messageController = inject(CampaignMessageControllerService);
+    private messagingProductController = inject(MessagingProductControllerService);
+    private queryParamsService = inject(QueryParamsService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private logger = inject(NGXLogger);
+
     Event = Event;
 
     campaign!: CampaignFields;
@@ -41,17 +50,6 @@ export class CampaignDetailsComponent implements OnInit {
     messagesSent = 0;
 
     isEditing = false;
-
-    constructor(
-        private campaignController: CampaignControllerService,
-        private campaignStore: CampaignStoreService,
-        private messageController: CampaignMessageControllerService,
-        private messagingProductController: MessagingProductControllerService,
-        private queryParamsService: QueryParamsService,
-        private route: ActivatedRoute,
-        private router: Router,
-        private logger: NGXLogger,
-    ) {}
 
     ngOnInit(): void {
         this.watchQueryParams();

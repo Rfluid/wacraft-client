@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostListener, Output, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import {
     contactDetailsQueryParams,
@@ -13,9 +13,9 @@ import {
     standalone: true,
 })
 export class OptionsComponent {
-    @Output() close = new EventEmitter<void>();
+    private elementRef = inject(ElementRef);
 
-    constructor(private elementRef: ElementRef) {}
+    @Output() close = new EventEmitter<void>();
 
     contactDetailsQueryParams = contactDetailsQueryParams;
 

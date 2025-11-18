@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
@@ -13,6 +13,7 @@ import { Event } from "../../../core/webhook/model/event.model";
 import { NGXLogger } from "ngx-logger";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-webhook-details",
@@ -29,6 +30,13 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
     standalone: true,
 })
 export class WebhookDetailsComponent implements OnInit {
+    private queryParamsService = inject(QueryParamsService);
+    private webhookController = inject(WebhookControllerService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private webhookStore = inject(WebhookStoreService);
+    private logger = inject(NGXLogger);
+
     HttpMethod = HttpMethod;
     Event = Event;
 
@@ -38,15 +46,6 @@ export class WebhookDetailsComponent implements OnInit {
     isEditing = false;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        private queryParamsService: QueryParamsService,
-        private webhookController: WebhookControllerService,
-        private route: ActivatedRoute,
-        private router: Router,
-        private webhookStore: WebhookStoreService,
-        private logger: NGXLogger,
-    ) {}
 
     ngOnInit(): void {
         this.watchQueryParams();
@@ -177,10 +176,16 @@ export class WebhookDetailsComponent implements OnInit {
     }
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

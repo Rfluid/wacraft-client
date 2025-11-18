@@ -1,4 +1,4 @@
-import { Component, HostListener } from "@angular/core";
+import { Component, HostListener, inject } from "@angular/core";
 import { QueryParamsService } from "../../core/navigation/service/query-params.service";
 import { SidebarComponent } from "../common/sidebar/sidebar.component";
 import { CommonModule } from "@angular/common";
@@ -15,13 +15,11 @@ import { ActivatedRoute, Router } from "@angular/router";
     standalone: true,
 })
 export class WebhooksComponent {
-    RoutePath = RoutePath;
+    queryParamsService = inject(QueryParamsService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
 
-    constructor(
-        public queryParamsService: QueryParamsService,
-        private route: ActivatedRoute,
-        private router: Router,
-    ) {}
+    RoutePath = RoutePath;
 
     /** Close / clean-up when Esc is pressed */
     @HostListener("window:keydown.escape")

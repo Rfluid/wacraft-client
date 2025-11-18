@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { User } from "../entity/user.entity";
 import { UserControllerService } from "../controller/user-controller.service";
 import { Query } from "../model/query.model";
@@ -9,6 +9,9 @@ import { NGXLogger } from "ngx-logger";
     providedIn: "root",
 })
 export class UserStoreService {
+    private userController = inject(UserControllerService);
+    private logger = inject(NGXLogger);
+
     private paginationLimit = 15;
 
     public reachedMaxLimit = false;
@@ -29,11 +32,6 @@ export class UserStoreService {
 
     public isExecuting = false;
     public pendingExecution = false;
-
-    constructor(
-        private userController: UserControllerService,
-        private logger: NGXLogger,
-    ) {}
 
     async loadCurrent() {
         try {

@@ -5,7 +5,7 @@
         [ngClass]="{
             hidden: currentFragment !== HomeFragment.chats,
         }"
-        (select)="conversations.getCurrentMessagingProductContactId($event)"
+        (selectMessagingProductContact)="conversations.getCurrentMessagingProductContactId($event)"
         #chatsSidebar
     ></app-chats-sidebar>
 

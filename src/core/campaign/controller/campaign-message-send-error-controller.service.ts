@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { MainServerControllerService } from "../../common/controller/main-server-controller.service";
 import { AuthService } from "../../auth/service/auth.service";
 import { ServerEndpoints } from "../../common/constant/server-endpoints.enum";
@@ -12,8 +12,14 @@ import { QueryError } from "../model/query-error.model";
     providedIn: "root",
 })
 export class CampaignMessageSendErrorControllerService extends MainServerControllerService {
-    constructor(public override auth: AuthService) {
-        super(auth);
+    override auth: AuthService;
+
+    constructor() {
+        const auth = inject(AuthService);
+
+        super();
+        this.auth = auth;
+
         this.setPath(ServerEndpoints.campaign, ServerEndpoints.error);
         this.setHttp();
     }

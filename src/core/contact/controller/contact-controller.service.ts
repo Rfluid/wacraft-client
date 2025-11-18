@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { MainServerControllerService } from "../../common/controller/main-server-controller.service";
-import { AuthService } from "../../auth/service/auth.service";
 import { ServerEndpoints } from "../../common/constant/server-endpoints.enum";
 import { Contact } from "../entity/contact.entity";
 import { UpdateContact } from "../model/update.model";
@@ -10,8 +9,8 @@ import { CreateContact } from "../model/create.model";
     providedIn: "root",
 })
 export class ContactControllerService extends MainServerControllerService {
-    constructor(auth: AuthService) {
-        super(auth);
+    constructor() {
+        super();
         this.setPath(ServerEndpoints.contact);
         this.setHttp();
     }

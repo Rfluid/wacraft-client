@@ -96,7 +96,7 @@
                     "
                     [date]="conversation.message.created_at"
                     [unread]="conversation.unread"
-                    (select)="select.emit($event)"
+                    (select)="selectMessagingProductContact.emit($event)"
                 ></app-conversation-preview>
             </li>
         </ul>
@@ -112,7 +112,7 @@
                     [messagingProductContact]="conversation | messagingProductContactFromMessage"
                     [date]="conversation.created_at"
                     [messageId]="conversation.id"
-                    (select)="select.emit($event)"
+                    (select)="selectMessagingProductContact.emit($event)"
                 ></app-conversation-preview>
             </li>
         </ul>

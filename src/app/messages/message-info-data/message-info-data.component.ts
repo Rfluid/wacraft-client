@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, inject } from "@angular/core";
 import { NGXLogger } from "ngx-logger";
 import { JsonPipe } from "../../../core/common/pipe/json.pipe";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
@@ -14,15 +14,13 @@ import { MatIconModule } from "@angular/material/icon";
     standalone: true,
 })
 export class MessageInfoDataComponent {
+    private jsonPipe = inject(JsonPipe);
+    private logger = inject(NGXLogger);
+    private elementRef = inject(ElementRef);
+
     @Input() message: any;
     @Output() closeModal = new EventEmitter<void>();
     copied = false;
-
-    constructor(
-        private jsonPipe: JsonPipe,
-        private logger: NGXLogger,
-        private elementRef: ElementRef,
-    ) {}
 
     close() {
         this.closeModal.emit();

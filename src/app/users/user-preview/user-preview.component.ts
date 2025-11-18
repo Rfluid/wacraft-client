@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit } from "@angular/core";
+import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { Role } from "../../../core/user/model/role.model";
@@ -12,13 +12,13 @@ import { User } from "../../../core/user/entity/user.entity";
     standalone: true,
 })
 export class UserPreviewComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+
     Role = Role;
 
     @Input() user!: User;
 
     isSelected = false;
-
-    constructor(private route: ActivatedRoute) {}
 
     ngOnInit() {
         this.watchQueryParams();

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewChild, OnInit } from "@angular/core";
+import { Component, EventEmitter, Output, ViewChild, OnInit, inject } from "@angular/core";
 import { CampaignMessageControllerService } from "../../../core/campaign/controller/campaign-message-controller.service";
 import { ActivatedRoute } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -8,6 +8,7 @@ import * as Papa from "papaparse";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
 import { FileUploadComponent } from "../../common/file-upload/file-upload.component";
 import { NGXLogger } from "ngx-logger";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-campaign-message-builder",
@@ -23,6 +24,10 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class CampaignMessageBuilderComponent implements OnInit {
+    private campaignMessagesController = inject(CampaignMessageControllerService);
+    private route = inject(ActivatedRoute);
+    private logger = inject(NGXLogger);
+
     campaignId?: string;
     selectedFile?: File;
     error?: string;
@@ -32,12 +37,6 @@ export class CampaignMessageBuilderComponent implements OnInit {
 
     @Output() messagesAdded = new EventEmitter();
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        private campaignMessagesController: CampaignMessageControllerService,
-        private route: ActivatedRoute,
-        private logger: NGXLogger,
-    ) {}
 
     async ngOnInit(): Promise<void> {
         this.watchQueryParams();
@@ -245,10 +244,16 @@ export class CampaignMessageBuilderComponent implements OnInit {
     }
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

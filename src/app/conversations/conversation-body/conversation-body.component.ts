@@ -1,15 +1,4 @@
-import {
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    QueryList,
-    ViewChild,
-    ViewChildren,
-} from "@angular/core";
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren, inject } from "@angular/core";
 import {
     Conversation,
     ConversationMessagingProductContact,
@@ -35,6 +24,12 @@ import { KeyboardNavigableList } from "../../common/keyboard/keyboard-navigable-
     standalone: true,
 })
 export class ConversationBodyComponent extends KeyboardNavigableList implements OnInit {
+    private conversationController = inject(ConversationControllerService);
+    private localSettings = inject(LocalSettingsService);
+    private route = inject(ActivatedRoute);
+    userConversationStore = inject(UserConversationsStoreService);
+    private logger = inject(NGXLogger);
+
     private scrollingUp = false;
     private scrollingDown = false;
 
@@ -48,13 +43,7 @@ export class ConversationBodyComponent extends KeyboardNavigableList implements 
     @Output() reply = new EventEmitter<Conversation>();
     @Output() reactionSent = new EventEmitter<SenderData>();
 
-    constructor(
-        private conversationController: ConversationControllerService,
-        private localSettings: LocalSettingsService,
-        private route: ActivatedRoute,
-        public userConversationStore: UserConversationsStoreService,
-        private logger: NGXLogger,
-    ) {
+    constructor() {
         super(undefined, ";");
     }
 

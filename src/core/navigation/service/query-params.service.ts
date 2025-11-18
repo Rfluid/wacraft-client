@@ -1,10 +1,12 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: "root",
 })
 export class QueryParamsService {
+    private router = inject(Router);
+
     // Global query params
     public sidebarOpen = false; // Handled by query params.
     closeSidebar() {
@@ -25,8 +27,6 @@ export class QueryParamsService {
             queryParamsHandling: "merge",
         });
     }
-
-    constructor(private router: Router) {}
 
     get globalQueryParams() {
         return {

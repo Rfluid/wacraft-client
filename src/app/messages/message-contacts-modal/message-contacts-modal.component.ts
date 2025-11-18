@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, inject } from "@angular/core";
 import { ContactData } from "../../../core/message/model/contact-data.model";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterModule } from "@angular/router";
@@ -13,13 +13,11 @@ import { QueryParamsService } from "../../../core/navigation/service/query-param
     standalone: true,
 })
 export class MessageContactsModalComponent {
+    queryParamsService = inject(QueryParamsService);
+    private elementRef = inject(ElementRef);
+
     @Input() contacts!: ContactData[];
     @Output() close = new EventEmitter();
-
-    constructor(
-        public queryParamsService: QueryParamsService,
-        private elementRef: ElementRef,
-    ) {}
 
     closeModal() {
         this.close.emit();

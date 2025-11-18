@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, inject } from "@angular/core";
 import {
     Conversation,
     ConversationMessagingProductContact,
@@ -21,6 +21,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { NgxIntlTelInputModule } from "ngx-intl-tel-input";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { MessagingProductControllerService } from "../../../core/messaging-product/controller/messaging-product-controller.service";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-contact-info",
@@ -43,6 +44,13 @@ import { MessagingProductControllerService } from "../../../core/messaging-produ
     standalone: true,
 })
 export class ContactInfoComponent implements OnInit {
+    private contactControllerService = inject(ContactControllerService);
+    private messagingProductContactController = inject(MessagingProductContactControllerService);
+    private conversationController = inject(ConversationControllerService);
+    private queryParamsService = inject(QueryParamsService);
+    private router = inject(Router);
+    private logger = inject(NGXLogger);
+
     // Existing properties
     isEditing = false;
     isLoading = false; // General loading state
@@ -58,15 +66,6 @@ export class ContactInfoComponent implements OnInit {
     isUnblocking = false;
 
     phoneControl = new FormControl<any>(null, [Validators.required]);
-
-    constructor(
-        private contactControllerService: ContactControllerService,
-        private messagingProductContactController: MessagingProductContactControllerService,
-        private conversationController: ConversationControllerService,
-        private queryParamsService: QueryParamsService,
-        private router: Router,
-        private logger: NGXLogger,
-    ) {}
 
     async ngOnInit(): Promise<void> {
         this.isLoading = true; // Start general loading
@@ -363,10 +362,16 @@ export class ContactInfoComponent implements OnInit {
     };
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

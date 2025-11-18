@@ -8,4 +8,5 @@ export interface UserFields extends Audit {
     role: Role;
 }
 
-export interface User extends UserFields {}
+// export interface User extends UserFields {}
+export type User = UserFields;

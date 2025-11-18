@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit } from "@angular/core";
+import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit, inject } from "@angular/core";
 import { Template } from "../../../core/template/model/template.model";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -12,11 +12,11 @@ import { FormsModule } from "@angular/forms";
     standalone: true,
 })
 export class TemplatePreviewComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+
     @Input() template!: Template;
 
     isSelected = false;
-
-    constructor(private route: ActivatedRoute) {}
 
     ngOnInit() {
         this.watchQueryParams();

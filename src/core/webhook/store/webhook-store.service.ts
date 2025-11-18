@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { WebhookControllerService } from "../controller/webhook-controller.service";
 import { Webhook } from "../entity/webhook.entity";
 import { Query } from "../model/query.model";
@@ -9,6 +9,9 @@ import { NGXLogger } from "ngx-logger";
     providedIn: "root",
 })
 export class WebhookStoreService {
+    private webhookController = inject(WebhookControllerService);
+    private logger = inject(NGXLogger);
+
     private paginationLimit = 15;
 
     public reachedMaxLimit = false;
@@ -29,11 +32,6 @@ export class WebhookStoreService {
 
     public isExecuting = false;
     public pendingExecution = false;
-
-    constructor(
-        private webhookController: WebhookControllerService,
-        private logger: NGXLogger,
-    ) {}
 
     async get(): Promise<void> {
         const webhooks = await this.webhookController.get(

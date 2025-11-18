@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { ConversationControllerService } from "../controller/conversation-controller.service";
 import { MessageControllerService } from "../controller/message-controller.service";
 import { Conversation } from "../model/conversation.model";
@@ -20,22 +20,20 @@ import { NGXLogger } from "ngx-logger";
     providedIn: "root",
 })
 export class UserConversationsStoreService {
+    private conversationController = inject(ConversationControllerService);
+    private messageController = inject(MessageControllerService);
+    private mpContactFromMessage = inject(MessagingProductContactFromMessagePipe);
+    private localSettings = inject(LocalSettingsService);
+    private messageGateway = inject(MessageGatewayService);
+    private statusGateway = inject(StatusGatewayService);
+    private logger = inject(NGXLogger);
+
     public paginationLimit = 50;
 
     public newBottomMessageFromConversations = new Map<string, Subject<Conversation>>();
 
     public messageHistory = new Map<string, Conversation[]>();
     public unsentMessages = new Map<string, Conversation[]>();
-
-    constructor(
-        private conversationController: ConversationControllerService,
-        private messageController: MessageControllerService,
-        private mpContactFromMessage: MessagingProductContactFromMessagePipe,
-        private localSettings: LocalSettingsService,
-        private messageGateway: MessageGatewayService,
-        private statusGateway: StatusGatewayService,
-        private logger: NGXLogger,
-    ) {}
     private initPromise: Promise<void> | null = null;
     public async initConditionally(
         route: ActivatedRoute,

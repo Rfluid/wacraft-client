@@ -1,15 +1,5 @@
 import { CommonModule } from "@angular/common";
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostBinding,
-    HostListener,
-    Input,
-    OnInit,
-    Output,
-    ViewChild,
-} from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output, ViewChild, inject } from "@angular/core";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import {
     Conversation,
@@ -27,6 +17,9 @@ import { QueryParamsService } from "../../../core/navigation/service/query-param
     styleUrl: "./conversation-preview.component.scss",
 })
 export class ConversationPreviewComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private queryParamsService = inject(QueryParamsService);
+
     /* ---------------- inputs & outputs ---------------- */
     @Input() messagingProductContact!: ConversationMessagingProductContact;
     @Input() messageId?: string;
@@ -37,11 +30,6 @@ export class ConversationPreviewComponent implements OnInit {
     @Output() select = new EventEmitter<ConversationMessagingProductContact>();
 
     isSelected = false;
-
-    constructor(
-        private route: ActivatedRoute,
-        private queryParamsService: QueryParamsService,
-    ) {}
 
     ngOnInit(): void {
         this.watchQueryParams();

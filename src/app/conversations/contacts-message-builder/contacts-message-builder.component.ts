@@ -1,6 +1,6 @@
 // contacts-message-builder.component.ts
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatIconModule } from "@angular/material/icon";
 import { SenderData } from "../../../core/message/model/sender-data.model";
@@ -41,6 +41,8 @@ interface ContactInternal {
     preserveWhitespaces: false,
 })
 export class ContactsMessageBuilderComponent {
+    private messageController = inject(MessageControllerService);
+
     @Input("toId") toIdInput!: string;
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
     @Output() sent = new EventEmitter<SenderData>();
@@ -65,8 +67,6 @@ export class ContactsMessageBuilderComponent {
         to: this.toPhoneNumberInput,
         type: MessageType.contacts,
     };
-
-    constructor(private messageController: MessageControllerService) {}
 
     buildContacts(): ContactData[] {
         const payloadContacts: ContactData[] = this.contacts.map(contact => {

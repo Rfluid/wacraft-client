@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { Component, Input, OnInit, ViewChild, inject } from "@angular/core";
 import { SmallButtonComponent } from "../../common/small-button/small-button.component";
 import { MediaPreviewComponent } from "../contact-info/media-preview/media-preview.component";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
@@ -14,6 +14,7 @@ import { CapitalizeFirstLetterPipe } from "../../../core/common/pipe/capitalize-
 import { QueryParamsService } from "../../../core/navigation/service/query-params.service";
 import { NGXLogger } from "ngx-logger";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-contact-media",
@@ -30,6 +31,12 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
     standalone: true,
 })
 export class ContactMediaComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private conversationController = inject(ConversationControllerService);
+    private queryParamsService = inject(QueryParamsService);
+    private logger = inject(NGXLogger);
+
     MediaMode = MediaMode;
     mediaModes = Object.values(MediaMode) as MediaMode[];
 
@@ -47,14 +54,6 @@ export class ContactMediaComponent implements OnInit {
     );
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private conversationController: ConversationControllerService,
-        private queryParamsService: QueryParamsService,
-        private logger: NGXLogger,
-    ) {}
 
     ngOnInit(): void {
         this.watchQueryParams();
@@ -133,10 +132,16 @@ export class ContactMediaComponent implements OnInit {
     }
 
     errorStr = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

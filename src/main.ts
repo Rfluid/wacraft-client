@@ -37,11 +37,12 @@ switch (themeMode) {
     case ThemeMode.light:
         document.documentElement.classList.remove("dark");
         break;
-    default:
+    default: {
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
         if (prefersDark) document.documentElement.classList.add("dark");
         else document.documentElement.classList.remove("dark");
+    }
 }
 
 // Load the Google Maps API before bootstrapping the app

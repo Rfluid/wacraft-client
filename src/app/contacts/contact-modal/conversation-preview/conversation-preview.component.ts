@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
     Conversation,
@@ -17,6 +17,10 @@ import { MessageContentPreviewComponent } from "../../../messages/message-conten
     standalone: true,
 })
 export class ConversationPreviewComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private statusGateway = inject(StatusGatewayService);
+
     @Input()
     messagingProductContact!: ConversationMessagingProductContact;
 
@@ -28,12 +32,6 @@ export class ConversationPreviewComponent implements OnInit {
 
     @Output() select = new EventEmitter<ConversationMessagingProductContact>();
     @Output() unSelect = new EventEmitter<ConversationMessagingProductContact>();
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private statusGateway: StatusGatewayService,
-    ) {}
 
     async ngOnInit() {}
 

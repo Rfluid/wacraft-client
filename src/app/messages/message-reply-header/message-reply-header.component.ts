@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MessageFields } from "../../../core/message/entity/message.entity";
 import { MessageControllerService } from "../../../core/message/controller/message-controller.service";
@@ -21,6 +21,12 @@ import { MessageContentPreviewComponent } from "../../messages/message-content-p
     standalone: true,
 })
 export class MessageReplyHeaderComponent implements OnInit {
+    private messageController = inject(MessageControllerService);
+    private messageDataPipe = inject(MessageDataPipe);
+    private templateInterpolator = inject(TemplateInterpolatorService);
+    private templateStore = inject(TemplateStoreService);
+    private router = inject(Router);
+
     @Input() message?: Conversation;
     @Input() sent!: boolean;
     @Input() backgroundColor: "blue" | "gray" = this.sent ? "blue" : "gray";
@@ -44,14 +50,6 @@ export class MessageReplyHeaderComponent implements OnInit {
         footerText: "",
         buttons: [],
     };
-
-    constructor(
-        private messageController: MessageControllerService,
-        private messageDataPipe: MessageDataPipe,
-        private templateInterpolator: TemplateInterpolatorService,
-        private templateStore: TemplateStoreService,
-        private router: Router,
-    ) {}
 
     async ngOnInit(): Promise<void> {
         await this.setMessage();

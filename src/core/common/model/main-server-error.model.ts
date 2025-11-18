@@ -1,3 +1,3 @@
 export interface MainServerError {
-    message: any;
+    message: string;
 }
