@@ -45,12 +45,15 @@ export class TemplateStoreService {
             await this.templateMutexSwapper.release(templateName);
             return template;
         }
-        const newTemplate = (
-            await this.templateController.get({
-                name: templateName,
-                limit: 1,
-            })
-        ).data[0];
+        const newTemplate = await this.findExactTemplateByName(templateName);
+        // Old query supposing Meta exact search:
+        //
+        // (
+        //     await this.templateController.get({
+        //         name: templateName,
+        //         limit: 1,
+        //     })
+        // ).data[0];
         this.templatesByName.set(templateName, newTemplate);
         await this.templateMutexSwapper.release(templateName);
         return newTemplate;
@@ -259,5 +262,38 @@ export class TemplateStoreService {
             this.templatesByName.set(template.name, template);
             await this.templateMutexSwapper.release(template.name);
         });
+    }
+
+    /**
+     * Meta doesn't support exact lookups by template name or ID,
+     * so we need to paginate through the results and filter manually.
+     */
+    private async findExactTemplateByName(
+        templateName: string,
+        PAGE_SIZE: number = 20,
+    ): Promise<Template> {
+        let cursor: string | undefined;
+
+        while (true) {
+            const response = await this.templateController.get({
+                name: templateName,
+                limit: PAGE_SIZE,
+                after: cursor,
+            });
+
+            // Try to find an exact match in the current page
+            const match = response.data.find(template => template.name === templateName);
+            if (match) {
+                return match;
+            }
+
+            // No match in this page; check if there's another page to query
+            cursor = response.paging?.cursors.after;
+
+            if (!cursor) {
+                // We've exhausted all pages without finding the template
+                throw new Error(`Template "${templateName}" not found in Meta API.`);
+            }
+        }
     }
 }
