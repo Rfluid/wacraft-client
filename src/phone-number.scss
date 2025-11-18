@@ -15,7 +15,7 @@
 }
 
 .dropdown-menu.iti__dropdown-content.show {
-    @apply dark:bg-gray-700 dark:text-white border-0;
+    @apply border-0 dark:bg-gray-700 dark:text-white;
 }
 
 .iti .iti__country-list {

@@ -1,5 +1,5 @@
 li {
-    @apply flex items-center dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg p-1 cursor-pointer;
+    @apply flex cursor-pointer items-center rounded-lg p-1 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800;
 
     > span {
         @apply ml-2;

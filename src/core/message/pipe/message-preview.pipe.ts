@@ -26,10 +26,7 @@ export class MessagePreviewPipe implements PipeTransform {
             case "interactive":
                 const interactiveData = data?.interactive;
                 if (!interactiveData) break;
-                if (
-                    interactiveData.type == "button" ||
-                    interactiveData.type == "list"
-                ) {
+                if (interactiveData.type == "button" || interactiveData.type == "list") {
                     if (interactiveData.header?.text) {
                         lastMessageText = interactiveData.header.text;
                         break;
@@ -38,17 +35,11 @@ export class MessagePreviewPipe implements PipeTransform {
                         break;
                     }
                 }
-                if (
-                    interactiveData.type == "button_reply" &&
-                    interactiveData.button_reply?.title
-                ) {
+                if (interactiveData.type == "button_reply" && interactiveData.button_reply?.title) {
                     lastMessageText = interactiveData.button_reply?.title;
                     break;
                 }
-                if (
-                    interactiveData.type == "list_reply" &&
-                    interactiveData.list_reply?.title
-                ) {
+                if (interactiveData.type == "list_reply" && interactiveData.list_reply?.title) {
                     lastMessageText = interactiveData.list_reply?.title;
                     break;
                 }

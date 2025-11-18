@@ -1,8 +1,4 @@
-import {
-    ApplicationConfig,
-    importProvidersFrom,
-    provideZoneChangeDetection,
-} from "@angular/core";
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from "@angular/core";
 import { provideRouter, ROUTES } from "@angular/router";
 
 import { routesWithPluginsFactory } from "./app.routes";
@@ -33,9 +29,7 @@ export const appConfig: ApplicationConfig = {
         importProvidersFrom(
             LoggerModule.forRoot({
                 level:
-                    environment.env === "production"
-                        ? NgxLoggerLevel.INFO
-                        : NgxLoggerLevel.DEBUG,
+                    environment.env === "production" ? NgxLoggerLevel.INFO : NgxLoggerLevel.DEBUG,
                 disableConsoleLogging: false,
             }),
         ),

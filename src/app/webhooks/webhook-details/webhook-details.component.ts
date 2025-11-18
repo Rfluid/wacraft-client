@@ -90,7 +90,7 @@ export class WebhookDetailsComponent implements OnInit {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const webhookId = params["webhook.id"];
             if (!(webhookId != this.webhookId)) return await this.loadWebhook();
             this.webhookId = webhookId;
@@ -146,7 +146,9 @@ export class WebhookDetailsComponent implements OnInit {
         if (!this.webhookId) return;
 
         // Show confirmation alert
-        const confirmed = window.confirm("Are you sure you want to delete this webhook? This action cannot be undone.");
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this webhook? This action cannot be undone.",
+        );
 
         // If the user confirms, proceed with the deletion
         if (confirmed) {

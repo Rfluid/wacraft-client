@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { WebhooksComponent } from './webhooks.component';
+import { WebhooksComponent } from "./webhooks.component";
 
-describe('WebhooksComponent', () => {
-  let component: WebhooksComponent;
-  let fixture: ComponentFixture<WebhooksComponent>;
+describe("WebhooksComponent", () => {
+    let component: WebhooksComponent;
+    let fixture: ComponentFixture<WebhooksComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [WebhooksComponent]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [WebhooksComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(WebhooksComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(WebhooksComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

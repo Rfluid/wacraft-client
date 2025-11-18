@@ -1,9 +1,6 @@
 import { Injectable, Renderer2 } from "@angular/core";
 import { UnreadMode } from "./../core/local-config/model/unread-mode.model";
-import {
-    getThemeMode,
-    ThemeMode,
-} from "../core/common/model/theme-modes.model";
+import { getThemeMode, ThemeMode } from "../core/common/model/theme-modes.model";
 
 @Injectable({
     providedIn: "root",
@@ -28,8 +25,7 @@ export class LocalSettingsService {
             ? localStorage.getItem("autoPreviewSticker") === "true"
             : true,
     };
-    unreadMode =
-        (localStorage.getItem("unreadMode") as UnreadMode) || UnreadMode.SERVER;
+    unreadMode = (localStorage.getItem("unreadMode") as UnreadMode) || UnreadMode.SERVER;
 
     constructor() {}
 
@@ -53,10 +49,7 @@ export class LocalSettingsService {
         this.autoPreview.sticker = value;
     }
 
-    setAutoPreviewSettings(
-        setting: "image" | "video" | "sticker" | "audio",
-        value: boolean,
-    ) {
+    setAutoPreviewSettings(setting: "image" | "video" | "sticker" | "audio", value: boolean) {
         this.autoPreview[setting] = value;
         localStorage.setItem(
             `autoPreview${setting.charAt(0).toUpperCase() + setting.slice(1)}`,
@@ -84,12 +77,9 @@ export class LocalSettingsService {
                 return renderer.removeClass(document.documentElement, "dark");
         }
 
-        const prefersDark = window.matchMedia(
-            "(prefers-color-scheme: dark)",
-        ).matches;
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-        if (prefersDark)
-            return renderer.addClass(document.documentElement, "dark");
+        if (prefersDark) return renderer.addClass(document.documentElement, "dark");
 
         renderer.removeClass(document.documentElement, "dark");
     }

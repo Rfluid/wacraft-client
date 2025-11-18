@@ -9,12 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     selector: "app-users",
-    imports: [
-        CommonModule,
-        SidebarComponent,
-        UserSidebarComponent,
-        UserDetailsComponent,
-    ],
+    imports: [CommonModule, SidebarComponent, UserSidebarComponent, UserDetailsComponent],
     templateUrl: "./users.component.html",
     styleUrl: "./users.component.scss",
     standalone: true,

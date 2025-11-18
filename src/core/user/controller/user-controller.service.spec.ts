@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { UserControllerService } from './user-controller.service';
+import { UserControllerService } from "./user-controller.service";
 
-describe('UserControllerService', () => {
-  let service: UserControllerService;
+describe("UserControllerService", () => {
+    let service: UserControllerService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(UserControllerService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(UserControllerService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it("should be created", () => {
+        expect(service).toBeTruthy();
+    });
 });

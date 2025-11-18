@@ -1,37 +1,32 @@
 <div
-    class="py-8 fixed top-0 left-0 bottom-0 right-0 flex items-center justify-center bg-gray-800 bg-opacity-70 z-10"
+    class="fixed bottom-0 left-0 right-0 top-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-70 py-8"
     (click)="closeModal()"
 >
     <div
-        class="w-[500px] max-w-full h-[500px] max-h-full flex flex-col rounded-sm overflow-hidden"
+        class="flex h-[500px] max-h-full w-[500px] max-w-full flex-col overflow-hidden rounded-sm"
         id="content"
         (click)="$event.stopPropagation()"
     >
         <!-- Header -->
         <div
-            class="px-6 py-2 w-full bg-blue-600 dark:bg-gray-700 text-white flex items-center"
+            class="flex w-full items-center bg-blue-600 px-6 py-2 text-white dark:bg-gray-700"
             id="header"
         >
             <button
-                class="w-10 aspect-square flex items-center justify-center rounded-full mr-2"
+                class="mr-2 flex aspect-square w-10 items-center justify-center rounded-full"
                 (click)="closeModal()"
             >
                 <mat-icon fontIcon="close"></mat-icon>
             </button>
 
-            <span class="text-lg font-normal" i18n
-                >{{ contacts.length }} contacts</span
-            >
+            <span class="text-lg font-normal" i18n>{{ contacts.length }} contacts</span>
         </div>
 
         <!-- Body -->
-        <div
-            class="h-full w-full bg-white dark:bg-gray-900 overflow-y-auto scrollable"
-            id="body"
-        >
+        <div class="scrollable h-full w-full overflow-y-auto bg-white dark:bg-gray-900" id="body">
             <div *ngFor="let contact of contacts" class="px-4 py-2">
                 <!-- Contact header -->
-                <div class="flex justify-between items-center py-4">
+                <div class="flex items-center justify-between py-4">
                     <div>
                         <p
                             class="text-base font-medium text-gray-800 dark:text-white"
@@ -44,8 +39,7 @@
                                 contact.org?.company
                             "
                             class="text-sm text-gray-500"
-                            >{{ contact.org?.title
-                            }}<span *ngIf="contact.org?.title"> - </span
+                            >{{ contact.org?.title }}<span *ngIf="contact.org?.title"> - </span
                             >{{ contact.org?.department
                             }}<span *ngIf="contact.org?.department">, </span
                             >{{ contact.org?.company }}</span
@@ -57,7 +51,7 @@
                         [queryParams]="addChatQueryParams"
                         queryParamsHandling="replace"
                         [preserveFragment]="true"
-                        class="text-sm bg-blue-600 text-white px-4 py-1.5 rounded-full"
+                        class="rounded-full bg-blue-600 px-4 py-1.5 text-sm text-white"
                         i18n
                         >Save</a
                     >
@@ -66,17 +60,14 @@
                 <div class="space-y-3">
                     <!-- Phones -->
                     <div class="space-y-2">
-                        <div
-                            *ngFor="let phone of contact.phones"
-                            class="text-sm"
-                        >
+                        <div *ngFor="let phone of contact.phones" class="text-sm">
                             <a
                                 class="text-gray-800 dark:text-white"
                                 [textContent]="phone.phone"
                                 [href]="'tel:' + phone.phone"
                             ></a>
                             <p
-                                class="text-blue-500 uppercase text-xs"
+                                class="text-xs uppercase text-blue-500"
                                 [textContent]="phone.type"
                             ></p>
                         </div>
@@ -85,36 +76,26 @@
                     <!-- Emails -->
                     <div
                         *ngIf="contact.emails?.length"
-                        class="pt-3 border-t border-gray-300 dark:border-gray-700 space-y-2"
+                        class="space-y-2 border-t border-gray-300 pt-3 dark:border-gray-700"
                     >
-                        <div
-                            *ngFor="let email of contact.emails"
-                            class="text-sm"
-                        >
+                        <div *ngFor="let email of contact.emails" class="text-sm">
                             <a
                                 class="text-gray-800 dark:text-white"
                                 [textContent]="email.email"
                                 [href]="'mailto:' + email.email"
                             ></a>
-                            <p
-                                class="text-blue-500 text-xs"
-                                [textContent]="email.type"
-                            ></p>
+                            <p class="text-xs text-blue-500" [textContent]="email.type"></p>
                         </div>
                     </div>
 
                     <!-- URLs -->
                     <div
                         *ngIf="contact.urls?.length"
-                        class="pt-3 border-t border-gray-300 dark:border-gray-700 space-y-2"
+                        class="space-y-2 border-t border-gray-300 pt-3 dark:border-gray-700"
                     >
                         <div *ngFor="let url of contact.urls" class="text-sm">
                             <a
-                                [href]="
-                                    url.url.startsWith('http')
-                                        ? url.url
-                                        : 'https://' + url.url
-                                "
+                                [href]="url.url.startsWith('http') ? url.url : 'https://' + url.url"
                                 target="_blank"
                                 class="text-sm"
                                 [textContent]="url.url"

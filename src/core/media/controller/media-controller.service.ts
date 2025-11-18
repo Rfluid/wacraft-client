@@ -33,13 +33,9 @@ export class MediaControllerService extends MainServerControllerService {
 
     // Download media using MediaInfo and get SafeUrl to display in browser
     async downloadMediaByInfo(mediaInfo: MediaInfo): Promise<SafeUrl> {
-        const response = await this.http.post(
-            `/media-info/download`,
-            mediaInfo,
-            {
-                responseType: "blob",
-            },
-        );
+        const response = await this.http.post(`/media-info/download`, mediaInfo, {
+            responseType: "blob",
+        });
         return this.createSafeUrl(response.data);
     }
 
@@ -53,13 +49,9 @@ export class MediaControllerService extends MainServerControllerService {
 
     // Download media using MediaInfo to save on PC
     async saveMediaByInfo(mediaInfo: MediaInfo): Promise<void> {
-        const response = await this.http.post(
-            `/media-info/download`,
-            mediaInfo,
-            {
-                responseType: "blob",
-            },
-        );
+        const response = await this.http.post(`/media-info/download`, mediaInfo, {
+            responseType: "blob",
+        });
         this.downloadFile(response.data, mediaInfo.id);
     }
 

@@ -23,9 +23,7 @@ import { MessageContentPreviewComponent } from "../../messages/message-content-p
 export class MessageReplyHeaderComponent implements OnInit {
     @Input("message") message?: Conversation;
     @Input("sent") sent!: boolean;
-    @Input("backgroundColor") backgroundColor: "blue" | "gray" = this.sent
-        ? "blue"
-        : "gray";
+    @Input("backgroundColor") backgroundColor: "blue" | "gray" = this.sent ? "blue" : "gray";
     @Input("contactName") contactName?: string;
     @Input("replyToMessage")
     replyToMessage?: MessageFields;
@@ -87,14 +85,13 @@ export class MessageReplyHeaderComponent implements OnInit {
         const template = await this.templateStore.getByName(templateName);
         if (!template) return;
         const useTemplate = messageData.template;
-        this.interpolatedTemplate =
-            this.templateInterpolator.interpolateTemplate(
-                template,
-                this.replyToMessage,
-                () => {
-                    return useTemplate;
-                },
-            );
+        this.interpolatedTemplate = this.templateInterpolator.interpolateTemplate(
+            template,
+            this.replyToMessage,
+            () => {
+                return useTemplate;
+            },
+        );
     }
 
     get headerUseMediaAsSenderData(): SenderData {
@@ -103,8 +100,7 @@ export class MessageReplyHeaderComponent implements OnInit {
             messaging_product: "whatsapp",
             recipient_type: "individual",
             to: "",
-            [this.interpolatedTemplate.headerType]:
-                this.interpolatedTemplate.headerUseMedia,
+            [this.interpolatedTemplate.headerType]: this.interpolatedTemplate.headerUseMedia,
         };
     }
 

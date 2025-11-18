@@ -19,10 +19,7 @@ import { ConversationMessagingProductContact } from "../../message/model/convers
 export class MessagingProductContactControllerService extends MainServerControllerService {
     constructor(auth: AuthService) {
         super(auth);
-        this.setPath(
-            ServerEndpoints.messaging_product,
-            ServerEndpoints.contact,
-        );
+        this.setPath(ServerEndpoints.messaging_product, ServerEndpoints.contact);
         this.setHttp();
     }
 
@@ -38,10 +35,7 @@ export class MessagingProductContactControllerService extends MainServerControll
         data: CreateWhatsAppContact,
     ): Promise<MessagingProductContactFields> {
         return (
-            await this.http.post<MessagingProductContactFields>(
-                `${ServerEndpoints.whatsapp}`,
-                data,
-            )
+            await this.http.post<MessagingProductContactFields>(`${ServerEndpoints.whatsapp}`, data)
         ).data;
     }
 
@@ -111,17 +105,11 @@ export class MessagingProductContactControllerService extends MainServerControll
     }
 
     async unblock(id: string): Promise<MessagingProductContactFields> {
-        return (
-            await this.http.delete(`${ServerEndpoints.block}`, { data: { id } })
-        ).data;
+        return (await this.http.delete(`${ServerEndpoints.block}`, { data: { id } })).data;
     }
 
-    async updateLastReadAt(
-        messagingProductContactId: string,
-    ): Promise<MessagingProductContact> {
-        messagingProductContactId = encodeURIComponent(
-            messagingProductContactId,
-        );
+    async updateLastReadAt(messagingProductContactId: string): Promise<MessagingProductContact> {
+        messagingProductContactId = encodeURIComponent(messagingProductContactId);
         return (
             await this.http.put<MessagingProductContact>(
                 `last-read-at/${messagingProductContactId}`,

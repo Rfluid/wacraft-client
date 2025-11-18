@@ -9,12 +9,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     selector: "app-webhooks",
-    imports: [
-        CommonModule,
-        SidebarComponent,
-        WebhookSidebarComponent,
-        WebhookDetailsComponent,
-    ],
+    imports: [CommonModule, SidebarComponent, WebhookSidebarComponent, WebhookDetailsComponent],
     templateUrl: "./webhooks.component.html",
     styleUrl: "./webhooks.component.scss",
     standalone: true,

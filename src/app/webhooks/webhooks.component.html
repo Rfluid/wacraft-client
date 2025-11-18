@@ -1,9 +1,7 @@
-<div class="w-full max-w-full h-screen flex justify-center">
+<div class="flex h-screen w-full max-w-full justify-center">
     <app-sidebar class="grow-0" [activePage]="RoutePath.webhooks"></app-sidebar>
 
     <app-webhook-sidebar></app-webhook-sidebar>
 
-    <app-webhook-details
-        class="grow-1 w-full dark:bg-gray-800"
-    ></app-webhook-details>
+    <app-webhook-details class="grow-1 w-full dark:bg-gray-800"></app-webhook-details>
 </div>

@@ -7,7 +7,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 export class EmojiToUnicodeEscapePipe implements PipeTransform {
     transform(emoji: string): string {
         return Array.from(emoji)
-            .map((char) => {
+            .map(char => {
                 const code = char.charCodeAt(0).toString(16).toUpperCase();
                 return "\\u" + code.padStart(4, "0");
             })

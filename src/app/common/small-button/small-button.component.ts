@@ -1,11 +1,5 @@
 import { CommonModule } from "@angular/common";
-import {
-    Component,
-    Input,
-    ViewChild,
-    ContentChild,
-    TemplateRef,
-} from "@angular/core";
+import { Component, Input, ViewChild, ContentChild, TemplateRef } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
 
 @Component({

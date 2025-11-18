@@ -16,8 +16,7 @@ export class FileUploadComponent {
 
     onFileChange(event: Event) {
         const input = event.target as HTMLInputElement;
-        if (input.files && input.files.length > 0)
-            this.uploadedFileName = input.files[0].name;
+        if (input.files && input.files.length > 0) this.uploadedFileName = input.files[0].name;
         else this.uploadedFileName = null;
 
         this.change.emit(event);

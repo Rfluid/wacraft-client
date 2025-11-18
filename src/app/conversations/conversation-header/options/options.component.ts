@@ -1,10 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostListener,
-    Output,
-} from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostListener, Output } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import {
     contactDetailsQueryParams,
@@ -29,9 +23,7 @@ export class OptionsComponent {
 
     @HostListener("document:click", ["$event"])
     onDocumentClick(event: MouseEvent) {
-        const clickedInside = this.elementRef.nativeElement.contains(
-            event.target,
-        );
+        const clickedInside = this.elementRef.nativeElement.contains(event.target);
         if (!clickedInside) {
             this.close.emit();
         }

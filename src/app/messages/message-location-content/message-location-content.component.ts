@@ -25,12 +25,8 @@ export class MessageLocationContentComponent implements OnInit {
     constructor(private messageDataPipe: MessageDataPipe) {}
 
     ngOnInit() {
-        const latitude =
-            this.messageDataPipe.transform(this.message)?.location?.latitude ||
-            0;
-        const longitude =
-            this.messageDataPipe.transform(this.message)?.location?.longitude ||
-            0;
+        const latitude = this.messageDataPipe.transform(this.message)?.location?.latitude || 0;
+        const longitude = this.messageDataPipe.transform(this.message)?.location?.longitude || 0;
 
         // Set map options
         this.options = {

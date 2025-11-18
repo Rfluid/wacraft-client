@@ -1,8 +1,5 @@
 import { Injectable, Pipe, PipeTransform } from "@angular/core";
-import {
-    Conversation,
-    ConversationMessagingProductContact,
-} from "../model/conversation.model";
+import { Conversation, ConversationMessagingProductContact } from "../model/conversation.model";
 import { NIL as NilUUID } from "uuid";
 
 @Injectable({

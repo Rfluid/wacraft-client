@@ -26,10 +26,8 @@ export class ConversationPreviewComponent implements OnInit {
     @Input("unread") unread: number = 0;
     @Input("selected") selected: boolean = false;
 
-    @Output("select") select =
-        new EventEmitter<ConversationMessagingProductContact>();
-    @Output("unSelect") unSelect =
-        new EventEmitter<ConversationMessagingProductContact>();
+    @Output("select") select = new EventEmitter<ConversationMessagingProductContact>();
+    @Output("unSelect") unSelect = new EventEmitter<ConversationMessagingProductContact>();
 
     constructor(
         private router: Router,

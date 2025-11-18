@@ -6,7 +6,6 @@ export interface CampaignMessageSendErrorFields extends Audit {
     campaign_message_id: string;
 }
 
-export interface CampaignMessageSendError
-    extends CampaignMessageSendErrorFields {
+export interface CampaignMessageSendError extends CampaignMessageSendErrorFields {
     campaign_message: CampaignMessageFields;
 }

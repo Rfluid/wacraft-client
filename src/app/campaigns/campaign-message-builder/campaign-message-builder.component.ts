@@ -44,7 +44,7 @@ export class CampaignMessageBuilderComponent {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const campaignId = params["campaign.id"];
             if (campaignId !== this.campaignId) {
                 this.campaignId = campaignId;
@@ -54,8 +54,7 @@ export class CampaignMessageBuilderComponent {
 
     async onFileSelected(event: Event) {
         const target = event.target as HTMLInputElement;
-        if (!target.files || target.files.length <= 0)
-            return (this.selectedFile = undefined);
+        if (!target.files || target.files.length <= 0) return (this.selectedFile = undefined);
 
         this.selectedFile = target.files[0];
         this.successes = 0;
@@ -138,8 +137,7 @@ export class CampaignMessageBuilderComponent {
                         this.error = "Invalid file format.";
                         return;
                     } else if (!Array.isArray(jsonData)) {
-                        this.error =
-                            "Invalid file format. JSON must be an array.";
+                        this.error = "Invalid file format. JSON must be an array.";
                         return;
                     }
                     await Promise.all(
@@ -171,9 +169,7 @@ export class CampaignMessageBuilderComponent {
 
             case "csv":
                 try {
-                    const csvContent = await this.readFileAsText(
-                        this.selectedFile,
-                    );
+                    const csvContent = await this.readFileAsText(this.selectedFile);
                     const parsed = Papa.parse(csvContent, {
                         header: true,
                         skipEmptyLines: true,
@@ -193,7 +189,7 @@ export class CampaignMessageBuilderComponent {
                     }
 
                     // Unflatten each object if necessary
-                    const processedData = jsonData.map((item) => {
+                    const processedData = jsonData.map(item => {
                         const unflatten = this.unflattenObject(item);
                         unflatten.to = `${unflatten.to}`;
                         return unflatten;

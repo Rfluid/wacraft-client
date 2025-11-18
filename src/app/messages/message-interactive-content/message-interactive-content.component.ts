@@ -65,10 +65,7 @@ export class MessageInteractiveContentComponent {
     }
 
     get headerTypeAsMessageType(): MessageType {
-        switch (
-            this.messageSent.interactive?.header?.type ||
-            HeaderType.image
-        ) {
+        switch (this.messageSent.interactive?.header?.type || HeaderType.image) {
             case HeaderType.image:
                 return MessageType.image;
             case HeaderType.video:

@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { TemplateStoreService } from './template-store.service';
+import { TemplateStoreService } from "./template-store.service";
 
-describe('TemplateStoreService', () => {
-  let service: TemplateStoreService;
+describe("TemplateStoreService", () => {
+    let service: TemplateStoreService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(TemplateStoreService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(TemplateStoreService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it("should be created", () => {
+        expect(service).toBeTruthy();
+    });
 });

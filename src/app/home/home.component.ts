@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit {
 
     watchQueryParams() {
         // Handle home fragments
-        this.route.fragment.subscribe((fragment) => {
+        this.route.fragment.subscribe(fragment => {
             if (!fragment) {
                 // If there's no fragment, set it to HomeFragment.chats
                 this.router.navigate([], {
@@ -61,8 +61,7 @@ export class HomeComponent implements OnInit {
                 return;
             }
             // Handle existing fragment if needed
-            this.currentFragment =
-                HomeFragment[fragment as keyof typeof HomeFragment];
+            this.currentFragment = HomeFragment[fragment as keyof typeof HomeFragment];
         });
     }
 

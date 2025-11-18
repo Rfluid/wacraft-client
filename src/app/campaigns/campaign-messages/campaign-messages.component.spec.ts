@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { CampaignMessagesComponent } from './campaign-messages.component';
+import { CampaignMessagesComponent } from "./campaign-messages.component";
 
-describe('CampaignMessagesComponent', () => {
-  let component: CampaignMessagesComponent;
-  let fixture: ComponentFixture<CampaignMessagesComponent>;
+describe("CampaignMessagesComponent", () => {
+    let component: CampaignMessagesComponent;
+    let fixture: ComponentFixture<CampaignMessagesComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [CampaignMessagesComponent]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [CampaignMessagesComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(CampaignMessagesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(CampaignMessagesComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

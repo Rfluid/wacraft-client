@@ -1,29 +1,27 @@
 <div
-    class="flex justify-between items-center p-2 bg-gray-200 dark:bg-gray-700 dark:text-white relative dark:main-shadow"
+    class="dark:main-shadow relative flex items-center justify-between bg-gray-200 p-2 dark:bg-gray-700 dark:text-white"
 >
     <a
         [routerLink]="[]"
         [queryParams]="contactDetailsQueryParams"
         queryParamsHandling="merge"
-        class="flex items-center w-full"
+        class="flex w-full items-center"
     >
         <img
             [src]="messagingProductContact.contact.photo_path"
             alt="Profile Picture"
-            class="rounded-full w-12 h-12"
+            class="h-12 w-12 rounded-full"
             *ngIf="messagingProductContact.contact.photo_path"
         />
 
         <!-- Show Font Awesome icon if profilePictureSrcInput is not provided -->
         <i
-            class="fas fa-user-circle text-gray-500 dark:text-gray-400 text-5xl"
+            class="fas fa-user-circle text-5xl text-gray-500 dark:text-gray-400"
             *ngIf="!messagingProductContact.contact.photo_path"
         ></i>
 
         <div class="ml-3">
-            <h2
-                class="text-lg text-gray-800 dark:text-gray-200 font-medium truncate"
-            >
+            <h2 class="truncate text-lg font-medium text-gray-800 dark:text-gray-200">
                 {{
                     messagingProductContact.contact.name ||
                         messagingProductContact.product_details.phone_number
@@ -43,7 +41,7 @@
         <app-options
             *ngIf="optionsModalOpen"
             (close)="this.optionsModalOpen = false"
-            class="absolute top-full right-0 mt-2 z-10 rounded-md"
+            class="absolute right-0 top-full z-10 mt-2 rounded-md"
         >
         </app-options>
     </div>

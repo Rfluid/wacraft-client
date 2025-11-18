@@ -1,7 +1,7 @@
-import { KeyboardNavigableList } from './keyboard-navigable-list.base';
+import { KeyboardNavigableList } from "./keyboard-navigable-list.base";
 
-describe('KeyboardNavigableList', () => {
-  it('should create an instance', () => {
-    expect(new KeyboardNavigableList()).toBeTruthy();
-  });
+describe("KeyboardNavigableList", () => {
+    it("should create an instance", () => {
+        expect(new KeyboardNavigableList()).toBeTruthy();
+    });
 });

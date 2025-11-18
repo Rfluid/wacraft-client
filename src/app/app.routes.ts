@@ -61,12 +61,10 @@ export const routes: Routes = [
     },
 ];
 
-export function routesWithPluginsFactory(
-    pluginManager: PluginsManagerService,
-): Routes {
+export function routesWithPluginsFactory(pluginManager: PluginsManagerService): Routes {
     pluginManager.loadPlugins(); // If synchronous
 
-    const pluginRoutes = pluginManager.plugins.map((plugin) => ({
+    const pluginRoutes = pluginManager.plugins.map(plugin => ({
         path: plugin.path,
         loadChildren: plugin.moduleLoader,
     }));

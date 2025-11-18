@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ShortcutsComponent } from './shortcuts.component';
+import { ShortcutsComponent } from "./shortcuts.component";
 
-describe('ShortcutsComponent', () => {
-  let component: ShortcutsComponent;
-  let fixture: ComponentFixture<ShortcutsComponent>;
+describe("ShortcutsComponent", () => {
+    let component: ShortcutsComponent;
+    let fixture: ComponentFixture<ShortcutsComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ShortcutsComponent]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [ShortcutsComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(ShortcutsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(ShortcutsComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

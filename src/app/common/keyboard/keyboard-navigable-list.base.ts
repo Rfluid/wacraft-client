@@ -1,10 +1,4 @@
-import {
-    AfterViewInit,
-    Directive,
-    ElementRef,
-    HostListener,
-    QueryList,
-} from "@angular/core";
+import { AfterViewInit, Directive, ElementRef, HostListener, QueryList } from "@angular/core";
 
 @Directive() // marker, no selector needed
 export abstract class KeyboardNavigableList implements AfterViewInit {
@@ -14,10 +8,7 @@ export abstract class KeyboardNavigableList implements AfterViewInit {
     protected abstract rows: QueryList<ElementRef<HTMLElement>>;
     private activeIndex = 0;
 
-    constructor(
-        focusShortcutEnable: boolean = true,
-        focusShortcutKey: string = "k",
-    ) {
+    constructor(focusShortcutEnable: boolean = true, focusShortcutKey: string = "k") {
         this.focusShortcutEnable = focusShortcutEnable;
         this.focusShortcutKey = focusShortcutKey;
     }
@@ -33,17 +24,9 @@ export abstract class KeyboardNavigableList implements AfterViewInit {
     handleGlobalKeys(e: KeyboardEvent) {
         if (!this.focusShortcutEnable) return;
         const t = e.target as HTMLElement;
-        if (
-            t?.tagName === "INPUT" ||
-            t?.tagName === "TEXTAREA" ||
-            t?.isContentEditable
-        )
-            return;
+        if (t?.tagName === "INPUT" || t?.tagName === "TEXTAREA" || t?.isContentEditable) return;
 
-        if (
-            (e.ctrlKey || e.metaKey) &&
-            e.key.toLowerCase() === this.focusShortcutKey
-        ) {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === this.focusShortcutKey) {
             e.preventDefault();
             this.focusActive();
         }
@@ -53,12 +36,7 @@ export abstract class KeyboardNavigableList implements AfterViewInit {
     @HostListener("keydown", ["$event"])
     handleListKeys(e: KeyboardEvent) {
         const t = e.target as HTMLElement;
-        if (
-            t?.tagName === "INPUT" ||
-            t?.tagName === "TEXTAREA" ||
-            t?.isContentEditable
-        )
-            return;
+        if (t?.tagName === "INPUT" || t?.tagName === "TEXTAREA" || t?.isContentEditable) return;
 
         if (e.key === "ArrowDown") {
             e.preventDefault();
@@ -88,7 +66,7 @@ export abstract class KeyboardNavigableList implements AfterViewInit {
     }
 
     private setActive(i: number) {
-        const list = this.rows.toArray().map((r) => r.nativeElement);
+        const list = this.rows.toArray().map(r => r.nativeElement);
         list[this.activeIndex]?.setAttribute("tabindex", "-1");
         list[i]?.setAttribute("tabindex", "0");
         this.activeIndex = i;

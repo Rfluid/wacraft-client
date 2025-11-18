@@ -1,11 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    HostBinding,
-    HostListener,
-    Input,
-    ViewChild,
-} from "@angular/core";
+import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild } from "@angular/core";
 import { CampaignFields } from "../../../../core/campaign/entity/campaign.entity";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -29,7 +22,7 @@ export class CampaignPreviewComponent {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe((params) => {
+        this.route.queryParams.subscribe(params => {
             this.isSelected = params["campaign.id"] === this.campaign.id;
         });
     }

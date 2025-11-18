@@ -1,8 +1,8 @@
-import { MessageIdPipe } from './message-id.pipe';
+import { MessageIdPipe } from "./message-id.pipe";
 
-describe('MessageIdPipe', () => {
-  it('create an instance', () => {
-    const pipe = new MessageIdPipe();
-    expect(pipe).toBeTruthy();
-  });
+describe("MessageIdPipe", () => {
+    it("create an instance", () => {
+        const pipe = new MessageIdPipe();
+        expect(pipe).toBeTruthy();
+    });
 });

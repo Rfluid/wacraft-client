@@ -33,7 +33,7 @@ export class WebhookPreviewComponent implements OnInit {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe((params) => {
+        this.route.queryParams.subscribe(params => {
             this.isSelected = params["webhook.id"] === this.webhook.id;
         });
     }

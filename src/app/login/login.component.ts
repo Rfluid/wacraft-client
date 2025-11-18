@@ -34,7 +34,8 @@ export class LoginComponent {
             await this.authService.login(email, password);
             this.router.navigate([""]);
         } catch (error: any) {
-            this.errorMessage = error?.response?.data?.description || "Some error occurred login in"; // Assuming customMessage is a property in MainServerError
+            this.errorMessage =
+                error?.response?.data?.description || "Some error occurred login in"; // Assuming customMessage is a property in MainServerError
         } finally {
             this.isLoading = false;
         }

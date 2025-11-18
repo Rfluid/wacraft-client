@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { StatusGatewayService } from './status-gateway.service';
+import { StatusGatewayService } from "./status-gateway.service";
 
-describe('StatusGatewayService', () => {
-  let service: StatusGatewayService;
+describe("StatusGatewayService", () => {
+    let service: StatusGatewayService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(StatusGatewayService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(StatusGatewayService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it("should be created", () => {
+        expect(service).toBeTruthy();
+    });
 });

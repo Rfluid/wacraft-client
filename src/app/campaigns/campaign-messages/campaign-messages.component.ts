@@ -16,7 +16,13 @@ import { NgxJsonViewerModule } from "ngx-json-viewer";
 
 @Component({
     selector: "app-campaign-messages",
-    imports: [CommonModule, FormsModule, SmallButtonComponent, TimeoutErrorModalComponent, NgxJsonViewerModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        SmallButtonComponent,
+        TimeoutErrorModalComponent,
+        NgxJsonViewerModule,
+    ],
     templateUrl: "./campaign-messages.component.html",
     styleUrl: "./campaign-messages.component.scss",
     standalone: true,
@@ -107,13 +113,28 @@ export class CampaignMessagesComponent {
             let newMessages: CampaignMessage[] = [];
             switch (this.messageState) {
                 case "all":
-                    newMessages = await this.campaignMessagesController.get(query, pagination, order, whereDate);
+                    newMessages = await this.campaignMessagesController.get(
+                        query,
+                        pagination,
+                        order,
+                        whereDate,
+                    );
                     break;
                 case "sent":
-                    newMessages = await this.campaignMessagesController.getSent(query, pagination, order, whereDate);
+                    newMessages = await this.campaignMessagesController.getSent(
+                        query,
+                        pagination,
+                        order,
+                        whereDate,
+                    );
                     break;
                 case "unsent":
-                    newMessages = await this.campaignMessagesController.getUnsent(query, pagination, order, whereDate);
+                    newMessages = await this.campaignMessagesController.getUnsent(
+                        query,
+                        pagination,
+                        order,
+                        whereDate,
+                    );
                     break;
             }
             if (newMessages.length < this.limit) {
@@ -136,7 +157,7 @@ export class CampaignMessagesComponent {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const campaignId = params["campaign.id"];
             if (campaignId !== this.campaignId) {
                 this.campaignId = campaignId;
@@ -159,7 +180,11 @@ export class CampaignMessagesComponent {
 
     onScroll(event: Event): void {
         const element = event.target as HTMLElement;
-        if (!(element.scrollHeight - element.scrollTop <= element.clientHeight + 100) || this.isLoading) return;
+        if (
+            !(element.scrollHeight - element.scrollTop <= element.clientHeight + 100) ||
+            this.isLoading
+        )
+            return;
 
         this.getPromise.then(() => {
             this.getPromise = this.loadMessages();

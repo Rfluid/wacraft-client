@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { TemplateControllerService } from './template-controller.service';
+import { TemplateControllerService } from "./template-controller.service";
 
-describe('TemplateControllerService', () => {
-  let service: TemplateControllerService;
+describe("TemplateControllerService", () => {
+    let service: TemplateControllerService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(TemplateControllerService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(TemplateControllerService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it("should be created", () => {
+        expect(service).toBeTruthy();
+    });
 });

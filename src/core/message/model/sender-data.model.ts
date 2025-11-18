@@ -42,10 +42,7 @@ export function compareSenderData(obj1: SenderData, obj2: SenderData): boolean {
         case MessageType.text:
             if (!obj1[obj1.type] || !obj2[obj2.type]) return false;
 
-            return compareTextData(
-                obj1[obj1.type] as TextData,
-                obj2[obj2.type] as TextData,
-            );
+            return compareTextData(obj1[obj1.type] as TextData, obj2[obj2.type] as TextData);
         case MessageType.location:
             const location1 = obj1[obj1.type] as LocationData;
             const location2 = obj2[obj2.type] as LocationData;

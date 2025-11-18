@@ -93,22 +93,16 @@ export class CampaignDetailsComponent {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const campaignId = params["campaign.id"];
             if (campaignId == this.campaignId) return await this.loadCampaign();
             this.campaignId = campaignId;
-            return await Promise.all([
-                this.loadMessageCount(),
-                this.loadCampaign(),
-            ]);
+            return await Promise.all([this.loadMessageCount(), this.loadCampaign()]);
         });
     }
 
     async loadCampaignDataAndStatuses() {
-        return await Promise.all([
-            this.loadMessageCount(),
-            this.loadCampaign(),
-        ]);
+        return await Promise.all([this.loadMessageCount(), this.loadCampaign()]);
     }
 
     async loadCampaign() {
@@ -183,17 +177,16 @@ export class CampaignDetailsComponent {
     }
 
     async loadMessageCount() {
-        [this.totalMessages, this.messagesSent, this.unsentMessages] =
-            await Promise.all([
-                this.messageController.count({
-                    campaign_id: this.campaignId,
-                }),
-                this.messageController.countSent({
-                    campaign_id: this.campaignId,
-                }),
-                this.messageController.countUnsent({
-                    campaign_id: this.campaignId,
-                }),
-            ]);
+        [this.totalMessages, this.messagesSent, this.unsentMessages] = await Promise.all([
+            this.messageController.count({
+                campaign_id: this.campaignId,
+            }),
+            this.messageController.countSent({
+                campaign_id: this.campaignId,
+            }),
+            this.messageController.countUnsent({
+                campaign_id: this.campaignId,
+            }),
+        ]);
     }
 }

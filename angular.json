@@ -5,7 +5,10 @@
     "projects": {
         "wacraft-client": {
             "i18n": {
-                "sourceLocale": { "code": "en", "baseHref": "/en/" },
+                "sourceLocale": {
+                    "code": "en",
+                    "baseHref": "/en/"
+                },
                 "locales": {
                     "pt-BR": {
                         "translation": "src/locale/messages.pt-BR.xlf",
@@ -30,10 +33,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:application",
                     "options": {
-                        "allowedCommonJsDependencies": [
-                            "papaparse",
-                            "file-saver"
-                        ],
+                        "allowedCommonJsDependencies": ["papaparse", "file-saver"],
                         "outputPath": "dist/wacraft-client",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
@@ -55,9 +55,7 @@
                             "src/styles.scss",
                             "src/phone-number.scss"
                         ],
-                        "scripts": [
-                            "node_modules/apexcharts/dist/apexcharts.min.js"
-                        ]
+                        "scripts": ["node_modules/apexcharts/dist/apexcharts.min.js"]
                     },
                     "configurations": {
                         "pt-BR": {
@@ -125,11 +123,7 @@
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
-                        "polyfills": [
-                            "zone.js",
-                            "zone.js/testing",
-                            "@angular/localize/init"
-                        ],
+                        "polyfills": ["zone.js", "zone.js/testing", "@angular/localize/init"],
                         "tsConfig": "tsconfig.spec.json",
                         "inlineStyleLanguage": "scss",
                         "assets": [
@@ -147,15 +141,20 @@
                             "src/styles.scss",
                             "src/phone-number.scss"
                         ],
-                        "scripts": [
-                            "node_modules/apexcharts/dist/apexcharts.min.js"
-                        ]
+                        "scripts": ["node_modules/apexcharts/dist/apexcharts.min.js"]
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
                     }
                 }
             }
         }
     },
     "cli": {
-        "analytics": false
+        "analytics": false,
+        "schematicCollections": ["angular-eslint"]
     }
 }

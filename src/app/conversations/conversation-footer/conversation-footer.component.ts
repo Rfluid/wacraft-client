@@ -145,11 +145,9 @@ export class ConversationFooterComponent {
 
     ngOnInit(): void {
         // Subscribe to typing state changes and emit to parent
-        this.typingIndicator
-            .getTypingStateObservable(this.toIdInput)
-            .subscribe(isTyping => {
-                this.typingStateChange.emit(isTyping);
-            });
+        this.typingIndicator.getTypingStateObservable(this.toIdInput).subscribe(isTyping => {
+            this.typingStateChange.emit(isTyping);
+        });
     }
 
     adjustHeight(area: HTMLTextAreaElement): void {

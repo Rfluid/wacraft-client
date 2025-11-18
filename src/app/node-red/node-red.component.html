@@ -1,7 +1,6 @@
 <iframe
     [src]="
-        (environment.nodeRedServerUrl
-            | urlWithHttp: environment.nodeRedServerSecurity) +
+        (environment.nodeRedServerUrl | urlWithHttp: environment.nodeRedServerSecurity) +
             '?access_token=' +
             accessToken | safeUrl
     "

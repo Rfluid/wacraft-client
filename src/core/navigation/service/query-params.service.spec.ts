@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { QueryParamsService } from './query-params.service';
+import { QueryParamsService } from "./query-params.service";
 
-describe('QueryParamsService', () => {
-  let service: QueryParamsService;
+describe("QueryParamsService", () => {
+    let service: QueryParamsService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(QueryParamsService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(QueryParamsService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it("should be created", () => {
+        expect(service).toBeTruthy();
+    });
 });

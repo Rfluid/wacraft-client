@@ -23,8 +23,7 @@ export class MediaStoreService {
     async downloadMediaById(mediaId: string): Promise<SafeUrl> {
         const safeUrl = this.mediaSafeURLs.get(mediaId);
         if (safeUrl) return safeUrl;
-        const newSafeUrl =
-            await this.mediaController.downloadMediaById(mediaId);
+        const newSafeUrl = await this.mediaController.downloadMediaById(mediaId);
         this.mediaSafeURLs.set(mediaId, newSafeUrl);
         return newSafeUrl;
     }

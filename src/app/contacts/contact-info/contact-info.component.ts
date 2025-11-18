@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
-import { Conversation, ConversationMessagingProductContact } from "../../../core/message/model/conversation.model";
+import {
+    Conversation,
+    ConversationMessagingProductContact,
+} from "../../../core/message/model/conversation.model";
 import { CommonModule } from "@angular/common";
 import { FormControl, FormsModule, NgForm, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ContactControllerService } from "../../../core/contact/controller/contact-controller.service";
@@ -76,7 +79,7 @@ export class ContactInfoComponent implements OnInit {
             //         value || "";
             // });
 
-            this.phoneControl.valueChanges.subscribe((value) => {
+            this.phoneControl.valueChanges.subscribe(value => {
                 if (!value?.e164Number) return;
                 this.messagingProductContact.product_details.phone_number = value?.e164Number || "";
             });
@@ -177,15 +180,19 @@ export class ContactInfoComponent implements OnInit {
         this.isLoading = true; // Start general loading
         try {
             if (!this.messagingProductContact?.id) {
-                const contact = await this.contactControllerService.create(this.messagingProductContact.contact);
-                const phoneNumber = this.messagingProductContact.product_details.phone_number.replace(/\D/g, "");
-                const messagingProductContact = await this.messagingProductContactController.createWhatsAppContact({
-                    contact_id: contact.id,
-                    product_details: {
-                        phone_number: phoneNumber,
-                        wa_id: phoneNumber,
-                    },
-                });
+                const contact = await this.contactControllerService.create(
+                    this.messagingProductContact.contact,
+                );
+                const phoneNumber =
+                    this.messagingProductContact.product_details.phone_number.replace(/\D/g, "");
+                const messagingProductContact =
+                    await this.messagingProductContactController.createWhatsAppContact({
+                        contact_id: contact.id,
+                        product_details: {
+                            phone_number: phoneNumber,
+                            wa_id: phoneNumber,
+                        },
+                    });
 
                 const mpc = (
                     await this.messagingProductContactController.getWhatsAppContacts(
@@ -293,7 +300,9 @@ export class ContactInfoComponent implements OnInit {
         if (confirmDelete) {
             this.isDeleting = true; // Start deleting loading state
             try {
-                await this.messagingProductContactController.delete(this.messagingProductContact.contact_id);
+                await this.messagingProductContactController.delete(
+                    this.messagingProductContact.contact_id,
+                );
                 await this.router.navigate(["/home"], { fragment: "chats" });
                 window.location.reload();
             } catch (error: any) {
@@ -321,10 +330,11 @@ export class ContactInfoComponent implements OnInit {
 
     async countMediaLinksAndDocs() {
         try {
-            this.quantityOfMediaLinksAndDocs = await this.conversationController.countConversationContentLike(
-                this.messagingProductContact.id,
-                'type:\\s*"(image|video|document)"',
-            );
+            this.quantityOfMediaLinksAndDocs =
+                await this.conversationController.countConversationContentLike(
+                    this.messagingProductContact.id,
+                    'type:\\s*"(image|video|document)"',
+                );
         } catch (error: any) {
             this.handleErr("Failed to count media and documents.", error);
         }

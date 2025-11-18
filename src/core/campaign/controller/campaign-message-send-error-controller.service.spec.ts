@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { CampaignMessageSendErrorControllerService } from './campaign-message-send-error-controller.service';
+import { CampaignMessageSendErrorControllerService } from "./campaign-message-send-error-controller.service";
 
-describe('CampaignMessageSendErrorControllerService', () => {
-  let service: CampaignMessageSendErrorControllerService;
+describe("CampaignMessageSendErrorControllerService", () => {
+    let service: CampaignMessageSendErrorControllerService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(CampaignMessageSendErrorControllerService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(CampaignMessageSendErrorControllerService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it("should be created", () => {
+        expect(service).toBeTruthy();
+    });
 });

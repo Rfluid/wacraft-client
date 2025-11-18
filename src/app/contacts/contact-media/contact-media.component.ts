@@ -2,7 +2,10 @@ import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { SmallButtonComponent } from "../../common/small-button/small-button.component";
 import { MediaPreviewComponent } from "../contact-info/media-preview/media-preview.component";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
-import { Conversation, ConversationMessagingProductContact } from "../../../core/message/model/conversation.model";
+import {
+    Conversation,
+    ConversationMessagingProductContact,
+} from "../../../core/message/model/conversation.model";
 import { CommonModule } from "@angular/common";
 import { MediaMode } from "./enum/media-mode.enum";
 import { ConversationControllerService } from "../../../core/message/controller/conversation-controller.service";
@@ -37,9 +40,11 @@ export class ContactMediaComponent implements OnInit {
 
     // Pagination parameters and media content
     mediaLimit: number = 40;
-    media = new Map<MediaMode, Conversation[]>(Object.values(MediaMode).map((value) => [value, []])); // Media content
-    scrolling = new Map<MediaMode, boolean>(Object.values(MediaMode).map((value) => [value, false])); // Scrolling status
-    reachedMaxMediaLimit = new Map<MediaMode, boolean>(Object.values(MediaMode).map((value) => [value, false]));
+    media = new Map<MediaMode, Conversation[]>(Object.values(MediaMode).map(value => [value, []])); // Media content
+    scrolling = new Map<MediaMode, boolean>(Object.values(MediaMode).map(value => [value, false])); // Scrolling status
+    reachedMaxMediaLimit = new Map<MediaMode, boolean>(
+        Object.values(MediaMode).map(value => [value, false]),
+    );
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
 
@@ -107,7 +112,7 @@ export class ContactMediaComponent implements OnInit {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const messagingProductContactId = params["messaging_product_contact.id"];
             if (
                 !messagingProductContactId ||

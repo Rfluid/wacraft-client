@@ -1,26 +1,22 @@
 <div
-    class="flex flex-col items-center justify-center w-full px-4 py-6 bg-white dark:bg-gray-800 rounded-lg shadow-md"
+    class="flex w-full flex-col items-center justify-center rounded-lg bg-white px-4 py-6 shadow-md dark:bg-gray-800"
 >
     <label
         for="file-upload"
-        class="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition"
+        class="flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-gray-50 transition hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600"
         [ngClass]="{
-            'border-green-500 bg-green-50 dark:bg-green-900 dark:border-green-600':
+            'border-green-500 bg-green-50 dark:border-green-600 dark:bg-green-900':
                 uploadedFileName,
         }"
     >
-        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+        <div class="flex flex-col items-center justify-center pb-6 pt-5">
             <mat-icon class="material-symbols-outlined mb-3">
                 {{ uploadedFileName ? "check_circle" : "upload" }}
             </mat-icon>
 
             <p class="mb-2 text-sm text-gray-500 dark:text-gray-300">
-                <span class="font-semibold" i18n *ngIf="uploadedFileName"
-                    >File uploaded:</span
-                >
-                <span class="font-semibold" i18n *ngIf="!uploadedFileName"
-                    >Click to upload</span
-                >
+                <span class="font-semibold" i18n *ngIf="uploadedFileName">File uploaded:</span>
+                <span class="font-semibold" i18n *ngIf="!uploadedFileName">Click to upload</span>
                 <span *ngIf="!uploadedFileName">&nbsp;</span>
                 <span *ngIf="!uploadedFileName" i18n>or drag and drop</span>
             </p>

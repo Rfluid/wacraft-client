@@ -127,7 +127,10 @@ export class TemplateMessageBuilderComponent {
         this.components = this.template.components
             .flatMap(component => {
                 // For BUTTONS components, create separate entries for each button with variables
-                if (component.type.toLowerCase() === TemplateComponentType.buttons.toLowerCase() && component.buttons) {
+                if (
+                    component.type.toLowerCase() === TemplateComponentType.buttons.toLowerCase() &&
+                    component.buttons
+                ) {
                     return component.buttons
                         .map((button, buttonIndex) => {
                             if (button.url && this.extractVariables(button.url).length > 0) {
@@ -135,7 +138,10 @@ export class TemplateMessageBuilderComponent {
                             }
                             return null;
                         })
-                        .filter((comp): comp is UseTemplateComponent => comp !== null && comp.parameters.length > 0);
+                        .filter(
+                            (comp): comp is UseTemplateComponent =>
+                                comp !== null && comp.parameters.length > 0,
+                        );
                 }
 
                 // For other components, generate normally
@@ -198,7 +204,7 @@ export class TemplateMessageBuilderComponent {
                 [component.format?.toLowerCase() as ParameterType]: this.headerUseMedia,
             });
         } else if (example.header_text && example.header_text.length > 0) {
-            example.header_text.forEach((exampleValue) => {
+            example.header_text.forEach(exampleValue => {
                 useComponent.parameters.push({
                     type: ParameterType.text,
                     text: "",
@@ -211,7 +217,7 @@ export class TemplateMessageBuilderComponent {
         ) {
             // If no example data, extract variables directly from the header text
             const variables = this.extractVariables(component.text);
-            variables.forEach((variableName) => {
+            variables.forEach(variableName => {
                 useComponent.parameters.push({
                     type: ParameterType.text,
                     text: "",
@@ -242,7 +248,7 @@ export class TemplateMessageBuilderComponent {
         // If no example data, extract variables directly from the component text
         if (component.text) {
             const variables = this.extractVariables(component.text);
-            variables.forEach((variableName) => {
+            variables.forEach(variableName => {
                 useComponent.parameters.push({
                     type: ParameterType.text,
                     text: "",
@@ -339,14 +345,14 @@ export class TemplateMessageBuilderComponent {
         const exampleValues: string[] = [];
 
         // If example is a full URL, try to extract variable values from it
-        if (exampleArray.length > 0 && exampleArray[0].startsWith('http')) {
+        if (exampleArray.length > 0 && exampleArray[0].startsWith("http")) {
             const exampleUrl = exampleArray[0];
 
             // Create a regex pattern from the template URL
             // Replace {{variable}} with a capture group
-            let pattern = templateUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escape special chars
+            let pattern = templateUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // Escape special chars
             variables.forEach(() => {
-                pattern = pattern.replace(/\\\{\\\{[^}]+\\\}\\\}/,  '(.+?)'); // Replace first variable with capture group
+                pattern = pattern.replace(/\\\{\\\{[^}]+\\\}\\\}/, "(.+?)"); // Replace first variable with capture group
             });
 
             const regex = new RegExp(pattern);

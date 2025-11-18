@@ -14,7 +14,13 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
 
 @Component({
     selector: "app-webhook-logs",
-    imports: [CommonModule, FormsModule, SmallButtonComponent, NgxJsonViewerModule, TimeoutErrorModalComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        SmallButtonComponent,
+        NgxJsonViewerModule,
+        TimeoutErrorModalComponent,
+    ],
     templateUrl: "./webhook-logs.component.html",
     styleUrl: "./webhook-logs.component.scss",
     standalone: true,
@@ -100,7 +106,7 @@ export class WebhookLogsComponent implements OnInit {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const webhookId = params["webhook.id"];
             if (webhookId !== this.webhookId) {
                 this.webhookId = webhookId;

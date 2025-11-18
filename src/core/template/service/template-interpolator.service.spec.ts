@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { TemplateInterpolatorService } from './template-interpolator.service';
+import { TemplateInterpolatorService } from "./template-interpolator.service";
 
-describe('TemplateInterpolatorService', () => {
-  let service: TemplateInterpolatorService;
+describe("TemplateInterpolatorService", () => {
+    let service: TemplateInterpolatorService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(TemplateInterpolatorService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(TemplateInterpolatorService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it("should be created", () => {
+        expect(service).toBeTruthy();
+    });
 });

@@ -22,26 +22,21 @@ export const navItems: NavItem[] = [
         route: ["/", RoutePath.automation],
         visible: () =>
             !!this.userStore.currentUser &&
-            [Role.admin, Role.developer, Role.automation].includes(
-                this.userStore.currentUser.role,
-            ),
+            [Role.admin, Role.developer, Role.automation].includes(this.userStore.currentUser.role),
     },
     {
         route: ["/", RoutePath.webhooks],
         visible: () =>
             !!this.userStore.currentUser &&
-            [Role.admin, Role.developer, Role.automation].includes(
-                this.userStore.currentUser.role,
-            ),
+            [Role.admin, Role.developer, Role.automation].includes(this.userStore.currentUser.role),
     },
     {
         route: ["/", RoutePath.users],
         visible: () =>
-            !!this.userStore.currentUser &&
-            this.userStore.currentUser.role === Role.admin,
+            !!this.userStore.currentUser && this.userStore.currentUser.role === Role.admin,
     },
     {
         route: ["/", RoutePath.account],
         visible: () => true, // “account” goes at the bottom
     },
-].filter((x) => x.visible());
+].filter(x => x.visible());

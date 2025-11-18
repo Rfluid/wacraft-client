@@ -39,23 +39,16 @@ export function compareAction(
                         return false;
 
                     // Check if rows lengths are equal
-                    if (
-                        section.rows.length !== correspondingSection.rows.length
-                    )
-                        return false;
+                    if (section.rows.length !== correspondingSection.rows.length) return false;
 
                     // Check if all rows are equal
                     return section.rows.every((row, rowIndex) => {
-                        const correspondingRow =
-                            correspondingSection.rows[rowIndex];
+                        const correspondingRow = correspondingSection.rows[rowIndex];
                         return (
                             row.title === correspondingRow.title &&
                             row.id === correspondingRow.id &&
-                            (!(
-                                row.description || correspondingRow.description
-                            ) ||
-                                row.description ===
-                                    correspondingRow.description)
+                            (!(row.description || correspondingRow.description) ||
+                                row.description === correspondingRow.description)
                         );
                     });
                 });
@@ -84,16 +77,14 @@ export function compareAction(
             if (action1.catalog_id !== action2.catalog_id) return false;
             break;
         case InteractiveType.product:
-            if (action1.product_retailer_id !== action2.product_retailer_id)
-                return false;
+            if (action1.product_retailer_id !== action2.product_retailer_id) return false;
             break;
         case InteractiveType.flow:
             if (action1.flow_action !== action2.flow_action) return false;
             if (action1.flow_id !== action2.flow_id) return false;
             if (action1.flow_token !== action2.flow_token) return false;
             if (action1.flow_cta !== action2.flow_cta) return false;
-            if (action1.flow_message_version !== action2.flow_message_version)
-                return false;
+            if (action1.flow_message_version !== action2.flow_message_version) return false;
             if (action1.flow_mode !== action2.flow_mode) return false;
             const payload1 = action1.flow_action_payload;
             const payload2 = action2.flow_action_payload;

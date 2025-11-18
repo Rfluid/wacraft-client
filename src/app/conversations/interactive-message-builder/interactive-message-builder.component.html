@@ -2,11 +2,9 @@
     <div class="space-y-4">
         <!-- Interactive Type Selection -->
         <div>
-            <label class="block dark:text-gray-300" i18n
-                >Interactive Type</label
-            >
+            <label class="block dark:text-gray-300" i18n>Interactive Type</label>
             <select
-                class="w-full p-2 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white border"
+                class="w-full rounded-lg border bg-gray-300 p-2 dark:bg-gray-600 dark:text-white"
                 [(ngModel)]="interactiveType"
                 (ngModelChange)="selectInteractive()"
                 name="interactiveType"
@@ -20,7 +18,7 @@
         <div>
             <label class="block dark:text-gray-300" i18n>Header Type</label>
             <select
-                class="w-full p-2 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white border"
+                class="w-full rounded-lg border bg-gray-300 p-2 dark:bg-gray-600 dark:text-white"
                 [(ngModel)]="interactiveHeaderType"
                 name="interactiveHeaderType"
             >
@@ -59,7 +57,7 @@
         <div *ngIf="interactiveHeaderType == HeaderType.text">
             <label class="block dark:text-gray-300" i18n>Header</label>
             <textarea
-                class="w-full p-2 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white resize-none outline-none"
+                class="w-full resize-none rounded-lg bg-gray-300 p-2 outline-none dark:bg-gray-600 dark:text-white"
                 placeholder="Interactive message header..."
                 i18n-placeholder
                 rows="1"
@@ -68,24 +66,18 @@
                 (input)="onTyping()"
                 required
             ></textarea>
-            <div
-                *ngIf="errors['interactiveHeaderString']"
-                class="text-red-500 text-sm mt-1"
-            >
+            <div *ngIf="errors['interactiveHeaderString']" class="mt-1 text-sm text-red-500">
                 <!-- prettier-ignore -->
                 {{ errors['interactiveHeaderString'] }}
             </div>
         </div>
 
-        <div
-            class="ml-2 w-full"
-            *ngIf="interactiveHeaderType != HeaderType.text"
-        >
+        <div class="ml-2 w-full" *ngIf="interactiveHeaderType != HeaderType.text">
             <label class="block dark:text-gray-300">Header</label>
             <div class="grid grid-cols-12 gap-2">
                 <select
                     id="media-mode"
-                    class="col-span-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
+                    class="col-span-4 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     [(ngModel)]="mediaByUrl"
                     name="mediaMode"
                     (ngModelChange)="onMediaModeChange($event)"
@@ -96,7 +88,7 @@
 
                 <!-- Media Link -->
                 <textarea
-                    class="col-span-8 min-h-10 w-full py-2 px-3 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white resize-none outline-none"
+                    class="col-span-8 min-h-10 w-full resize-none rounded-lg bg-gray-300 px-3 py-2 outline-none dark:bg-gray-600 dark:text-white"
                     placeholder="Media link"
                     i18n-placeholder
                     rows="1"
@@ -118,22 +110,19 @@
 
                 <!-- Caption -->
                 <textarea
-                    class="col-span-12 min-h-10 w-full py-2 px-3 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white resize-none outline-none"
+                    class="col-span-12 min-h-10 w-full resize-none rounded-lg bg-gray-300 px-3 py-2 outline-none dark:bg-gray-600 dark:text-white"
                     placeholder="Caption (optional)"
                     rows="1"
                     [(ngModel)]="caption"
                     [ngClass]="{
-                        'border-red-500 border': errors['headerMedia'],
+                        'border border-red-500': errors['headerMedia'],
                     }"
                     (input)="adjustHeight(headerMediaCaptionArea)"
                     name="mediaCaption"
                     #headerMediaCaptionArea
                 ></textarea>
             </div>
-            <div
-                *ngIf="errors['headerMedia']"
-                class="text-red-500 text-sm mt-1"
-            >
+            <div *ngIf="errors['headerMedia']" class="mt-1 text-sm text-red-500">
                 <!-- prettier-ignore -->
                 {{ errors['headerMedia'] }}
                 jflkda
@@ -144,9 +133,9 @@
         <div>
             <label class="block dark:text-gray-300" i18n>Body</label>
             <textarea
-                class="w-full p-2 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white resize-none outline-none"
+                class="w-full resize-none rounded-lg bg-gray-300 p-2 outline-none dark:bg-gray-600 dark:text-white"
                 [ngClass]="{
-                    'border-red-500 border': !interactiveBody,
+                    'border border-red-500': !interactiveBody,
                 }"
                 placeholder="Interactive message body..."
                 i18n-placeholder
@@ -164,7 +153,7 @@
         <div>
             <label class="block dark:text-gray-300" i18n>Footer</label>
             <textarea
-                class="w-full p-2 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white resize-none outline-none"
+                class="w-full resize-none rounded-lg bg-gray-300 p-2 outline-none dark:bg-gray-600 dark:text-white"
                 placeholder="Footer text..."
                 i18n-placeholder
                 rows="1"
@@ -179,13 +168,13 @@
             <label class="block dark:text-gray-300" i18n>Button</label>
             <div class="space-y-2">
                 <div class="space-y-2">
-                    <div class="w-full flex items-center">
+                    <div class="flex w-full items-center">
                         <input
                             type="text"
                             [ngClass]="{
-                                'border-red-500 border': !singleButtonText,
+                                'border border-red-500': !singleButtonText,
                             }"
-                            class="flex-1 p-2 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white"
+                            class="flex-1 rounded-lg bg-gray-300 p-2 dark:bg-gray-600 dark:text-white"
                             placeholder="Button"
                             i18n-placeholder
                             maxlength="20"
@@ -196,23 +185,17 @@
                 </div>
             </div>
 
-            <label class="block dark:text-gray-300 mt-4" i18n
-                >List sections</label
-            >
+            <label class="mt-4 block dark:text-gray-300" i18n>List sections</label>
             <div class="space-y-2">
-                <div
-                    *ngFor="let section of interactiveSections; let i = index"
-                    class="space-y-2"
-                >
-                    <div class="w-full flex items-center">
+                <div *ngFor="let section of interactiveSections; let i = index" class="space-y-2">
+                    <div class="flex w-full items-center">
                         <input
                             type="text"
-                            class="flex-1 p-2 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white"
+                            class="flex-1 rounded-lg bg-gray-300 p-2 dark:bg-gray-600 dark:text-white"
                             placeholder="Section {{ i }}"
                             [ngClass]="{
-                                'border-red-500 border':
-                                    interactiveSections.length > 1 &&
-                                    !section.title,
+                                'border border-red-500':
+                                    interactiveSections.length > 1 && !section.title,
                             }"
                             [(ngModel)]="section.title"
                             maxlength="24"
@@ -232,16 +215,15 @@
                         </button>
                     </div>
                     <div
-                        class="pl-10 w-full flex items-center"
+                        class="flex w-full items-center pl-10"
                         *ngFor="let row of section.rows; let j = index"
                     >
-                        <div class="flex flex-col w-full">
+                        <div class="flex w-full flex-col">
                             <input
                                 type="text"
-                                class="p-2 rounded-t-lg bg-gray-300 dark:bg-gray-600 dark:text-white w-full"
+                                class="w-full rounded-t-lg bg-gray-300 p-2 dark:bg-gray-600 dark:text-white"
                                 [ngClass]="{
-                                    'border-red-500 border':
-                                        !section.rows[j].title,
+                                    'border border-red-500': !section.rows[j].title,
                                 }"
                                 placeholder="Row {{ j }} title"
                                 maxlength="24"
@@ -250,18 +232,14 @@
                             />
                             <input
                                 type="text"
-                                class="p-2 rounded-b-lg bg-gray-300 dark:bg-gray-600 dark:text-white w-full"
+                                class="w-full rounded-b-lg bg-gray-300 p-2 dark:bg-gray-600 dark:text-white"
                                 placeholder="Row {{ j }} description"
                                 maxlength="72"
                                 [(ngModel)]="section.rows[j].description"
                                 required
                             />
                         </div>
-                        <button
-                            type="button"
-                            class="text-red-500"
-                            (click)="removeRow(i, j)"
-                        >
+                        <button type="button" class="text-red-500" (click)="removeRow(i, j)">
                             <mat-icon
                                 class="material-icons-outlined brightness-50 dark:brightness-100"
                                 >delete</mat-icon
@@ -270,12 +248,11 @@
                     </div>
                     <button
                         type="button"
-                        class="flex items-center text-blue-500 pl-10"
+                        class="flex items-center pl-10 text-blue-500"
                         *ngIf="totalRows < 10"
                         (click)="addRow(i)"
                     >
-                        <mat-icon
-                            class="material-icons-outlined brightness-50 dark:brightness-100"
+                        <mat-icon class="material-icons-outlined brightness-50 dark:brightness-100"
                             >add</mat-icon
                         >
                         <span i18n>Add row</span>
@@ -283,21 +260,17 @@
                 </div>
                 <button
                     type="button"
-                    class="flex items-center text-blue-500 mb-4"
+                    class="mb-4 flex items-center text-blue-500"
                     *ngIf="interactiveSections.length < 10"
                     (click)="addSection()"
                 >
-                    <mat-icon
-                        class="material-icons-outlined brightness-50 dark:brightness-100"
+                    <mat-icon class="material-icons-outlined brightness-50 dark:brightness-100"
                         >add</mat-icon
                     >
                     <span i18n>Add section</span>
                 </button>
             </div>
-            <div
-                *ngIf="errors['interactiveSections']"
-                class="text-red-500 text-sm mt-1"
-            >
+            <div *ngIf="errors['interactiveSections']" class="mt-1 text-sm text-red-500">
                 {{ errors["interactiveSections"] }}
             </div>
         </div>
@@ -306,20 +279,16 @@
         <div *ngIf="interactiveType == InteractiveType.button">
             <label class="block dark:text-gray-300" i18n>Buttons</label>
             <div class="space-y-2">
-                <div
-                    *ngFor="let button of interactiveButtons; let i = index"
-                    class="space-y-2"
-                >
-                    <div class="w-full flex items-center">
+                <div *ngFor="let button of interactiveButtons; let i = index" class="space-y-2">
+                    <div class="flex w-full items-center">
                         <input
                             type="text"
-                            class="flex-1 p-2 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white"
+                            class="flex-1 rounded-lg bg-gray-300 p-2 dark:bg-gray-600 dark:text-white"
                             placeholder="Button {{ i }}"
                             i18n-placeholder
                             [(ngModel)]="interactiveButtons[i].title"
                             [ngClass]="{
-                                'border-red-500 border':
-                                    !interactiveButtons[i].title,
+                                'border border-red-500': !interactiveButtons[i].title,
                             }"
                             name="buttonText{{ i }}"
                             maxlength="20"
@@ -340,12 +309,11 @@
                 </div>
                 <button
                     type="button"
-                    class="flex items-center text-blue-500 mb-4"
+                    class="mb-4 flex items-center text-blue-500"
                     *ngIf="interactiveButtons.length < 3"
                     (click)="addButton()"
                 >
-                    <mat-icon
-                        class="material-icons-outlined brightness-50 dark:brightness-100"
+                    <mat-icon class="material-icons-outlined brightness-50 dark:brightness-100"
                         >add</mat-icon
                     >
                     <span i18n>Add option</span>

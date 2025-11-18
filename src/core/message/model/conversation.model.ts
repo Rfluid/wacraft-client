@@ -3,8 +3,7 @@ import { MessagingProductContactFields } from "../../messaging-product/entity/me
 import { StatusFields } from "../../status/entity/status.entity";
 import { MessageFields } from "../entity/message.entity";
 
-export interface ConversationMessagingProductContact
-    extends MessagingProductContactFields {
+export interface ConversationMessagingProductContact extends MessagingProductContactFields {
     contact: Contact;
 }
 

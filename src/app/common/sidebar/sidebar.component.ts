@@ -51,16 +51,13 @@ export class SidebarComponent implements OnInit {
 
     watchQueryParams() {
         // Watch for sidebar query param and update.
-        this.route.queryParams.subscribe(async (params) => {
-            this.queryParamsService.sidebarOpen =
-                params["sidebar_open"] !== "false";
+        this.route.queryParams.subscribe(async params => {
+            this.queryParamsService.sidebarOpen = params["sidebar_open"] !== "false";
         });
     }
 
     get isCollapsed(): boolean {
-        return [RoutePath.account, RoutePath.automation].includes(
-            this.activePage as RoutePath,
-        );
+        return [RoutePath.account, RoutePath.automation].includes(this.activePage as RoutePath);
     }
 
     get navItems(): NavItem[] {
@@ -99,14 +96,13 @@ export class SidebarComponent implements OnInit {
             {
                 route: ["/", RoutePath.users],
                 visible: () =>
-                    !!this.userStore.currentUser &&
-                    this.userStore.currentUser.role === Role.admin,
+                    !!this.userStore.currentUser && this.userStore.currentUser.role === Role.admin,
             },
             {
                 route: ["/", RoutePath.account],
                 visible: () => true, // “account” goes at the bottom
             },
-        ].filter((x) => x.visible());
+        ].filter(x => x.visible());
     }
 
     showShortcuts = false;
@@ -119,11 +115,7 @@ export class SidebarComponent implements OnInit {
             return;
         }
         const t = e.target as HTMLElement;
-        if (
-            t?.tagName === "INPUT" ||
-            t?.tagName === "TEXTAREA" ||
-            t?.isContentEditable
-        ) {
+        if (t?.tagName === "INPUT" || t?.tagName === "TEXTAREA" || t?.isContentEditable) {
             return;
         }
 

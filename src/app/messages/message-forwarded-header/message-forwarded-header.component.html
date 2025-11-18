@@ -1,22 +1,19 @@
 <p
-    class="w-full text-xm text-gray-400"
+    class="text-xm w-full text-gray-400"
     *ngIf="context && (context.forwarded || context.frequently_forwarded)"
 >
     <span *ngIf="context.forwarded" class="flex flex-row items-center">
         <mat-icon
             style="transform: scaleX(-1)"
-            class="material-icons-outlined brightness-75 text-md !w-4 !h-4 !flex !justify-center !items-center mr-1"
+            class="material-icons-outlined text-md mr-1 !flex !h-4 !w-4 !items-center !justify-center brightness-75"
             >reply</mat-icon
         >
         <span i18n>Forwarded</span>
     </span>
 
-    <span
-        *ngIf="context.frequently_forwarded"
-        class="flex flex-row items-center"
-    >
+    <span *ngIf="context.frequently_forwarded" class="flex flex-row items-center">
         <mat-icon
-            class="material-symbols-outlined brightness-75 text-md !w-6 !h-4 !flex !justify-center !items-center mr-1"
+            class="material-symbols-outlined text-md mr-1 !flex !h-4 !w-6 !items-center !justify-center brightness-75"
             >forward</mat-icon
         >
         <span i18n>Frequetly forwarded</span>

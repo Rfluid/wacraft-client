@@ -1,6 +1,6 @@
 <button
     [ngClass]="{
-        'aspect-square flex items-center justify-center rounded-full active:bg-gray-200 dark:active:bg-gray-600 outline-none': true,
+        'flex aspect-square items-center justify-center rounded-full outline-none active:bg-gray-200 dark:active:bg-gray-600': true,
         'bg-gray-300 dark:bg-gray-500': active,
         'hover:bg-gray-400 dark:hover:bg-gray-600': !active,
     }"
@@ -23,12 +23,12 @@
     <mat-icon
         [fontIcon]="matIcon"
         *ngIf="!customContent && matIcon"
-        class="aspect-square text-gray-500 dark:text-white material-icons-outlined"
+        class="material-icons-outlined aspect-square text-gray-500 dark:text-white"
     ></mat-icon>
 
     <mat-icon
         [fontIcon]="matSymbol"
         *ngIf="!customContent && matSymbol"
-        class="aspect-square text-gray-500 dark:text-white material-symbols-outlined"
+        class="material-symbols-outlined aspect-square text-gray-500 dark:text-white"
     ></mat-icon>
 </button>

@@ -21,8 +21,7 @@ function loadGoogleMaps(apiKey: string) {
             script.defer = true;
 
             script.onload = () => resolve();
-            script.onerror = () =>
-                reject(new Error("Google Maps could not be loaded."));
+            script.onerror = () => reject(new Error("Google Maps could not be loaded."));
 
             document.head.appendChild(script);
         }
@@ -39,9 +38,7 @@ switch (themeMode) {
         document.documentElement.classList.remove("dark");
         break;
     default:
-        const prefersDark = window.matchMedia(
-            "(prefers-color-scheme: dark)",
-        ).matches;
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
         if (prefersDark) document.documentElement.classList.add("dark");
         else document.documentElement.classList.remove("dark");
@@ -50,8 +47,6 @@ switch (themeMode) {
 // Load the Google Maps API before bootstrapping the app
 loadGoogleMaps(environment.googleMapsApiKey)
     .then(() => {
-        bootstrapApplication(AppComponent, appConfig).catch((err) =>
-            console.error(err),
-        );
+        bootstrapApplication(AppComponent, appConfig).catch(err => console.error(err));
     })
-    .catch((err) => console.error(err));
+    .catch(err => console.error(err));

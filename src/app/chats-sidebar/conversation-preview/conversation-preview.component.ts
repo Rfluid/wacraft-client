@@ -22,12 +22,7 @@ import { QueryParamsService } from "../../../core/navigation/service/query-param
 @Component({
     selector: "app-conversation-preview",
     standalone: true,
-    imports: [
-        CommonModule,
-        MessageContentPreviewComponent,
-        MessageDataPipe,
-        RouterModule,
-    ],
+    imports: [CommonModule, MessageContentPreviewComponent, MessageDataPipe, RouterModule],
     templateUrl: "./conversation-preview.component.html",
     styleUrl: "./conversation-preview.component.scss",
 })
@@ -67,13 +62,10 @@ export class ConversationPreviewComponent implements OnInit {
     }
 
     private watchQueryParams() {
-        this.route.queryParams.subscribe((params) => {
+        this.route.queryParams.subscribe(params => {
             this.isSelected =
-                params["messaging_product_contact.id"] ===
-                    this.messagingProductContact.id &&
-                (this.messageId
-                    ? params["message.id"] === this.messageId
-                    : true);
+                params["messaging_product_contact.id"] === this.messagingProductContact.id &&
+                (this.messageId ? params["message.id"] === this.messageId : true);
 
             if (this.isSelected) this.select.emit(this.messagingProductContact);
         });

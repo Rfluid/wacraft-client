@@ -37,7 +37,7 @@ export class MainServerControllerService {
     }
 
     watchToken(): void {
-        this.auth.token.subscribe((token) => {
+        this.auth.token.subscribe(token => {
             this.setHttp(token);
         });
     }

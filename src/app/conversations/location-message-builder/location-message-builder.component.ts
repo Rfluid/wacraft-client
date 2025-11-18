@@ -81,7 +81,7 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
         if (this.locationType === "self") {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    (position) => {
+                    position => {
                         this.markerPosition = {
                             lat: position.coords.latitude,
                             lng: position.coords.longitude,
@@ -91,11 +91,8 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
                             zoom: 16,
                         };
                     },
-                    (error) => {
-                        this.logger.error(
-                            "Error getting current position",
-                            error,
-                        );
+                    error => {
+                        this.logger.error("Error getting current position", error);
                         this.error = "Unable to get your current location.";
                     },
                 );
@@ -146,12 +143,9 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
         }
         this.logger.log("Autocomplete initialized");
 
-        const autocomplete = new google.maps.places.Autocomplete(
-            this.searchInput.nativeElement,
-            {
-                types: ["geocode", "establishment"],
-            },
-        );
+        const autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
+            types: ["geocode", "establishment"],
+        });
 
         autocomplete.addListener("place_changed", () => {
             this.ngZone.run(() => {
@@ -170,8 +164,7 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
                     this.name = place.name || "";
                     this.address = place.formatted_address || "";
                 } else {
-                    this.error =
-                        "No details available for the selected location.";
+                    this.error = "No details available for the selected location.";
                 }
             });
         });

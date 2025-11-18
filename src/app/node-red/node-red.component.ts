@@ -20,7 +20,7 @@ export class NodeRedComponent implements OnInit {
 
     ngOnInit() {
         this.accessToken = this.authService.getToken();
-        this.authService.token.subscribe((token) => {
+        this.authService.token.subscribe(token => {
             this.authService.setAuthCookie();
         });
     }

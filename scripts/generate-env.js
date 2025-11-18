@@ -26,7 +26,7 @@ export const environment = {
 `;
 
 // Write the environment.ts file
-fs.writeFile(targetPath, envConfigFile, (err) => {
+fs.writeFile(targetPath, envConfigFile, err => {
     if (err) {
         console.error("Error writing environment.ts:", err);
         process.exit(1);

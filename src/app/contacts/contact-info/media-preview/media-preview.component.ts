@@ -49,9 +49,7 @@ export class MediaPreviewComponent implements OnInit {
             return;
         }
         if (!mediaData.id) return;
-        this.mediaSafeUrl = await this.mediaStore.downloadMediaById(
-            mediaData.id,
-        );
+        this.mediaSafeUrl = await this.mediaStore.downloadMediaById(mediaData.id);
     }
 
     async downloadMedia() {
@@ -69,9 +67,7 @@ export class MediaPreviewComponent implements OnInit {
         }
 
         if (!mediaData.id) return;
-        const safeUrl: SafeUrl = await this.mediaStore.downloadMediaById(
-            mediaData.id,
-        );
+        const safeUrl: SafeUrl = await this.mediaStore.downloadMediaById(mediaData.id);
 
         // Convert SafeUrl to a plain string
         const urlString = this.sanitizer.sanitize(4, safeUrl); // 4 represents the URL context
@@ -117,8 +113,9 @@ export class MediaPreviewComponent implements OnInit {
 
     get goToMessageQueryParams() {
         return {
-            "messaging_product_contact.id":
-                this.messProdcContFromMessagePipe.transform(this.message).id,
+            "messaging_product_contact.id": this.messProdcContFromMessagePipe.transform(
+                this.message,
+            ).id,
             "message.id": this.message.id,
             "message.created_at": this.message.created_at,
         };

@@ -23,7 +23,7 @@ export class TemplatePreviewComponent {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe((params) => {
+        this.route.queryParams.subscribe(params => {
             this.isSelected = params["template.name"] === this.template.name;
         });
     }

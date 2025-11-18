@@ -15,7 +15,13 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
 
 @Component({
     selector: "app-user-details",
-    imports: [FormsModule, CommonModule, MatIconModule, MatTooltipModule, TimeoutErrorModalComponent],
+    imports: [
+        FormsModule,
+        CommonModule,
+        MatIconModule,
+        MatTooltipModule,
+        TimeoutErrorModalComponent,
+    ],
     templateUrl: "./user-details.component.html",
     styleUrl: "./user-details.component.scss",
     preserveWhitespaces: false,
@@ -80,7 +86,7 @@ export class UserDetailsComponent implements OnInit {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const userId = params["user.id"];
             if (!(userId != this.userId)) return await this.loadUser();
             this.userId = userId;
@@ -137,7 +143,9 @@ export class UserDetailsComponent implements OnInit {
         if (!this.userId) return;
 
         // Show confirmation alert
-        const confirmed = window.confirm("Are you sure you want to delete this user? This action cannot be undone.");
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this user? This action cannot be undone.",
+        );
 
         // If the user confirms, proceed with the deletion
         if (confirmed) {

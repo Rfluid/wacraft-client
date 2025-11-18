@@ -1,22 +1,19 @@
 <div
     class="max-w-82"
-    *ngIf="
-        (message | messageData).type === MessageType.interactive &&
-        messageSent.interactive
-    "
+    *ngIf="(message | messageData).type === MessageType.interactive && messageSent.interactive"
 >
     <!-- Sender data -->
     <div *ngIf="isSent">
         <div
             id="content"
             [ngClass]="{
-                'rounded-md ': true,
+                'rounded-md': true,
                 'bg-blue-300 dark:bg-blue-800': isSent,
                 'bg-gray-100 dark:bg-gray-700': !isSent,
             }"
         >
             <div
-                class="pt-1 px-1"
+                class="px-1 pt-1"
                 *ngIf="
                     message.receiver_data?.context &&
                     (message.receiver_data?.context?.forwarded ||
@@ -29,10 +26,9 @@
             </div>
 
             <div
-                class="w-full pt-1 px-1"
+                class="w-full px-1 pt-1"
                 *ngIf="
-                    message.sender_data?.context?.message_id ||
-                    message.receiver_data?.context?.id
+                    message.sender_data?.context?.message_id || message.receiver_data?.context?.id
                 "
             >
                 <app-message-reply-header
@@ -43,13 +39,10 @@
                 ></app-message-reply-header>
             </div>
 
-            <div class="px-1 pt-1 pb-1">
+            <div class="px-1 pb-1 pt-1">
                 <!-- Header -->
                 <div
-                    [class]="
-                        'text-base' +
-                        (messageSent.interactive.header?.text && 'mb-2')
-                    "
+                    [class]="'text-base' + (messageSent.interactive.header?.text && 'mb-2')"
                     id="header"
                     *ngIf="
                         messageSent.interactive?.header &&
@@ -59,8 +52,7 @@
                     <p
                         class=""
                         *ngIf="
-                            messageSent.interactive?.header?.type ===
-                                HeaderType.text &&
+                            messageSent.interactive?.header?.type === HeaderType.text &&
                             messageSent.interactive?.header?.text
                         "
                         [textContent]="messageSent.interactive.header?.text"
@@ -68,8 +60,8 @@
 
                     <app-message-media-content
                         *ngIf="
-                            messageSent.interactive?.header?.type !==
-                                HeaderType.text && useMediaData
+                            messageSent.interactive?.header?.type !== HeaderType.text &&
+                            useMediaData
                         "
                         [isSent]="isSent"
                         [mediaData]="useMediaData"
@@ -86,17 +78,13 @@
 
                 <!-- Footer -->
                 <p
-                    class="text-xs text-gray-600 dark:text-gray-200 font-light mt-2"
+                    class="mt-2 text-xs font-light text-gray-600 dark:text-gray-200"
                     id="footer"
                     *ngIf="messageSent.interactive?.footer?.text"
                     [textContent]="messageSent.interactive.footer?.text"
                 ></p>
 
-                <app-message-info
-                    class="pb-1"
-                    [sent]="sent"
-                    [message]="message"
-                ></app-message-info>
+                <app-message-info class="pb-1" [sent]="sent" [message]="message"></app-message-info>
             </div>
 
             <!-- Action -->
@@ -104,7 +92,7 @@
             <button
                 type=""
                 [ngClass]="{
-                    'flex items-center justify-center w-full h-10 rounded-b-md opacity-100 relative border-t border-t-gray-500': true,
+                    'relative flex h-10 w-full items-center justify-center rounded-b-md border-t border-t-gray-500 opacity-100': true,
                 }"
                 (click)="openListOptionsModal()"
                 *ngIf="messageSent.interactive?.action?.button"
@@ -121,7 +109,7 @@
             <button
                 type=""
                 [ngClass]="{
-                    'flex items-center justify-center w-full h-10 rounded-md opacity-100 relative': true,
+                    'relative flex h-10 w-full items-center justify-center rounded-md opacity-100': true,
                     'bg-blue-300 dark:bg-blue-800': isSent,
                     'dark:bg-gray-700': !isSent,
                 }"
@@ -138,33 +126,28 @@
         [ngClass]="{
             'rounded-md': true,
             'bg-blue-300 dark:bg-blue-800': isSent,
-            'bg-gray-100  dark:bg-gray-700': !isSent,
+            'bg-gray-100 dark:bg-gray-700': !isSent,
         }"
     >
         <!-- Button reply -->
         <div id="button-reply-content">
             <div
-                class="px-1 pt-1 pb-1"
+                class="px-1 pb-1 pt-1"
                 *ngIf="
-                    messageReceived.interactive?.type ===
-                        ReceivedInteractiveType.buttonReply &&
+                    messageReceived.interactive?.type === ReceivedInteractiveType.buttonReply &&
                     messageReceived.interactive?.button_reply
                 "
             >
                 <p
                     class=""
                     id="button-reply-body"
-                    [textContent]="
-                        messageReceived.interactive?.button_reply?.title
-                    "
+                    [textContent]="messageReceived.interactive?.button_reply?.title"
                 ></p>
                 <p
-                    class="text-xs text-gray-400 dark:text-gray-200 font-light mt-2"
+                    class="mt-2 text-xs font-light text-gray-400 dark:text-gray-200"
                     id="button-reply-footer"
                     *ngIf="messageReceived.interactive?.button_reply?.id"
-                    [textContent]="
-                        messageReceived.interactive?.button_reply?.id
-                    "
+                    [textContent]="messageReceived.interactive?.button_reply?.id"
                 ></p>
             </div>
         </div>
@@ -172,29 +155,24 @@
         <!-- List reply -->
         <div id="list-reply-content">
             <div
-                class="px-1 pt-1 pb-1"
+                class="px-1 pb-1 pt-1"
                 *ngIf="
-                    messageReceived.interactive?.type ===
-                        ReceivedInteractiveType.listReply &&
+                    messageReceived.interactive?.type === ReceivedInteractiveType.listReply &&
                     messageReceived.interactive?.list_reply
                 "
             >
                 <p
-                    class="text-base mb-2"
+                    class="mb-2 text-base"
                     id="list-reply-header"
-                    [textContent]="
-                        messageReceived.interactive?.list_reply?.title
-                    "
+                    [textContent]="messageReceived.interactive?.list_reply?.title"
                 ></p>
                 <p
                     class="mb-2"
                     id="list-reply-body"
-                    [textContent]="
-                        messageReceived.interactive?.list_reply?.description
-                    "
+                    [textContent]="messageReceived.interactive?.list_reply?.description"
                 ></p>
                 <p
-                    class="text-xs text-gray-200 font-light mt-2"
+                    class="mt-2 text-xs font-light text-gray-200"
                     id="list-reply-footer"
                     *ngIf="messageReceived.interactive?.list_reply?.id"
                     [textContent]="messageReceived.interactive?.list_reply?.id"
@@ -207,10 +185,7 @@
 </div>
 
 <app-list-options-modal
-    *ngIf="
-        messageSent.interactive?.type === InteractiveType.list &&
-        listOptionsModalOpen
-    "
+    *ngIf="messageSent.interactive?.type === InteractiveType.list && listOptionsModalOpen"
     (close)="closeListOptionsModal()"
     [sections]="messageSent.interactive?.action?.sections || []"
     [listName]="messageSent.interactive?.action?.button || ''"

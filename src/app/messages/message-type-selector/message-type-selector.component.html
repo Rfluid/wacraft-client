@@ -1,4 +1,4 @@
-<div class="w-40 shadow-xl p-2 rounded-lg bg-gray-100 dark:bg-gray-700 z-50">
+<div class="z-50 w-40 rounded-lg bg-gray-100 p-2 shadow-xl dark:bg-gray-700">
     <ul class="space-y-2">
         <li
             [ngClass]="{
@@ -67,9 +67,7 @@
             (click)="selectType(MessageType.interactive)"
             #listItem
         >
-            <mat-icon class="material-symbols-outlined"
-                >interactive_space</mat-icon
-            >
+            <mat-icon class="material-symbols-outlined">interactive_space</mat-icon>
             <span i18n>Interactive</span>
         </li>
         <li

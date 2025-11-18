@@ -153,7 +153,7 @@ export class ChatsSidebarComponent extends KeyboardNavigableList implements OnIn
 
     // Handle message read.
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const messagingProductContactId = params["messaging_product_contact.id"];
             if (!messagingProductContactId) return;
             this.conversationStore.read(messagingProductContactId);

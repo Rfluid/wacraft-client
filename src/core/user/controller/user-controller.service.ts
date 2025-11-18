@@ -39,8 +39,7 @@ export class UserControllerService extends MainServerControllerService {
 
     // Get current user
     async getCurrentUser(): Promise<User> {
-        const currentUser = (await this.http.get<User>(`${ServerEndpoints.me}`))
-            .data;
+        const currentUser = (await this.http.get<User>(`${ServerEndpoints.me}`)).data;
         return currentUser;
     }
 

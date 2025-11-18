@@ -1,12 +1,5 @@
 import { CommonModule } from "@angular/common";
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostListener,
-    Input,
-    Output,
-} from "@angular/core";
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from "@angular/core";
 import { ContactData } from "../../../core/message/model/contact-data.model";
 import { MatIconModule } from "@angular/material/icon";
 import { RouterModule } from "@angular/router";
@@ -42,9 +35,7 @@ export class MessageContactsModalComponent {
     // Shortcuts
     @HostListener("document:click", ["$event"])
     onDocumentClick(event: MouseEvent) {
-        const clickedInside = this.elementRef.nativeElement.contains(
-            event.target,
-        );
+        const clickedInside = this.elementRef.nativeElement.contains(event.target);
         if (!clickedInside) this.close.emit();
     }
 }

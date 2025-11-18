@@ -1,4 +1,4 @@
-<div class="w-screen h-screen flex justify-center">
+<div class="flex h-screen w-screen justify-center">
     <app-sidebar class="" [activePage]="currentFragment"></app-sidebar>
 
     <app-chats-sidebar
@@ -12,17 +12,13 @@
     <div
         class="w-full dark:bg-gray-800"
         [ngClass]="{
-            hidden:
-                currentFragment !== HomeFragment.chats ||
-                queryParamIs('mode', 'new_contact'),
+            hidden: currentFragment !== HomeFragment.chats || queryParamIs('mode', 'new_contact'),
         }"
     >
         <app-conversations
             class=""
             #conversations
-            (searchAtContactId)="
-                chatsSidebar.addMessagingProductContactIdField($event)
-            "
+            (searchAtContactId)="chatsSidebar.addMessagingProductContactIdField($event)"
             [ngClass]="{
                 hidden: !hasQueryParam('messaging_product_contact.id'),
             }"
@@ -53,15 +49,11 @@
     ></app-template-details>
 
     <app-campaigns-sidebar
-        *ngIf="
-            currentFragment === HomeFragment.campaigns && !environment.isLite
-        "
+        *ngIf="currentFragment === HomeFragment.campaigns && !environment.isLite"
     ></app-campaigns-sidebar>
 
     <app-campaign-details
         class="w-full dark:bg-gray-800"
-        *ngIf="
-            currentFragment === HomeFragment.campaigns && !environment.isLite
-        "
+        *ngIf="currentFragment === HomeFragment.campaigns && !environment.isLite"
     ></app-campaign-details>
 </div>

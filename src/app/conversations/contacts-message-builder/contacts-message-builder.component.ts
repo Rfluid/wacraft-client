@@ -69,16 +69,12 @@ export class ContactsMessageBuilderComponent {
     constructor(private messageController: MessageControllerService) {}
 
     buildContacts(): ContactData[] {
-        const payloadContacts: ContactData[] = this.contacts.map((contact) => {
-            const processedPhones: ContactPhone[] = contact.phones.map(
-                (phone) => ({
-                    phone: phone.phone,
-                    type: phone.type,
-                    wa_id: phone.is_wa
-                        ? phone.phone.replace(/\D/g, "")
-                        : undefined,
-                }),
-            );
+        const payloadContacts: ContactData[] = this.contacts.map(contact => {
+            const processedPhones: ContactPhone[] = contact.phones.map(phone => ({
+                phone: phone.phone,
+                type: phone.type,
+                wa_id: phone.is_wa ? phone.phone.replace(/\D/g, "") : undefined,
+            }));
 
             return {
                 name: contact.name,

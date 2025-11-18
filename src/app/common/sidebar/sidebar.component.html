@@ -1,17 +1,17 @@
 <div
-    class="bg-gray-200 dark:bg-gray-700 py-2 w-14 h-screen overflow-auto flex flex-col justify-between items-center border-gray-300 dark:border-gray-700 border-r"
+    class="flex h-screen w-14 flex-col items-center justify-between overflow-auto border-r border-gray-300 bg-gray-200 py-2 dark:border-gray-700 dark:bg-gray-700"
 >
     <div class="flex flex-col items-center justify-center">
         <div
             [ngClass]="{
-                'flex flex-col items-center justify-center transition-all duration-300 overflow-hidden': true,
+                'flex flex-col items-center justify-center overflow-hidden transition-all duration-300': true,
                 'max-h-0': isCollapsed,
                 'max-h-80': !isCollapsed,
             }"
         >
             <button
                 id="sidebar-toggle"
-                class="rounded-lg w-10 aspect-square border flex items-center justify-center text-white border-gray-500 dark:border-gray-500"
+                class="flex aspect-square w-10 items-center justify-center rounded-lg border border-gray-500 text-white dark:border-gray-500"
                 (click)="
                     queryParamsService.sidebarOpen
                         ? queryParamsService.closeSidebar()
@@ -20,16 +20,14 @@
             >
                 <i
                     [ngClass]="{
-                        'fa-solid fa-chevron-right transition-transform duration-300 outline-none': true,
+                        'fa-solid fa-chevron-right outline-none transition-transform duration-300': true,
                         'text-gray-500 dark:text-gray-500': true,
                         'rotate-180': queryParamsService.sidebarOpen,
                     }"
                 ></i>
             </button>
 
-            <hr
-                class="my-5 border-b w-8 border-gray-600 dark:border-gray-600"
-            />
+            <hr class="my-5 w-8 border-b border-gray-600 dark:border-gray-600" />
         </div>
 
         <a
@@ -152,10 +150,7 @@
             [queryParams]="queryParamsService.globalQueryParams"
             queryParamsHandling="replace"
             class="navigator"
-            *ngIf="
-                userStore.currentUser &&
-                userStore.currentUser.role === Role.admin
-            "
+            *ngIf="userStore.currentUser && userStore.currentUser.role === Role.admin"
         >
             <app-small-button
                 [active]="activePage === RoutePath.users"

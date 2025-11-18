@@ -72,7 +72,7 @@ export class TypingIndicatorService {
 
         // If we recently sent a typing indicator (within the refresh window),
         // don't send another one yet
-        if (lastSent && (now - lastSent) < this.REFRESH_INTERVAL_MS) {
+        if (lastSent && now - lastSent < this.REFRESH_INTERVAL_MS) {
             return;
         }
 
