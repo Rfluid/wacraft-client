@@ -1,0 +1,34 @@
+version: 2
+
+updates:
+    # Keep npm dependencies up to date (your Angular app)
+    - package-ecosystem: "npm"
+      directory: "/"
+      schedule:
+          interval: "weekly"
+          day: "monday"
+          time: "06:00"
+          timezone: "America/Sao_Paulo"
+      open-pull-requests-limit: 5
+      groups:
+          minor-and-patch:
+              applies-to: "version-updates"
+              update-types:
+                  - "minor"
+                  - "patch"
+      labels:
+          - "dependencies"
+          - "security"
+
+    # Keep GitHub Actions up to date (checkout, setup-node, etc.)
+    - package-ecosystem: "github-actions"
+      directory: "/"
+      schedule:
+          interval: "weekly"
+          day: "monday"
+          time: "06:00"
+          timezone: "America/Sao_Paulo"
+      open-pull-requests-limit: 5
+      labels:
+          - "dependencies"
+          - "ci"
