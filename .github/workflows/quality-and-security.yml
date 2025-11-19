@@ -6,6 +6,13 @@ on:
     pull_request:
         branches: [main, develop]
 
+permissions:
+    contents: read
+
+concurrency:
+    group: quality-security-${{ github.ref }}
+    cancel-in-progress: true
+
 jobs:
     lint-and-format:
         name: Code Quality – Lint & Prettier
