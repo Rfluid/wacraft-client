@@ -8,7 +8,7 @@ on:
 
 jobs:
     lint-and-format:
-        name: Lint & Prettier check
+        name: Code Quality – Lint & Prettier
         runs-on: ubuntu-latest
 
         steps:
@@ -32,7 +32,7 @@ jobs:
               run: npm run format:check
 
     security:
-        name: Dependency security check
+        name: Dependency Security Scan
         runs-on: ubuntu-latest
         needs: lint-and-format
         steps:
@@ -47,7 +47,7 @@ jobs:
               run: npm audit --audit-level=high
 
     build:
-        name: Build app
+        name: Production Build Validation
         runs-on: ubuntu-latest
         needs: [lint-and-format, security]
         steps:
