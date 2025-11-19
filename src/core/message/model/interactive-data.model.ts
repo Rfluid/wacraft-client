@@ -1,3 +1,3 @@
 import { Interactive } from "./interactive.model";
 
-export interface InteractiveData extends Interactive {}
+export type InteractiveData = Interactive;

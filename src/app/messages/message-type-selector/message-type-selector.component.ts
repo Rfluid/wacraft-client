@@ -1,4 +1,12 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output,
+    inject,
+} from "@angular/core";
 import { MessageType } from "../../../core/message/model/message-type.model";
 import { CommonModule } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";

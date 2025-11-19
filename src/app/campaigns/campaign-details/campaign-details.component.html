@@ -15,10 +15,11 @@
                 'sm:col-span-6': campaignId,
             }"
         >
-            <label class="mb-2 block text-sm font-medium" i18n>Name</label>
+            <label class="mb-2 block text-sm font-medium" i18n for="campaign-name">Name</label>
             <div class="relative">
                 <input
                     type="url"
+                    id="campaign-name"
                     [(ngModel)]="campaign.name"
                     [disabled]="!isEditing"
                     class="w-full rounded bg-gray-200 p-2 outline-none dark:bg-gray-600 dark:text-white"
@@ -27,9 +28,10 @@
         </div>
 
         <div class="relative col-span-12 sm:col-span-6" *ngIf="campaignId">
-            <label class="mb-2 block text-sm font-medium">ID</label>
+            <label class="mb-2 block text-sm font-medium" for="campaign-id">ID</label>
             <div class="relative">
                 <input
+                    id="campaign-id"
                     [(ngModel)]="campaign.id"
                     [disabled]="!isEditing"
                     class="w-full rounded bg-gray-200 p-2 pr-10 outline-none dark:bg-gray-600 dark:text-white"
@@ -47,7 +49,7 @@
         </div>
 
         <div class="relative col-span-12 sm:col-span-4" *ngIf="campaignId">
-            <label class="mb-2 block text-sm font-medium" i18n>Total messages</label>
+            <p class="mb-2 block text-sm font-medium" i18n>Total messages</p>
             <div class="relative">
                 <div
                     class="w-full rounded bg-gray-200 p-2 outline-none dark:bg-gray-600 dark:text-white"
@@ -58,7 +60,7 @@
         </div>
 
         <div class="relative col-span-12 sm:col-span-4" *ngIf="campaignId">
-            <label class="mb-2 block text-sm font-medium" i18n>Messages sent</label>
+            <p class="mb-2 block text-sm font-medium" i18n>Messages sent</p>
             <div class="relative">
                 <div
                     class="w-full rounded bg-gray-200 p-2 outline-none dark:bg-gray-600 dark:text-white"
@@ -69,7 +71,7 @@
         </div>
 
         <div class="relative col-span-12 sm:col-span-4" *ngIf="campaignId">
-            <label class="mb-2 block text-sm font-medium" i18n>Unsent messages</label>
+            <p class="mb-2 block text-sm font-medium" i18n>Unsent messages</p>
             <div class="relative">
                 <div
                     class="w-full rounded bg-gray-200 p-2 pr-10 outline-none dark:bg-gray-600 dark:text-white"

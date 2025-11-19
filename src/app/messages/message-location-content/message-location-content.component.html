@@ -19,16 +19,14 @@
                 "
                 target="_blank"
                 rel="noopener noreferrer"
-                [textContent]="(message | messageData)?.location?.name"
-            ></a>
+            >
+                {{ (message | messageData)?.location?.name }}
+            </a>
         </p>
     </div>
 
     <!-- Body -->
-    <p
-        class=""
-        id="body"
-        *ngIf="(message | messageData)?.location?.address"
-        [textContent]="(message | messageData)?.location?.address"
-    ></p>
+    <p class="" id="body" *ngIf="(message | messageData)?.location?.address">
+        {{ (message | messageData)?.location?.address }}
+    </p>
 </div>

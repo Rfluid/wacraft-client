@@ -18,6 +18,7 @@ export interface UseTemplateComponent {
 export interface ComponentParameters {
     type: ParameterType;
     text?: string;
+    placeholder?: string;
 
     image?: UseMedia;
     video?: UseMedia;

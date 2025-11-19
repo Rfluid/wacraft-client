@@ -179,7 +179,7 @@ export class TemplateMessageBuilderComponent {
                 this.handleBodyComponent(component, useComponent, example);
                 break;
             case TemplateComponentType.footer.toLowerCase():
-                this.handleFooterComponent(component, useComponent, example);
+                this.handleFooterComponent(component, useComponent);
                 break;
             case TemplateComponentType.buttons.toLowerCase():
                 this.handleButtonsComponent(component, useComponent, example, buttonIndex);
@@ -208,7 +208,7 @@ export class TemplateMessageBuilderComponent {
                     type: ParameterType.text,
                     text: "",
                     placeholder: exampleValue || undefined,
-                } as any);
+                });
             });
         } else if (
             component.format?.toLowerCase() === TemplateComponentFormat.Text.toLowerCase() &&
@@ -221,7 +221,7 @@ export class TemplateMessageBuilderComponent {
                     type: ParameterType.text,
                     text: "",
                     placeholder: `Enter ${variableName}`,
-                } as any);
+                });
             });
         }
     }
@@ -239,7 +239,7 @@ export class TemplateMessageBuilderComponent {
                     type: ParameterType.text,
                     text: "",
                     placeholder: exampleValue || undefined,
-                } as any);
+                });
             });
             return;
         }
@@ -252,7 +252,7 @@ export class TemplateMessageBuilderComponent {
                     type: ParameterType.text,
                     text: "",
                     placeholder: `Enter ${variableName}`,
-                } as any);
+                });
             });
         }
     }
@@ -274,12 +274,25 @@ export class TemplateMessageBuilderComponent {
         return variables;
     }
 
-    handleFooterComponent(
-        component: TemplateComponent,
-        useComponent: UseTemplateComponent,
-        example: ComponentExample,
-    ) {
-        return;
+    handleFooterComponent(component: TemplateComponent, useComponent: UseTemplateComponent) {
+        if (!component.text) return;
+        const variables = this.extractVariables(component.text);
+        if (!variables.length) {
+            useComponent.parameters.push({
+                type: ParameterType.text,
+                text: "",
+                placeholder: component.text,
+            });
+            return;
+        }
+
+        variables.forEach(variableName => {
+            useComponent.parameters.push({
+                type: ParameterType.text,
+                text: "",
+                placeholder: `Enter ${variableName}`,
+            });
+        });
     }
 
     handleButtonsComponent(
@@ -305,7 +318,7 @@ export class TemplateMessageBuilderComponent {
                         type: ParameterType.text,
                         text: "",
                         placeholder,
-                    } as any);
+                    });
                 });
             }
             return;
@@ -324,7 +337,7 @@ export class TemplateMessageBuilderComponent {
                         type: ParameterType.text,
                         text: "",
                         placeholder,
-                    } as any);
+                    });
                 });
             }
         });
@@ -409,15 +422,20 @@ export class TemplateMessageBuilderComponent {
     }
 
     // Helper function to flatten nested objects, handling arrays as JSON strings
-    flattenObject(obj: any, parentKey = "", result: any = {}): any {
-        for (const key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    flattenObject(
+        obj: object,
+        parentKey = "",
+        result: Record<string, unknown> = {},
+    ): Record<string, unknown> {
+        const record = obj as Record<string, unknown>;
+        for (const key in record) {
+            if (Object.prototype.hasOwnProperty.call(record, key)) {
                 const newKey = parentKey ? `${parentKey}.${key}` : key;
-                const value = obj[key];
+                const value = record[key];
 
                 if (value && typeof value === "object" && !Array.isArray(value)) {
                     // Recursively flatten nested objects
-                    this.flattenObject(value, newKey, result);
+                    this.flattenObject(value as Record<string, unknown>, newKey, result);
                 } else if (Array.isArray(value)) {
                     // Serialize arrays as JSON strings
                     result[newKey] = JSON.stringify(value);

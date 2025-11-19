@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, AfterViewInit, inject } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, inject } from "@angular/core";
 import { ConversationHeaderComponent } from "../conversation-header/conversation-header.component";
 import { ConversationFooterComponent } from "../conversation-footer/conversation-footer.component";
 import { ConversationBodyComponent } from "../conversation-body/conversation-body.component";
@@ -26,7 +26,7 @@ import { MessageActionsFooterComponent } from "../message-actions-footer/message
     styleUrl: "./conversation.component.scss",
     standalone: true,
 })
-export class ConversationComponent implements OnInit, AfterViewInit {
+export class ConversationComponent implements OnInit {
     private route = inject(ActivatedRoute);
     userConversationStore = inject(UserConversationsStoreService);
     private logger = inject(NGXLogger);
@@ -71,8 +71,6 @@ export class ConversationComponent implements OnInit, AfterViewInit {
             return;
         });
     }
-
-    ngAfterViewInit(): void {}
 
     closeContactInfo() {
         this.contactInfoEnabled = false;

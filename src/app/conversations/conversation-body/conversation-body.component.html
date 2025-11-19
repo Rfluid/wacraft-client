@@ -53,6 +53,10 @@
             selectable: !!selectedMessages.length,
         }"
         (click)="!!selectedMessages.length && clickMessage(message)"
+        [attr.tabindex]="selectedMessages.length ? 0 : null"
+        [attr.role]="selectedMessages.length ? 'button' : null"
+        (keyup.enter)="selectedMessages.length && clickMessage(message)"
+        (keyup.space)="selectedMessages.length && clickMessage(message)"
     >
         <!-- (click)="!!selectedMessages.length && toggleSelection(message)" -->
         <!-- (click)="clickMessage(message)" -->

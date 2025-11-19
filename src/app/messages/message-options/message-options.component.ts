@@ -1,5 +1,14 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output,
+    ViewChild,
+    inject,
+} from "@angular/core";
 import { MessageInfoDataComponent } from "../message-info-data/message-info-data.component";
 import { Conversation } from "../../../core/message/model/conversation.model";
 import { MessageControllerService } from "../../../core/message/controller/message-controller.service";
@@ -15,6 +24,12 @@ import { MessageFields } from "../../../core/message/entity/message.entity";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
 import { MessageDataPipe } from "../../../core/message/pipe/message-data.pipe";
 import { isHttpError } from "../../../core/common/model/http-error-shape.model";
+
+interface EmojiSelectEvent {
+    emoji: {
+        native: string;
+    };
+}
 
 @Component({
     selector: "app-message-options",
@@ -82,7 +97,7 @@ export class MessageOptionsComponent {
         this.close.emit();
     }
 
-    onSelectMessage(event: MouseEvent) {
+    onSelectMessage(event: Event) {
         event.stopPropagation(); // ✅ Prevents click from reaching <li>
         this.selectMessage.emit(this.message);
         this.close.emit();
@@ -93,10 +108,11 @@ export class MessageOptionsComponent {
         this.showEmojiPicker = !this.showEmojiPicker;
     }
 
-    async onEmojiSelect(event: any) {
+    async onEmojiSelect(event: EmojiSelectEvent) {
         this.logger.debug("Emoji selected", event);
-        // Send message
-        this.reaction = event.emoji.native;
+        const nativeEmoji = event.emoji?.native;
+        if (!nativeEmoji) return;
+        this.reaction = nativeEmoji;
         await this.sendReaction();
 
         // Close UI helpers

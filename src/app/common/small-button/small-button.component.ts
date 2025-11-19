@@ -15,8 +15,9 @@ export class SmallButtonComponent {
     @Input() matSymbol = "";
     @Input() active = false;
     @Input() width = "40px";
+    @Input() alt = "";
     @ViewChild("button") button!: HTMLButtonElement;
-    @ContentChild(TemplateRef) customContent!: TemplateRef<any>;
+    @ContentChild(TemplateRef) customContent?: TemplateRef<unknown>;
 
     changeActive() {
         this.active = !this.active;

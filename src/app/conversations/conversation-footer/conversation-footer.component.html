@@ -41,7 +41,7 @@
 
         <form
             #messageForm="ngForm"
-            (ngSubmit)="send(messageForm)"
+            (ngSubmit)="send()"
             class="flex h-auto w-full flex-row items-center"
         >
             <!-- Media Message -->
@@ -108,7 +108,7 @@
                 [toId]="toIdInput"
                 [toPhoneNumber]="toPhoneNumberInput"
                 class="ml-2 mt-2 w-full"
-                *ngIf="messageType == MessageType.interactive"
+                *ngIf="messageType === MessageType.interactive"
                 #interactiveMessageBuilder
             >
             </app-interactive-message-builder>
@@ -118,7 +118,7 @@
                 [toId]="toIdInput"
                 [toPhoneNumber]="toPhoneNumberInput"
                 class="ml-2 w-full"
-                *ngIf="messageType == MessageType.location"
+                *ngIf="messageType === MessageType.location"
                 #locationMessageBuilder
             >
             </app-location-message-builder>
@@ -128,14 +128,14 @@
                 [toId]="toIdInput"
                 [toPhoneNumber]="toPhoneNumberInput"
                 class="ml-2 w-full"
-                *ngIf="messageType == MessageType.contacts"
+                *ngIf="messageType === MessageType.contacts"
                 #contactsMessageBuilder
             ></app-contacts-message-builder>
 
             <!-- Text Message -->
             <div
                 class="ml-2 flex w-full items-center"
-                *ngIf="messageType == MessageType.text || messageType === 'raw'"
+                *ngIf="messageType === MessageType.text || messageType === 'raw'"
             >
                 <textarea
                     class="min-h-10 w-full resize-none rounded-lg bg-gray-300 px-3 py-2 outline-none dark:bg-gray-600 dark:text-white"
@@ -148,9 +148,9 @@
                     [(ngModel)]="textBody"
                     (ngModelChange)="onMessageChange()"
                     (input)="adjustHeight(area)"
-                    (keydown.control.enter)="send(messageForm)"
+                    (keydown.control.enter)="send()"
                     name="textMessage"
-                    [maxlength]="messageType == MessageType.text ? '4096' : 'undefined'"
+                    [maxlength]="messageType === MessageType.text ? '4096' : 'undefined'"
                     required
                     #area
                 ></textarea>

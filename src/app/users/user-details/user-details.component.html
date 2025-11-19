@@ -10,10 +10,11 @@
             class="relative col-span-10"
             [ngClass]="{ 'md:col-span-5': !userId, 'md:col-span-10': userId }"
         >
-            <label class="mb-2 block text-sm font-medium" i18n>Name</label>
+            <label class="mb-2 block text-sm font-medium" i18n for="user-name">Name</label>
             <div class="relative">
                 <input
                     type="url"
+                    id="user-name"
                     [(ngModel)]="user.name"
                     [disabled]="!isEditing"
                     class="w-full rounded bg-gray-200 p-2 outline-none dark:bg-gray-600 dark:text-white"
@@ -23,10 +24,11 @@
 
         <!-- URL Field with Copy Button -->
         <div class="relative col-span-12 md:col-span-5" *ngIf="isEditing && !userId">
-            <label class="mb-2 block text-sm font-medium" i18n>Password</label>
+            <label class="mb-2 block text-sm font-medium" i18n for="user-password">Password</label>
             <div class="relative">
                 <input
                     [type]="showPassword ? 'text' : 'password'"
+                    id="user-password"
                     [(ngModel)]="user.password"
                     [disabled]="!isEditing"
                     class="w-full rounded bg-gray-200 p-2 pr-10 text-white outline-none dark:bg-gray-600"
@@ -46,9 +48,10 @@
         </div>
 
         <div class="relative col-span-12 md:col-span-2">
-            <label class="mb-2 block text-sm font-medium" i18n>Role</label>
+            <label class="mb-2 block text-sm font-medium" i18n for="user-role">Role</label>
             <div class="relative">
                 <select
+                    id="user-role"
                     class="block w-full rounded-lg border bg-gray-50 p-2.5 text-sm font-semibold outline-none focus:ring-blue-500 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:ring-blue-500"
                     [disabled]="!isEditing"
                     [(ngModel)]="user.role"
@@ -73,9 +76,10 @@
 
         <!-- Authorization Field with Copy Button -->
         <div class="relative col-span-12">
-            <label class="mb-2 block text-sm font-medium">Email</label>
+            <label class="mb-2 block text-sm font-medium" for="user-email">Email</label>
             <div class="relative">
                 <input
+                    id="user-email"
                     [(ngModel)]="user.email"
                     [disabled]="!isEditing"
                     class="w-full rounded bg-gray-200 p-2 pr-10 outline-none dark:bg-gray-600 dark:text-white"

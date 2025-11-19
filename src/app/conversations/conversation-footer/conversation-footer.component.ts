@@ -1,12 +1,22 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, OnInit, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output,
+    ViewChild,
+    OnInit,
+    inject,
+} from "@angular/core";
 import { SenderData } from "../../../core/message/model/sender-data.model";
 import { isMediaType, MessageType } from "../../../core/message/model/message-type.model";
 import { MessageControllerService } from "../../../core/message/controller/message-controller.service";
 import { MessageFields } from "../../../core/message/entity/message.entity";
 import { SmallButtonComponent } from "../../common/small-button/small-button.component";
 import { MediaControllerService } from "../../../core/media/controller/media-controller.service";
-import { FormsModule, NgForm } from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import { InteractiveMessageBuilderComponent } from "../interactive-message-builder/interactive-message-builder.component";
 import { LocationMessageBuilderComponent } from "../location-message-builder/location-message-builder.component";
 import { MessageReplyHeaderComponent } from "../../messages/message-reply-header/message-reply-header.component";
@@ -147,7 +157,7 @@ export class ConversationFooterComponent implements OnInit {
         area.style.height = `${area.scrollHeight}px`; // Set height to scrollHeight
     }
 
-    async send(form: NgForm) {
+    async send() {
         this.errors = {}; // Reset errors
 
         this.validateForm();
@@ -168,7 +178,7 @@ export class ConversationFooterComponent implements OnInit {
 
         try {
             switch (this.messageType) {
-                case MessageType.text:
+                case MessageType.text: {
                     const sendText = this.sendText(context);
                     setTimeout(() => {
                         this.adjustHeight(this.area.nativeElement);
@@ -176,10 +186,11 @@ export class ConversationFooterComponent implements OnInit {
                     this.replyToMessage = undefined;
                     const sentText = await sendText;
                     return sentText;
+                }
                 case MessageType.image:
                 case MessageType.video:
                 case MessageType.sticker:
-                case MessageType.document:
+                case MessageType.document: {
                     const sendMedia = this.sendMedia(context);
                     setTimeout(() => {
                         this.adjustHeight(this.mediaLinkArea.nativeElement);
@@ -188,22 +199,26 @@ export class ConversationFooterComponent implements OnInit {
                     this.replyToMessage = undefined;
                     const sentMedia = await sendMedia;
                     return sentMedia;
-                case MessageType.interactive:
+                }
+                case MessageType.interactive: {
                     const sendInteractive = this.interactiveMessageBuilder.sendInteractive(context);
                     this.replyToMessage = undefined;
                     const sentInteractive = await sendInteractive;
                     return sentInteractive;
-                case MessageType.location:
+                }
+                case MessageType.location: {
                     const sendLocation = this.locationMessageBuilder.send(context);
                     this.replyToMessage = undefined;
                     const sentLocation = await sendLocation;
                     return sentLocation;
-                case MessageType.contacts:
+                }
+                case MessageType.contacts: {
                     const sendContacts = this.contactsMessageBuilder.send(context);
                     this.replyToMessage = undefined;
                     const sentContacts = await sendContacts;
                     return sentContacts;
-                default:
+                }
+                default: {
                     const sendRaw = this.sendRaw(context);
                     setTimeout(() => {
                         this.adjustHeight(this.area.nativeElement);
@@ -211,6 +226,7 @@ export class ConversationFooterComponent implements OnInit {
                     this.replyToMessage = undefined;
                     const sentRaw = await sendRaw;
                     return sentRaw;
+                }
             }
         } catch (error) {
             this.handleErr("Error sending message.", error);
@@ -248,7 +264,8 @@ export class ConversationFooterComponent implements OnInit {
     }
 
     private async buildRaw() {
-        const senderData = JSON.parse(this.textBody as any);
+        if (!this.textBody) return;
+        const senderData = JSON.parse(this.textBody) as Record<string, unknown>;
         Object.assign(this.senderData, senderData);
     }
 
@@ -388,7 +405,7 @@ export class ConversationFooterComponent implements OnInit {
             case "raw":
                 try {
                     JSON.parse(this.textBody);
-                } catch (error) {
+                } catch {
                     this.errors["raw"] = "Invalid JSON format.";
                 }
                 break;
@@ -396,7 +413,7 @@ export class ConversationFooterComponent implements OnInit {
         return true;
     }
 
-    trackByIndex(index: number, item: any) {
+    trackByIndex(index: number) {
         return index;
     }
 
@@ -473,22 +490,25 @@ export class ConversationFooterComponent implements OnInit {
                 case MessageType.document:
                     await this.buildMedia();
                     return;
-                case MessageType.interactive:
+                case MessageType.interactive: {
                     await this.interactiveMessageBuilder.buildInteractive();
                     const senderDataInteractive = this.interactiveMessageBuilder.senderData;
                     Object.assign(this.senderData, senderDataInteractive);
                     return;
-                case MessageType.location:
+                }
+                case MessageType.location: {
                     await this.locationMessageBuilder.buildLocation();
                     const senderDataLocation = this.locationMessageBuilder.senderData;
                     Object.assign(this.senderData, senderDataLocation);
                     return;
-                case MessageType.contacts:
+                }
+                case MessageType.contacts: {
                     this.contactsMessageBuilder.buildContacts();
                     const senderDataContacts = this.contactsMessageBuilder.senderData;
                     this.logger.debug("Sender data from contacts builder:", senderDataContacts);
                     Object.assign(this.senderData, senderDataContacts);
                     return;
+                }
                 default:
                     await this.buildRaw();
                     return;

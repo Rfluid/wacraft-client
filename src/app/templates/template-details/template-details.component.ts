@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild, inject } from "@angular/core";
+import { Component, OnInit, ViewChild, inject } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Template } from "../../../core/template/model/template.model";
 import { CommonModule } from "@angular/common";

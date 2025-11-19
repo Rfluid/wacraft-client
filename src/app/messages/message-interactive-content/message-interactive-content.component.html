@@ -90,14 +90,15 @@
             <!-- Action -->
             <!-- List -->
             <button
-                type=""
+                type="button"
                 [ngClass]="{
                     'relative flex h-10 w-full items-center justify-center rounded-b-md border-t border-t-gray-500 opacity-100': true,
                 }"
                 (click)="openListOptionsModal()"
                 *ngIf="messageSent.interactive?.action?.button"
-                [textContent]="messageSent.interactive.action?.button"
-            ></button>
+            >
+                {{ messageSent.interactive.action?.button }}
+            </button>
         </div>
 
         <!-- Action -->
@@ -107,7 +108,7 @@
             *ngIf="messageSent.interactive?.action?.buttons"
         >
             <button
-                type=""
+                type="button"
                 [ngClass]="{
                     'relative flex h-10 w-full items-center justify-center rounded-md opacity-100': true,
                     'bg-blue-300 dark:bg-blue-800': isSent,
@@ -115,8 +116,9 @@
                 }"
                 (click)="copyText(button.reply.id)"
                 *ngFor="let button of messageSent.interactive?.action?.buttons"
-                [textContent]="button.reply.title"
-            ></button>
+            >
+                {{ button.reply.title }}
+            </button>
         </div>
     </div>
 

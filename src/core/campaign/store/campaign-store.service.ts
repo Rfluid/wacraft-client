@@ -18,7 +18,7 @@ export class CampaignStoreService {
     public reachedMaxSearchLimit = false;
     currentCampaign!: Campaign;
 
-    searchMode: "name" = "name";
+    searchMode = "name" as const;
 
     searchValue = "";
     searchFilters: {

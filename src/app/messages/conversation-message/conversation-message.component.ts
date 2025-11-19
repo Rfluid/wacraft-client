@@ -1,4 +1,13 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, OnInit, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output,
+    ViewChild,
+    inject,
+} from "@angular/core";
 import {
     Conversation,
     ConversationMessagingProductContact,
@@ -48,7 +57,7 @@ import { MessageReplyHeaderComponent } from "../message-reply-header/message-rep
     styleUrl: "./conversation-message.component.scss",
     standalone: true,
 })
-export class ConversationMessageComponent implements OnInit {
+export class ConversationMessageComponent {
     private messageDataPipe = inject(MessageDataPipe);
 
     MessageType = MessageType;
@@ -72,8 +81,6 @@ export class ConversationMessageComponent implements OnInit {
     mediaSafeUrl: SafeUrl = ""; // Safe URL for media
     optionsArrow = false;
     optionsOpen = false;
-
-    async ngOnInit() {}
 
     get isMediaType(): boolean {
         return isMediaType(this.messageType);
@@ -118,7 +125,8 @@ export class ConversationMessageComponent implements OnInit {
 
     // Listen for clicks in this component
     @HostListener("keydown.enter", ["$event"])
-    private onEnter(event: MouseEvent) {
+    private onEnter(event: KeyboardEvent) {
+        event.preventDefault();
         this.showOptionsArrow();
         this.optionsOpen = true;
     }

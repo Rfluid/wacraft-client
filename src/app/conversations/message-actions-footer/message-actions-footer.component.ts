@@ -1,25 +1,16 @@
 import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, Input, Output, ViewChild, inject } from "@angular/core";
 import { SenderData } from "../../../core/message/model/sender-data.model";
-import { MessageType } from "../../../core/message/model/message-type.model";
 import { MessageControllerService } from "../../../core/message/controller/message-controller.service";
-import { MessageFields } from "../../../core/message/entity/message.entity";
 import { SmallButtonComponent } from "../../common/small-button/small-button.component";
 import { MediaControllerService } from "../../../core/media/controller/media-controller.service";
-import { FormsModule, NgForm } from "@angular/forms";
-import { InteractiveMessageBuilderComponent } from "../interactive-message-builder/interactive-message-builder.component";
-import { LocationMessageBuilderComponent } from "../location-message-builder/location-message-builder.component";
-import { MessageReplyHeaderComponent } from "../../messages/message-reply-header/message-reply-header.component";
 import {
     Conversation,
     ConversationMessagingProductContact,
 } from "../../../core/message/model/conversation.model";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
 import { MatIconModule } from "@angular/material/icon";
-import { MediaMessageFileUploadComponent } from "../../messages/media-message-file-upload/media-message-file-upload.component";
-import { MessageTypeSelectorComponent } from "../../messages/message-type-selector/message-type-selector.component";
 import { NGXLogger } from "ngx-logger";
-import { ContactsMessageBuilderComponent } from "../contacts-message-builder/contacts-message-builder.component";
 import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 import { ContactsModalComponent } from "../../contacts/contact-modal/contacts-modal.component";
 
@@ -28,7 +19,6 @@ import { ContactsModalComponent } from "../../contacts/contact-modal/contacts-mo
     imports: [
         CommonModule,
         SmallButtonComponent,
-        FormsModule,
         TimeoutErrorModalComponent,
         MatIconModule,
         ContactsModalComponent,

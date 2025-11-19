@@ -1,4 +1,14 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+    inject,
+} from "@angular/core";
 import { ConversationMessagingProductContact } from "../../../core/message/model/conversation.model";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CommonModule } from "@angular/common";

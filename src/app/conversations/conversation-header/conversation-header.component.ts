@@ -20,8 +20,6 @@ export class ConversationHeaderComponent {
     messagingProductContact!: ConversationMessagingProductContact;
     @Output() searchAtContactId = new EventEmitter<string>();
 
-    constructor() {}
-
     contactDetailsQueryParams = contactDetailsQueryParams;
 
     searchAtContact(): void {

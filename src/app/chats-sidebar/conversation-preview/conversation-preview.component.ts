@@ -1,5 +1,16 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output, ViewChild, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostBinding,
+    HostListener,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+    inject,
+} from "@angular/core";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import {
     Conversation,

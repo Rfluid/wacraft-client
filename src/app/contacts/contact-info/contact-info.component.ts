@@ -20,7 +20,6 @@ import { NGXLogger } from "ngx-logger";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { NgxIntlTelInputModule } from "ngx-intl-tel-input";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
-import { MessagingProductControllerService } from "../../../core/messaging-product/controller/messaging-product-controller.service";
 import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
@@ -65,7 +64,15 @@ export class ContactInfoComponent implements OnInit {
     isBlocking = false;
     isUnblocking = false;
 
-    phoneControl = new FormControl<any>(null, [Validators.required]);
+    private static readonly EMPTY_PHONE_VALUE = {
+        number: "",
+        countryCode: "",
+        e164Number: "",
+    };
+
+    phoneControl = new FormControl<typeof ContactInfoComponent.EMPTY_PHONE_VALUE | null>(null, [
+        Validators.required,
+    ]);
 
     async ngOnInit(): Promise<void> {
         this.isLoading = true; // Start general loading
@@ -90,10 +97,10 @@ export class ContactInfoComponent implements OnInit {
                     const phoneNumber = parsePhoneNumberFromString(
                         rawPhone.startsWith("+") ? rawPhone : `+${rawPhone}`,
                     );
-                    const phoneValueToSet = {
-                        number: phoneNumber?.nationalNumber || "",
-                        countryCode: phoneNumber?.country || "",
-                        e164Number: phoneNumber?.number,
+                    const phoneValueToSet: typeof ContactInfoComponent.EMPTY_PHONE_VALUE = {
+                        number: `${phoneNumber?.nationalNumber ?? ""}`,
+                        countryCode: phoneNumber?.country ?? "",
+                        e164Number: phoneNumber?.number ?? "",
                     };
                     this.phoneControl.setValue(phoneValueToSet);
                 }
@@ -281,7 +288,7 @@ export class ContactInfoComponent implements OnInit {
                 await this.contactControllerService.delete(this.messagingProductContact.contact_id);
                 await this.router.navigate(["/home"], { fragment: "chats" });
                 window.location.reload();
-            } catch (error: any) {
+            } catch (error: unknown) {
                 this.handleErr("Failed to delete contact. Please try again.", error);
             } finally {
                 this.isDeleting = false; // End deleting loading state
@@ -304,7 +311,7 @@ export class ContactInfoComponent implements OnInit {
                 );
                 await this.router.navigate(["/home"], { fragment: "chats" });
                 window.location.reload();
-            } catch (error: any) {
+            } catch (error: unknown) {
                 this.handleErr("Failed to delete contact. Please try again.", error);
             } finally {
                 this.isDeleting = false; // End deleting loading state
@@ -320,7 +327,7 @@ export class ContactInfoComponent implements OnInit {
         try {
             await this.messagingProductContactController.unblock(this.messagingProductContact.id);
             this.messagingProductContact.blocked = false;
-        } catch (error: any) {
+        } catch (error: unknown) {
             this.handleErr("Failed to unblock contact. Please try again.", error);
         } finally {
             this.isUnblocking = false; // End unblocking loading state
@@ -334,7 +341,7 @@ export class ContactInfoComponent implements OnInit {
                     this.messagingProductContact.id,
                     'type:\\s*"(image|video|document)"',
                 );
-        } catch (error: any) {
+        } catch (error: unknown) {
             this.handleErr("Failed to count media and documents.", error);
         }
     }
@@ -348,7 +355,7 @@ export class ContactInfoComponent implements OnInit {
                 { limit: 5, offset: 0 },
                 { created_at: DateOrderEnum.desc },
             );
-        } catch (error: any) {
+        } catch (error: unknown) {
             this.handleErr("Failed to load media and documents.", error);
         }
     }

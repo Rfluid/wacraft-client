@@ -30,6 +30,8 @@ module.exports = tseslint.config(
                     style: "kebab-case",
                 },
             ],
+            "@angular-eslint/no-output-native": "off",
+            "@angular-eslint/no-input-rename": "off",
         },
     },
     {

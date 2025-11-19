@@ -27,8 +27,6 @@ export class LocalSettingsService {
     };
     unreadMode = (localStorage.getItem("unreadMode") as UnreadMode) || UnreadMode.SERVER;
 
-    constructor() {}
-
     setAutoPreviewImage(value: boolean) {
         localStorage.setItem("autoPreviewImage", value.toString());
         this.autoPreview.image = value;

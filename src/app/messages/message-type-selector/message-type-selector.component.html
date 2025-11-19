@@ -5,6 +5,10 @@
                 selected: messageType === MessageType.text,
             }"
             (click)="selectType(MessageType.text)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="selectType(MessageType.text)"
+            (keyup.space)="selectType(MessageType.text)"
             #listItem
         >
             <mat-icon class="material-icons-outlined">text_fields_alt</mat-icon>
@@ -15,6 +19,10 @@
                 selected: messageType === MessageType.image,
             }"
             (click)="selectType(MessageType.image)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="selectType(MessageType.image)"
+            (keyup.space)="selectType(MessageType.image)"
             #listItem
         >
             <mat-icon class="material-icons-outlined">image</mat-icon>
@@ -25,6 +33,10 @@
                 selected: messageType === MessageType.video,
             }"
             (click)="selectType(MessageType.video)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="selectType(MessageType.video)"
+            (keyup.space)="selectType(MessageType.video)"
             #listItem
         >
             <mat-icon class="material-icons-outlined">videocam</mat-icon>
@@ -35,6 +47,10 @@
                 selected: messageType === MessageType.audio,
             }"
             (click)="selectType(MessageType.audio)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="selectType(MessageType.audio)"
+            (keyup.space)="selectType(MessageType.audio)"
             #listItem
         >
             <mat-icon class="material-icons-outlined">mic</mat-icon>
@@ -45,6 +61,10 @@
                 selected: messageType === MessageType.sticker,
             }"
             (click)="selectType(MessageType.sticker)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="selectType(MessageType.sticker)"
+            (keyup.space)="selectType(MessageType.sticker)"
             #listItem
         >
             <mat-icon class="material-symbols-outlined">ar_stickers</mat-icon>
@@ -55,6 +75,10 @@
                 selected: messageType === MessageType.document,
             }"
             (click)="selectType(MessageType.document)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="selectType(MessageType.document)"
+            (keyup.space)="selectType(MessageType.document)"
             #listItem
         >
             <mat-icon class="material-icons-outlined">description</mat-icon>
@@ -65,6 +89,10 @@
                 selected: messageType === MessageType.interactive,
             }"
             (click)="selectType(MessageType.interactive)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="selectType(MessageType.interactive)"
+            (keyup.space)="selectType(MessageType.interactive)"
             #listItem
         >
             <mat-icon class="material-symbols-outlined">interactive_space</mat-icon>
@@ -75,6 +103,10 @@
                 selected: messageType === MessageType.location,
             }"
             (click)="selectType(MessageType.location)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="selectType(MessageType.location)"
+            (keyup.space)="selectType(MessageType.location)"
             #listItem
         >
             <mat-icon class="material-icons-outlined">pin_drop</mat-icon>
@@ -85,6 +117,10 @@
                 selected: messageType === MessageType.contacts,
             }"
             (click)="selectType(MessageType.contacts)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="selectType(MessageType.contacts)"
+            (keyup.space)="selectType(MessageType.contacts)"
             #listItem
         >
             <mat-icon class="material-icons-outlined">group</mat-icon>
@@ -95,7 +131,11 @@
         <!--     [ngClass]="{ -->
         <!--         selected: messageType === 'reaction', -->
         <!--     }" -->
-        <!--     (click)="selectType('raw')" -->
+        <!--     (click)="selectType('raw')"
+     role="button"
+     tabindex="0"
+     (keyup.enter)="selectType('raw')"
+     (keyup.space)="selectType('raw')" -->
         <!-- > -->
         <!--     <mat-icon -->
         <!--         class="material-icons-outlined " -->
@@ -108,6 +148,10 @@
                 selected: messageType === 'raw',
             }"
             (click)="selectType('raw')"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="selectType('raw')"
+            (keyup.space)="selectType('raw')"
             #listItem
         >
             <mat-icon class="material-icons-outlined">raw_on</mat-icon>

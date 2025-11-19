@@ -9,11 +9,11 @@
         *ngIf="!mediaSafeUrl"
         [ngClass]="{
             'relative flex items-center justify-center rounded-lg': true,
-            'w-80': messageType != MessageType.sticker,
+            'w-80': messageType !== MessageType.sticker,
             'aspect-square max-w-full':
-                messageType != MessageType.sticker &&
-                messageType != MessageType.document &&
-                messageType != MessageType.audio,
+                messageType !== MessageType.sticker &&
+                messageType !== MessageType.document &&
+                messageType !== MessageType.audio,
             'h-56 w-56 max-w-full': messageType === MessageType.sticker,
             'aspect-auto h-20':
                 messageType === MessageType.document || messageType === MessageType.audio,
@@ -32,7 +32,7 @@
                     class="options"
                     (click)="downloadMedia()"
                     [ngClass]="{
-                        'mr-1': messageType != MessageType.document && !mediaSafeUrl,
+                        'mr-1': messageType !== MessageType.document && !mediaSafeUrl,
                     }"
                 >
                     <mat-icon class="material-icons-outlined !h-11 !w-11 text-3xl"
@@ -42,7 +42,7 @@
                 <button
                     class="options"
                     (click)="setMediaUrl()"
-                    *ngIf="messageType != MessageType.document && !mediaSafeUrl"
+                    *ngIf="messageType !== MessageType.document && !mediaSafeUrl"
                 >
                     <mat-icon class="material-icons-outlined !h-11 !w-11 text-3xl"
                         >preview</mat-icon
@@ -59,14 +59,14 @@
     <div
         *ngIf="mediaSafeUrl"
         [ngClass]="{
-            'w-80 max-w-80': messageType != MessageType.sticker,
+            'w-80 max-w-80': messageType !== MessageType.sticker,
         }"
     >
         <ng-container [ngSwitch]="messageType">
             <!-- Image -->
             <ng-container *ngSwitchCase="MessageType.image">
                 <div class="relative">
-                    <img [src]="mediaSafeUrl" class="simple-media" />
+                    <img [src]="mediaSafeUrl" class="simple-media" alt="Image attachment" />
                     <div
                         class="absolute bottom-0 left-0 right-0 top-0 flex w-full items-center justify-center bg-transparent"
                         style="pointer-events: none"
@@ -129,7 +129,7 @@
             <!-- Sticker -->
             <ng-container *ngSwitchCase="MessageType.sticker">
                 <div class="relative aspect-square h-56 max-h-56 w-56 max-w-56">
-                    <img [src]="mediaSafeUrl" class="rounded-lg" />
+                    <img [src]="mediaSafeUrl" class="rounded-lg" alt="Sticker attachment" />
                     <div
                         class="absolute bottom-0 left-0 right-0 top-0 flex w-full items-center justify-center bg-transparent"
                         style="pointer-events: none"

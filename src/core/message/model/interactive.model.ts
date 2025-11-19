@@ -37,12 +37,14 @@ export function compareInteractive(interactive1: Interactive, interactive2: Inte
             case HeaderType.text:
                 if ((header1.text || header2.text) && header1.text !== header2.text) return false;
                 break;
-            default:
+            default: {
                 const headerData1 = header1[header1.type] as UseMedia;
                 const headerData2 = header2[header2.type] as UseMedia;
 
                 const useMediaComparison = compareUseMedia(headerData1, headerData2);
                 if (!useMediaComparison) return false;
+                break;
+            }
         }
     }
 

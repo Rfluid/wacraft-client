@@ -1,6 +1,5 @@
 import { Injectable, inject } from "@angular/core";
 import { MainServerControllerService } from "../../common/controller/main-server-controller.service";
-import { AuthService } from "../../auth/service/auth.service";
 import { ServerEndpoints } from "../../common/constant/server-endpoints.enum";
 import { MediaInfo } from "../model/media-info.model";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";

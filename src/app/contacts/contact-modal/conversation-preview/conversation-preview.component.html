@@ -46,16 +46,19 @@
                         <img
                             width="10px"
                             src="assets/icons/flaticon/check-mark.png"
+                            alt="Message sent"
                             *ngIf="lastMessage.statuses[0].product_data.status === 'sent'"
                         />
                         <img
                             width="15px"
                             src="assets/icons/flaticon/double-check-mark.png"
+                            alt="Message delivered"
                             *ngIf="lastMessage.statuses[0].product_data.status === 'delivered'"
                         />
                         <img
                             width="15px"
                             src="assets/icons/flaticon/double-green-check-mark.png"
+                            alt="Message read"
                             *ngIf="lastMessage.statuses[0].product_data.status === 'read'"
                         />
 

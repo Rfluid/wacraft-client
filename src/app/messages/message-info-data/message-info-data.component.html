@@ -3,6 +3,8 @@
 >
     <div
         class="flex max-h-full w-[800px] max-w-full flex-col overflow-y-hidden rounded-sm shadow-lg"
+        role="dialog"
+        tabindex="0"
     >
         <div
             class="flex flex-grow-0 items-center justify-between bg-blue-600 px-6 py-2 text-white dark:bg-gray-700"
@@ -17,6 +19,9 @@
                         'hover:bg-gray-400 dark:hover:bg-gray-600': !copied,
                     }"
                     (click)="copyToClipboard()"
+                    tabindex="0"
+                    (keyup.enter)="copyToClipboard()"
+                    (keyup.space)="copyToClipboard()"
                 >
                     <!-- Material Icon -->
                     <mat-icon class="material-icons-outlined aspect-square text-white"

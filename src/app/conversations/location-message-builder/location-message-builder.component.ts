@@ -1,4 +1,15 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, OnInit, AfterViewInit, NgZone, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    Output,
+    ViewChild,
+    OnInit,
+    AfterViewInit,
+    NgZone,
+    inject,
+} from "@angular/core";
 import { SenderData } from "../../../core/message/model/sender-data.model";
 import { MessageType } from "../../../core/message/model/message-type.model";
 import { MessageControllerService } from "../../../core/message/controller/message-controller.service";

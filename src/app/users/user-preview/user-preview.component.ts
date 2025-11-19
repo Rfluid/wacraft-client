@@ -1,4 +1,13 @@
-import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    HostBinding,
+    HostListener,
+    Input,
+    ViewChild,
+    OnInit,
+    inject,
+} from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { Role } from "../../../core/user/model/role.model";

@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { AuthService } from "../../core/auth/service/auth.service";
 import { AuthModule } from "../../core/auth/auth.module";
 import { UserModule } from "../../core/user/user.module";
+import { isHttpError } from "../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-login",
@@ -31,9 +32,15 @@ export class LoginComponent {
         try {
             await this.authService.login(email, password);
             this.router.navigate([""]);
-        } catch (error: any) {
-            this.errorMessage =
-                error?.response?.data?.description || "Some error occurred login in"; // Assuming customMessage is a property in MainServerError
+        } catch (error: unknown) {
+            if (isHttpError(error)) {
+                this.errorMessage =
+                    error.response?.data?.description || "Some error occurred login in";
+            } else if (error instanceof Error) {
+                this.errorMessage = error.message;
+            } else {
+                this.errorMessage = "Some error occurred login in";
+            }
         } finally {
             this.isLoading = false;
         }

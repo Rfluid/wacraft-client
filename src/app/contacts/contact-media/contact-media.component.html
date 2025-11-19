@@ -37,9 +37,9 @@
         *ngFor="let mode of mediaModes"
         [ngClass]="{
             'scrollable grid h-auto w-full gap-2 overflow-y-scroll p-2': true,
-            'grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4': mode != MediaMode.audio,
-            'grid-cols-1': mode == MediaMode.audio,
-            hidden: currentMediaMode != mode,
+            'grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4': mode !== MediaMode.audio,
+            'grid-cols-1': mode === MediaMode.audio,
+            hidden: currentMediaMode !== mode,
         }"
     >
         <app-media-preview

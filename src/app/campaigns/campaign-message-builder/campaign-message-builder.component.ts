@@ -9,6 +9,7 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
 import { FileUploadComponent } from "../../common/file-upload/file-upload.component";
 import { NGXLogger } from "ngx-logger";
 import { isHttpError } from "../../../core/common/model/http-error-shape.model";
+import { SenderData } from "../../../core/message/model/sender-data.model";
 
 @Component({
     selector: "app-campaign-message-builder",
@@ -24,6 +25,7 @@ import { isHttpError } from "../../../core/common/model/http-error-shape.model";
     standalone: true,
 })
 export class CampaignMessageBuilderComponent implements OnInit {
+    private static readonly textFileError = "Error reading file";
     private campaignMessagesController = inject(CampaignMessageControllerService);
     private route = inject(ActivatedRoute);
     private logger = inject(NGXLogger);
@@ -67,12 +69,16 @@ export class CampaignMessageBuilderComponent implements OnInit {
     }
 
     // Existing readFile function
-    async readFile(file: File): Promise<any> {
+    async readFile(file: File): Promise<unknown> {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = (event: any) => {
+            reader.onload = (event: ProgressEvent<FileReader>) => {
                 try {
-                    const content = event.target.result;
+                    const content = event.target?.result;
+                    if (typeof content !== "string") {
+                        reject(CampaignMessageBuilderComponent.textFileError);
+                        return;
+                    }
                     resolve(JSON.parse(content));
                 } catch (err) {
                     this.handleErr("Failed to read file", err);
@@ -80,34 +86,36 @@ export class CampaignMessageBuilderComponent implements OnInit {
                 }
             };
             reader.onerror = () => {
-                reject("Error reading file");
+                reject(CampaignMessageBuilderComponent.textFileError);
             };
             reader.readAsText(file);
         });
     }
 
     // Helper function to unflatten objects with dot notation keys, parsing arrays from JSON strings
-    unflattenObject(data: any): any {
-        const result: any = {};
+    unflattenObject(data: Record<string, unknown>): Record<string, unknown> {
+        const result: Record<string, unknown> = {};
         for (const key in data) {
             if (Object.prototype.hasOwnProperty.call(data, key)) {
                 const keys = key.split(".");
-                keys.reduce((acc, part, index) => {
+                keys.reduce<Record<string, unknown>>((acc, part, index) => {
                     if (index === keys.length - 1) {
                         const value = data[key];
                         // Attempt to parse JSON strings to reconstruct arrays
                         try {
-                            const parsed = JSON.parse(value);
+                            const parsed = typeof value === "string" ? JSON.parse(value) : value;
                             acc[part] = Array.isArray(parsed) ? parsed : parsed;
                         } catch {
                             acc[part] = value;
                         }
                     } else {
                         if (!acc[part]) {
-                            acc[part] = {};
+                            acc[part] = {} as Record<string, unknown>;
                         }
-                        return acc[part];
+                        return acc[part] as Record<string, unknown>;
                     }
+
+                    return acc;
                 }, result);
             }
         }
@@ -131,7 +139,7 @@ export class CampaignMessageBuilderComponent implements OnInit {
         switch (this.uploadFileType) {
             case "json":
                 try {
-                    const jsonData = await this.readFile(this.selectedFile);
+                    const jsonData = (await this.readFile(this.selectedFile)) as unknown;
                     if (!jsonData) {
                         this.error = "Invalid file format.";
                         return;
@@ -140,8 +148,8 @@ export class CampaignMessageBuilderComponent implements OnInit {
                         return;
                     }
                     await Promise.all(
-                        jsonData.map(async (data: any) => {
-                            if (!data.to) {
+                        jsonData.map(async (data: Record<string, unknown>) => {
+                            if (!data["to"]) {
                                 this.errors++;
                                 return;
                             }
@@ -152,7 +160,8 @@ export class CampaignMessageBuilderComponent implements OnInit {
                                         messaging_product: "whatsapp",
                                         recipient_type: "individual",
                                         ...data,
-                                    },
+                                        to: `${data["to"]}`,
+                                    } as SenderData,
                                 });
                                 this.successes++;
                             } catch {
@@ -180,7 +189,7 @@ export class CampaignMessageBuilderComponent implements OnInit {
                         return;
                     }
 
-                    const jsonData = parsed.data as any[];
+                    const jsonData = parsed.data as Record<string, unknown>[];
 
                     if (!Array.isArray(jsonData)) {
                         this.error = "Invalid CSV format.";
@@ -190,13 +199,13 @@ export class CampaignMessageBuilderComponent implements OnInit {
                     // Unflatten each object if necessary
                     const processedData = jsonData.map(item => {
                         const unflatten = this.unflattenObject(item);
-                        unflatten.to = `${unflatten.to}`;
+                        unflatten["to"] = `${unflatten["to"] ?? ""}`;
                         return unflatten;
                     });
 
                     await Promise.all(
-                        processedData.map(async (data: any) => {
-                            if (!data.to) {
+                        processedData.map(async (data: Record<string, unknown>) => {
+                            if (!data["to"]) {
                                 this.errors++;
                                 return;
                             }
@@ -207,7 +216,8 @@ export class CampaignMessageBuilderComponent implements OnInit {
                                         messaging_product: "whatsapp",
                                         recipient_type: "individual",
                                         ...data,
-                                    },
+                                        to: `${data["to"]}`,
+                                    } as SenderData,
                                 });
                                 this.successes++;
                             } catch {
@@ -233,11 +243,16 @@ export class CampaignMessageBuilderComponent implements OnInit {
     readFileAsText(file: File): Promise<string> {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = (event: any) => {
-                resolve(event.target.result);
+            reader.onload = (event: ProgressEvent<FileReader>) => {
+                const result = event.target?.result;
+                if (typeof result === "string") {
+                    resolve(result);
+                } else {
+                    reject(CampaignMessageBuilderComponent.textFileError);
+                }
             };
             reader.onerror = () => {
-                reject("Error reading file");
+                reject(CampaignMessageBuilderComponent.textFileError);
             };
             reader.readAsText(file);
         });

@@ -189,13 +189,10 @@ export class UserConversationsStoreService {
 
         await this.offsetMu.release(messagingProductContactId);
 
-        try {
-            this.unshift([conversation], messagingProductContactId);
-            (await this.createBottomMessageSubjectIfNotExists(messagingProductContactId)).next(
-                conversation,
-            );
-        } finally {
-        }
+        this.unshift([conversation], messagingProductContactId);
+        (await this.createBottomMessageSubjectIfNotExists(messagingProductContactId)).next(
+            conversation,
+        );
     }
 
     async markAsRead(messagingProductContactId: string) {
@@ -302,38 +299,45 @@ export class UserConversationsStoreService {
         await this.getMutex.release(mpcId);
     }
 
-    areEqual(a: any, b: any): boolean {
-        const isPrimitive = (val: any) =>
+    areEqual(a: unknown, b: unknown): boolean {
+        const isPrimitive = (
+            val: unknown,
+        ): val is string | number | boolean | symbol | null | undefined | Date =>
             val === null || typeof val !== "object" || val instanceof Date;
 
-        const isEmpty = (val: any): boolean =>
+        const isEmpty = (val: unknown): boolean =>
             val === null ||
             val === undefined ||
             val === "" ||
             (typeof val === "object" && !Array.isArray(val) && Object.keys(val).length === 0);
 
-        const normalize = (val: any): any => (isEmpty(val) ? null : val);
+        const normalize = (val: unknown): unknown => (isEmpty(val) ? null : val);
 
-        const deepCompare = (x: any, y: any): boolean => {
-            x = normalize(x);
-            y = normalize(y);
+        const deepCompare = (x: unknown, y: unknown): boolean => {
+            const normalizedX = normalize(x);
+            const normalizedY = normalize(y);
 
-            if (isPrimitive(x) || isPrimitive(y)) {
-                return x === y;
+            if (isPrimitive(normalizedX) || isPrimitive(normalizedY)) {
+                return normalizedX === normalizedY;
             }
 
-            if (Array.isArray(x) && Array.isArray(y)) {
-                if (x.length !== y.length) return false;
-                return x.every((val, i) => deepCompare(val, y[i]));
+            if (Array.isArray(normalizedX) && Array.isArray(normalizedY)) {
+                if (normalizedX.length !== normalizedY.length) return false;
+                return normalizedX.every((val, i) => deepCompare(val, normalizedY[i]));
             }
 
-            if (typeof x === "object" && typeof y === "object") {
-                const keysX = Object.keys(x);
-                const keysY = Object.keys(y);
-                const allKeys = new Set([...keysX, ...keysY]);
+            if (
+                normalizedX &&
+                normalizedY &&
+                typeof normalizedX === "object" &&
+                typeof normalizedY === "object"
+            ) {
+                const objX = normalizedX as Record<string, unknown>;
+                const objY = normalizedY as Record<string, unknown>;
+                const allKeys = new Set([...Object.keys(objX), ...Object.keys(objY)]);
 
                 for (const key of allKeys) {
-                    if (!deepCompare(x[key], y[key])) {
+                    if (!deepCompare(objX[key], objY[key])) {
                         return false;
                     }
                 }

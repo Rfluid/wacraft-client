@@ -1,4 +1,15 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    QueryList,
+    ViewChild,
+    ViewChildren,
+    inject,
+} from "@angular/core";
 import {
     Conversation,
     ConversationMessagingProductContact,
@@ -56,7 +67,7 @@ export class ConversationBodyComponent extends KeyboardNavigableList implements 
         const sub = this.userConversationStore.newBottomMessageFromConversations.get(
             this.messagingProductContact.id,
         ) as Subject<Conversation>;
-        sub.subscribe(_ => {
+        sub.subscribe(() => {
             this.scrollIfAtBottom();
         });
 
@@ -205,10 +216,14 @@ export class ConversationBodyComponent extends KeyboardNavigableList implements 
     }
 
     // Flag to prevent multiple adjustments
-    onAsyncContentLoaded(): void {}
+    onAsyncContentLoaded(): void {
+        this.scrollIfAtBottom();
+    }
 
     @ViewChildren(ConversationMessageComponent, { read: ElementRef })
     protected rows!: QueryList<ElementRef<HTMLElement>>;
 
-    protected onEnter(i: number) {}
+    protected onEnter(index: number) {
+        this.rows.toArray()[index]?.nativeElement.click();
+    }
 }

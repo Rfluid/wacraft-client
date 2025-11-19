@@ -22,6 +22,9 @@ export class NodeRedComponent implements OnInit {
         this.accessToken = this.authService.getToken();
         this.authService.token.subscribe(token => {
             this.authService.setAuthCookie();
+            if (token) {
+                this.accessToken = token;
+            }
         });
     }
 }

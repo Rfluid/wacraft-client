@@ -7,6 +7,10 @@
     }"
     (click)="setIdAsQueryParam()"
     *ngIf="replyToMessage"
+    role="button"
+    tabindex="0"
+    (keyup.enter)="setIdAsQueryParam()"
+    (keyup.space)="setIdAsQueryParam()"
 >
     <p class="mb-2 text-green-700">
         <span *ngIf="replyToMessage.receiver_data" [textContent]="contactName"></span>

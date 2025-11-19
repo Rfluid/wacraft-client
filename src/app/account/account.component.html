@@ -30,10 +30,12 @@
                         <label
                             class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                             i18n
+                            for="account-name"
                             >Name</label
                         >
                         <input
                             type="text"
+                            id="account-name"
                             [(ngModel)]="userStore.currentUser.name"
                             [disabled]="!isEditing"
                             class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
@@ -45,10 +47,12 @@
                         <label
                             class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                             i18n
+                            for="account-email"
                             >Email</label
                         >
                         <input
                             type="email"
+                            id="account-email"
                             [(ngModel)]="userStore.currentUser.email"
                             [disabled]="!isEditing"
                             class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
@@ -60,10 +64,12 @@
                         <label
                             class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                             i18n
+                            for="account-new-password"
                             >New Password</label
                         >
                         <input
                             type="password"
+                            id="account-new-password"
                             [(ngModel)]="userStore.currentUser.password"
                             placeholder="Leave empty to keep current"
                             i18n-placeholder
@@ -127,11 +133,12 @@
                     <div class="p-6">
                         <div class="mb-3 flex items-start justify-between">
                             <div>
-                                <label
+                                <p
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     i18n
-                                    >Auto Preview</label
                                 >
+                                    Auto Preview
+                                </p>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
                                     Select media types to preview automatically
                                 </p>
@@ -258,7 +265,7 @@
                     <!-- Read Control Setting -->
                     <div class="p-6" id="unread-mode-selector">
                         <div class="mb-3">
-                            <label
+                            <p
                                 class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-300"
                                 matTooltip="Defines where your message read will be registered. Used to track messages you didn't read yet."
                                 i18n-matTooltip
@@ -268,7 +275,7 @@
                                     class="material-icons-outlined ml-1 !h-4 !w-4 cursor-help text-sm text-gray-500 dark:text-gray-400"
                                     >info</mat-icon
                                 >
-                            </label>
+                            </p>
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
                                 Choose how message read status is tracked
                             </p>
@@ -289,9 +296,9 @@
                     <!-- Theme Setting -->
                     <div class="p-6" id="theme-mode-selector">
                         <div class="mb-3">
-                            <label class="text-sm font-medium text-gray-700 dark:text-gray-300" i18n
-                                >Theme</label
-                            >
+                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300" i18n>
+                                Theme
+                            </p>
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
                                 Choose your preferred color scheme
                             </p>
@@ -345,11 +352,12 @@
                     <div class="p-6" id="auto-read-selector">
                         <div class="flex items-center justify-between">
                             <div>
-                                <label
+                                <p
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     i18n
-                                    >Auto Mark as Read</label
                                 >
+                                    Auto Mark as Read
+                                </p>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
                                     Automatically mark messages as read when viewed
                                 </p>
@@ -381,11 +389,12 @@
                     <div class="p-6" id="send-typing-selector">
                         <div class="flex items-center justify-between">
                             <div>
-                                <label
+                                <p
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     i18n
-                                    >Send Typing Indicator</label
                                 >
+                                    Send Typing Indicator
+                                </p>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
                                     Send typing notifications to users when composing messages
                                 </p>

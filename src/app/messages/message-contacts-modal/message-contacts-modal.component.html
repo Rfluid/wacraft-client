@@ -1,11 +1,20 @@
 <div
     class="fixed bottom-0 left-0 right-0 top-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-70 py-8"
     (click)="closeModal()"
+    role="button"
+    tabindex="0"
+    aria-label="Close contacts"
+    (keyup.enter)="closeModal()"
+    (keyup.space)="closeModal()"
 >
     <div
         class="flex h-[500px] max-h-full w-[500px] max-w-full flex-col overflow-hidden rounded-sm"
         id="content"
         (click)="$event.stopPropagation()"
+        tabindex="0"
+        role="dialog"
+        (keyup.enter)="$event.stopPropagation()"
+        (keyup.space)="$event.stopPropagation()"
     >
         <!-- Header -->
         <div
@@ -61,11 +70,9 @@
                     <!-- Phones -->
                     <div class="space-y-2">
                         <div *ngFor="let phone of contact.phones" class="text-sm">
-                            <a
-                                class="text-gray-800 dark:text-white"
-                                [textContent]="phone.phone"
-                                [href]="'tel:' + phone.phone"
-                            ></a>
+                            <a class="text-gray-800 dark:text-white" [href]="'tel:' + phone.phone">
+                                {{ phone.phone }}
+                            </a>
                             <p
                                 class="text-xs uppercase text-blue-500"
                                 [textContent]="phone.type"
@@ -81,9 +88,10 @@
                         <div *ngFor="let email of contact.emails" class="text-sm">
                             <a
                                 class="text-gray-800 dark:text-white"
-                                [textContent]="email.email"
                                 [href]="'mailto:' + email.email"
-                            ></a>
+                            >
+                                {{ email.email }}
+                            </a>
                             <p class="text-xs text-blue-500" [textContent]="email.type"></p>
                         </div>
                     </div>
@@ -98,8 +106,9 @@
                                 [href]="url.url.startsWith('http') ? url.url : 'https://' + url.url"
                                 target="_blank"
                                 class="text-sm"
-                                [textContent]="url.url"
-                            ></a>
+                            >
+                                {{ url.url }}
+                            </a>
                             <p class="text-xs text-blue-500">{{ url.type }}</p>
                         </div>
                     </div>

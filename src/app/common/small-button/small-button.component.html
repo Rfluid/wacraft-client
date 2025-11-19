@@ -17,6 +17,7 @@
         [src]="src"
         class="aspect-square brightness-50 dark:brightness-100"
         *ngIf="!customContent && src"
+        [attr.alt]="alt || ''"
     />
 
     <!-- Material Icon -->

@@ -371,9 +371,7 @@ export class TemplateInterpolatorService {
         return variables;
     }
 
-    private getMediaParameterKey(
-        format?: TemplateComponentFormat,
-    ): MediaParameterKey | undefined {
+    private getMediaParameterKey(format?: TemplateComponentFormat): MediaParameterKey | undefined {
         switch (format) {
             case TemplateComponentFormat.Image:
                 return "image";

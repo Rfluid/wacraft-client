@@ -1,4 +1,13 @@
-import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild, OnInit, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    HostBinding,
+    HostListener,
+    Input,
+    ViewChild,
+    OnInit,
+    inject,
+} from "@angular/core";
 import { CampaignFields } from "../../../../core/campaign/entity/campaign.entity";
 import { ActivatedRoute, RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";

@@ -1,5 +1,13 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, inject } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    Output,
+    ViewChild,
+    inject,
+} from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HeaderType } from "../../../core/message/model/header-type.model";
 import { InteractiveType } from "../../../core/message/model/interactive-type.model";
@@ -87,7 +95,6 @@ export class InteractiveMessageBuilderComponent {
     async buildInteractive() {
         let link: string | undefined = undefined;
         let id: string | undefined = undefined;
-        let filename: string | undefined = undefined;
 
         if (this.interactiveHeaderType && this.interactiveHeaderType !== HeaderType.text) {
             if (this.selectedFile) {
@@ -98,7 +105,6 @@ export class InteractiveMessageBuilderComponent {
                         mimeType,
                     );
                     id = uploadResponse.id;
-                    filename = this.selectedFile.name;
                 } catch (error) {
                     this.errors["media"] = "Failed to upload media.";
                     return Promise.reject(error);
