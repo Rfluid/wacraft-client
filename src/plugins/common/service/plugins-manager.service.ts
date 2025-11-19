@@ -9,8 +9,6 @@ import { exampleSpecs } from "../../example/example.plugin";
 export class PluginsManagerService {
     public plugins: Plugin[] = [];
 
-    constructor() {}
-
     loadPlugins() {
         if (pluginsConfig.example) this.loadPlugin(exampleSpecs);
     }

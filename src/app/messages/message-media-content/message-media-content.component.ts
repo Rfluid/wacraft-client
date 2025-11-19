@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, inject } from "@angular/core";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { MessageType, ReceivedMessageType } from "../../../core/message/model/message-type.model";
 import { LocalSettingsService } from "../../local-settings.service";
@@ -16,21 +16,19 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class MessageMediaContentComponent implements OnInit {
+    private mediaStore = inject(MediaStoreService);
+    private sanitizer = inject(DomSanitizer);
+    private localSettings = inject(LocalSettingsService);
+    private logger = inject(NGXLogger);
+
     MessageType = MessageType;
 
-    @Input("mediaData") mediaData!: UseMedia;
-    @Input("messageType") messageType!: MessageType | ReceivedMessageType;
-    @Input("isSent") isSent!: boolean;
-    @Output("asyncContentLoaded") asyncContentLoaded = new EventEmitter();
+    @Input() mediaData!: UseMedia;
+    @Input() messageType!: MessageType | ReceivedMessageType;
+    @Input() isSent!: boolean;
+    @Output() asyncContentLoaded = new EventEmitter();
 
-    mediaSafeUrl: SafeUrl = ""; // Safe URL for media
-
-    constructor(
-        private mediaStore: MediaStoreService,
-        private sanitizer: DomSanitizer, // Inject DomSanitizer
-        private localSettings: LocalSettingsService,
-        private logger: NGXLogger,
-    ) {}
+    mediaSafeUrl: SafeUrl = "";
 
     async ngOnInit(): Promise<void> {
         await this.handleAutoPreview();
@@ -86,7 +84,7 @@ export class MessageMediaContentComponent implements OnInit {
         this.downloadMedia();
     }
 
-    options: boolean = false;
+    options = false;
     showOptions() {
         this.options = true;
     }

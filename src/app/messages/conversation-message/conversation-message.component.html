@@ -14,12 +14,12 @@
             [ngClass]="{
                 'bg-blue-300 dark:bg-blue-800':
                     message.sender_data &&
-                    messageType != MessageType.interactive &&
-                    messageType != MessageType.template,
+                    messageType !== MessageType.interactive &&
+                    messageType !== MessageType.template,
                 'bg-gray-100 dark:bg-gray-700':
                     !message.sender_data &&
-                    messageType != MessageType.interactive &&
-                    messageType != MessageType.template,
+                    messageType !== MessageType.interactive &&
+                    messageType !== MessageType.template,
             }"
             [ngStyle]="{
                 'word-break': 'break-word',
@@ -29,8 +29,8 @@
             <div
                 class="px-1 pt-1"
                 *ngIf="
-                    messageType != MessageType.interactive &&
-                    messageType != MessageType.template &&
+                    messageType !== MessageType.interactive &&
+                    messageType !== MessageType.template &&
                     message.receiver_data?.context &&
                     (message.receiver_data?.context?.forwarded ||
                         message.receiver_data?.context?.frequently_forwarded)
@@ -43,8 +43,8 @@
             <div
                 class="w-full px-1 pt-1"
                 *ngIf="
-                    messageType != MessageType.interactive &&
-                    messageType != MessageType.template &&
+                    messageType !== MessageType.interactive &&
+                    messageType !== MessageType.template &&
                     (message.sender_data?.context?.message_id ||
                         message.receiver_data?.context?.id ||
                         (message | messageData).reaction?.message_id)
@@ -61,7 +61,7 @@
 
             <!-- Text Message -->
             <p
-                *ngIf="messageType == MessageType.text"
+                *ngIf="messageType === MessageType.text"
                 class="px-1 pt-1"
                 [textContent]="(message | messageData)?.text?.body"
             ></p>
@@ -69,7 +69,7 @@
             <app-message-contacts-content
                 class="flex w-80 items-center"
                 [contacts]="(message | messageData).contacts || []"
-                *ngIf="messageType == MessageType.contacts"
+                *ngIf="messageType === MessageType.contacts"
             ></app-message-contacts-content>
 
             <app-message-media-content
@@ -87,7 +87,7 @@
                 [sent]="sent"
                 [contactName]="contactName"
                 [isSent]="!!message.sender_data"
-                *ngIf="messageType == MessageType.interactive"
+                *ngIf="messageType === MessageType.interactive"
             >
             </app-message-interactive-content>
 
@@ -97,7 +97,7 @@
                 [sent]="sent"
                 [contactName]="contactName"
                 (asyncContentLoaded)="asyncContentLoaded.emit()"
-                *ngIf="messageType == MessageType.template"
+                *ngIf="messageType === MessageType.template"
                 #templateMessage
             ></app-message-template-content>
 
@@ -106,7 +106,7 @@
                 [sent]="sent"
                 [isSent]="!!message.sender_data"
                 class="flex w-full items-center px-1 pt-1"
-                *ngIf="messageType == MessageType.location"
+                *ngIf="messageType === MessageType.location"
             >
             </app-message-location-content>
 
@@ -115,7 +115,7 @@
                 [sent]="sent"
                 [isSent]="!!message.sender_data"
                 class="flex w-full items-center px-1 pt-1"
-                *ngIf="messageType == MessageType.reaction"
+                *ngIf="messageType === MessageType.reaction"
             >
             </app-message-reaction-content>
 
@@ -123,14 +123,14 @@
                 [buttonData]="buttonData"
                 [sent]="sent"
                 class="flex w-full items-center px-1 pt-1"
-                *ngIf="messageType == ReceivedMessageType.button"
+                *ngIf="messageType === ReceivedMessageType.button"
             ></app-message-button-content>
 
             <app-message-info
                 [message]="message"
                 [sent]="sent"
                 *ngIf="
-                    messageType != MessageType.interactive && messageType != MessageType.template
+                    messageType !== MessageType.interactive && messageType !== MessageType.template
                 "
             ></app-message-info>
 

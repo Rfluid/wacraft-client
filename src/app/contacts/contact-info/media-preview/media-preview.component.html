@@ -1,10 +1,10 @@
 <div
     [ngClass]="{
-        'w-full flex flex-col justify-center items-center rounded-lg relative p-1': true,
+        'relative flex w-full flex-col items-center justify-center rounded-lg p-1': true,
         'bg-blue-800': message.sender_data,
         'bg-gray-700': !message.sender_data,
-        'aspect-square': (message | messageData).type != MessageType.audio,
-        'h-auto': (message | messageData).type == MessageType.audio,
+        'aspect-square': (message | messageData).type !== MessageType.audio,
+        'h-auto': (message | messageData).type === MessageType.audio,
     }"
     (mouseenter)="showOptions()"
     (mouseleave)="hideOptions()"
@@ -12,85 +12,70 @@
     <div
         *ngIf="!mediaSafeUrl"
         [ngClass]="{
-            'w-full h-full flex justify-center items-center rounded-lg relative': true,
+            'relative flex h-full w-full items-center justify-center rounded-lg': true,
             'bg-blue-800': message.sender_data,
             'bg-gray-800': message.receiver_data,
-            'h-10': (message | messageData).type == MessageType.audio,
+            'h-10': (message | messageData).type === MessageType.audio,
         }"
     >
         <!-- Document Message -->
         <p
-            class="text-sm font-thin text-gray-500 absolute bottom-0 left-1"
+            class="absolute bottom-0 left-1 text-sm font-thin text-gray-500"
             [textContent]="mediaData?.filename"
         ></p>
     </div>
 
     <!-- Image Message -->
     <div
-        *ngIf="
-            (message | messageData)?.type === MessageType.image && mediaSafeUrl
-        "
-        class="w-full h-full"
+        *ngIf="(message | messageData)?.type === MessageType.image && mediaSafeUrl"
+        class="h-full w-full"
     >
-        <img [src]="mediaSafeUrl" class="w-full h-full object-cover" />
+        <img [src]="mediaSafeUrl" class="h-full w-full object-cover" alt="Image attachment" />
     </div>
 
     <!-- Video Message -->
     <div
-        *ngIf="
-            (message | messageData)?.type === MessageType.video && mediaSafeUrl
-        "
-        class="w-full h-full"
+        *ngIf="(message | messageData)?.type === MessageType.video && mediaSafeUrl"
+        class="h-full w-full"
     >
-        <video
-            controls
-            [src]="mediaSafeUrl"
-            class="w-full h-full object-cover"
-        ></video>
+        <video controls [src]="mediaSafeUrl" class="h-full w-full object-cover"></video>
     </div>
 
     <!-- Audio Message -->
     <div
-        class="w-full h-10 flex items-center justify-center"
-        *ngIf="
-            (message | messageData)?.type === MessageType.audio && mediaSafeUrl
-        "
+        class="flex h-10 w-full items-center justify-center"
+        *ngIf="(message | messageData)?.type === MessageType.audio && mediaSafeUrl"
     >
-        <audio controls [src]="mediaSafeUrl" class="w-full h-full"></audio>
+        <audio controls [src]="mediaSafeUrl" class="h-full w-full"></audio>
 
         <button
             (click)="downloadMedia()"
             [ngClass]="{
-                'inline-flex items-center justify-center aspect-square rounded-l-full rounded-r-full hover:bg-gray-800/50 transition-all duration-300 ease-in-out': true,
-                'w-10 ml-1': options,
+                'inline-flex aspect-square items-center justify-center rounded-l-full rounded-r-full transition-all duration-300 ease-in-out hover:bg-gray-800/50': true,
+                'ml-1 w-10': options,
                 'w-0': !options,
             }"
         >
-            <mat-icon class="material-icons-outlined !h-4 !w-4"
-                >download</mat-icon
-            >
+            <mat-icon class="material-icons-outlined !h-4 !w-4">download</mat-icon>
         </button>
     </div>
 
     <!-- Sticker Message -->
     <div
-        *ngIf="
-            (message | messageData)?.type === MessageType.sticker &&
-            mediaSafeUrl
-        "
-        class="w-full h-full"
+        *ngIf="(message | messageData)?.type === MessageType.sticker && mediaSafeUrl"
+        class="h-full w-full"
     >
-        <img [src]="mediaSafeUrl" class="w-full h-full" />
+        <img [src]="mediaSafeUrl" class="h-full w-full" alt="Sticker attachment" />
     </div>
 
     <div
-        class="flex items-center justify-center bg-transparent w-full absolute top-0 bottom-0 right-0 left-0"
+        class="absolute bottom-0 left-0 right-0 top-0 flex w-full items-center justify-center bg-transparent"
         style="pointer-events: none"
     >
         <div
-            class="bg-gray-800/50 rounded-l-full rounded-r-full h-6"
+            class="h-6 rounded-l-full rounded-r-full bg-gray-800/50"
             *ngIf="
-                (message | messageData).type == MessageType.audio
+                (message | messageData).type === MessageType.audio
                     ? !mediaSafeUrl
                     : !mediaSafeUrl || options
             "
@@ -102,10 +87,7 @@
             <button
                 class="options"
                 (click)="setMediaUrl()"
-                *ngIf="
-                    (message | messageData)?.type != MessageType.document &&
-                    !mediaSafeUrl
-                "
+                *ngIf="(message | messageData)?.type !== MessageType.document && !mediaSafeUrl"
             >
                 <mat-icon class="material-icons-outlined">preview</mat-icon>
             </button>
@@ -116,9 +98,7 @@
                 queryParamsHandling="merge"
                 class="options"
             >
-                <mat-icon class="material-symbols-outlined"
-                    >switch_access_shortcut</mat-icon
-                >
+                <mat-icon class="material-symbols-outlined">switch_access_shortcut</mat-icon>
             </a>
         </div>
     </div>

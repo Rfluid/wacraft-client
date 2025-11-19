@@ -5,7 +5,12 @@ import { Pipe, PipeTransform } from "@angular/core";
     standalone: true,
 })
 export class JsonPipe implements PipeTransform {
-    transform(value: Object): string {
-        return JSON.stringify(value, null, 4);
+    transform(value: unknown): string {
+        try {
+            const stringified = JSON.stringify(value, null, 4);
+            return typeof stringified === "string" ? stringified : String(value ?? "");
+        } catch {
+            return String(value ?? "");
+        }
     }
 }

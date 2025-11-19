@@ -6,7 +6,7 @@
             placeholder="Search for places..."
             #searchInput
             [ngClass]="{
-                'bg-gray-200 dark:text-white p-2 rounded w-full dark:bg-gray-600 outline-none mb-1': true,
+                'mb-1 w-full rounded bg-gray-200 p-2 outline-none dark:bg-gray-600 dark:text-white': true,
                 hidden: locationType !== 'map',
             }"
         />
@@ -31,7 +31,7 @@
     <div class="grid grid-cols-12 gap-2">
         <select
             id="location-type"
-            class="col-span-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
+            class="col-span-4 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
             [(ngModel)]="locationType"
             (ngModelChange)="onLocationTypeChange()"
             name="locationType"
@@ -41,7 +41,7 @@
         </select>
 
         <textarea
-            class="col-span-8 min-h-10 w-full py-2 px-3 rounded-lg bg-gray-600 text-white resize-none outline-none"
+            class="col-span-8 min-h-10 w-full resize-none rounded-lg bg-gray-600 px-3 py-2 text-white outline-none"
             placeholder="Name (optional)"
             i18n-placeholder
             rows="1"
@@ -52,7 +52,7 @@
         ></textarea>
 
         <textarea
-            class="col-span-12 min-h-10 w-full py-2 px-3 rounded-lg bg-gray-300 dark:bg-gray-600 dark:text-white resize-none outline-none"
+            class="col-span-12 min-h-10 w-full resize-none rounded-lg bg-gray-300 px-3 py-2 outline-none dark:bg-gray-600 dark:text-white"
             placeholder="Address (optional)"
             i18n-placeholder
             rows="1"
@@ -63,7 +63,7 @@
         ></textarea>
     </div>
 
-    <div *ngIf="error" class="text-red-500 text-sm mt-1">
+    <div *ngIf="error" class="mt-1 text-sm text-red-500">
         {{ error }}
     </div>
 </div>

@@ -9,7 +9,10 @@
         "start": "ng serve",
         "build": "ng build --localize",
         "watch": "ng build --watch --configuration development",
-        "test": "ng test"
+        "test": "ng test",
+        "lint": "ng lint",
+        "format": "prettier . --write",
+        "format:check": "prettier . --check"
     },
     "private": true,
     "dependencies": {
@@ -62,7 +65,11 @@
         "@angular/localize": "^19.0.1",
         "@types/file-saver": "^2.0.7",
         "@types/jasmine": "~5.1.0",
+        "angular-eslint": "20.6.0",
         "autoprefixer": "^10.4.20",
+        "eslint": "^9.39.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.4",
         "jasmine-core": "~5.2.0",
         "karma": "~6.4.0",
         "karma-chrome-launcher": "~3.2.0",
@@ -74,6 +81,7 @@
         "prettier": "^3.6.2",
         "prettier-plugin-tailwindcss": "^0.6.14",
         "tailwindcss": "^3.4.10",
-        "typescript": "~5.5.2"
+        "typescript": "~5.5.2",
+        "typescript-eslint": "8.46.3"
     }
 }

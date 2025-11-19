@@ -2,9 +2,9 @@ import { Audit } from "../../common/model/audit.model";
 import { Webhook } from "./webhook.entity";
 
 export interface WebhookLogFields extends Audit {
-    payload: any;
+    payload: unknown;
     http_response_code: number;
-    response_data: any;
+    response_data: unknown;
     webhook_id: string;
 }
 

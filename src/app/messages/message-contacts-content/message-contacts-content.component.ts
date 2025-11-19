@@ -11,7 +11,7 @@ import { CommonModule } from "@angular/common";
     standalone: true,
 })
 export class MessageContactsContentComponent {
-    @Input("contacts") contacts!: ContactData[];
+    @Input() contacts!: ContactData[];
 
     modalVisible = false;
     openModal() {

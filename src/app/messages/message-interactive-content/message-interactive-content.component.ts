@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, inject } from "@angular/core";
 import { MessageType } from "../../../core/message/model/message-type.model";
 import { Conversation } from "../../../core/message/model/conversation.model";
 import { CommonModule } from "@angular/common";
@@ -33,6 +33,8 @@ import { ListOptionsModalComponent } from "../list-options-modal/list-options-mo
     standalone: true,
 })
 export class MessageInteractiveContentComponent {
+    private messageDataPipe = inject(MessageDataPipe);
+
     MessageType = MessageType;
     HeaderType = HeaderType;
     InteractiveType = InteractiveType;
@@ -40,12 +42,10 @@ export class MessageInteractiveContentComponent {
 
     listOptionsModalOpen = false;
 
-    @Input("message") message!: Conversation;
-    @Input("isSent") isSent!: boolean;
-    @Input("sent") sent: boolean = true;
-    @Input("contactName") contactName?: string;
-
-    constructor(private messageDataPipe: MessageDataPipe) {}
+    @Input() message!: Conversation;
+    @Input() isSent!: boolean;
+    @Input() sent = true;
+    @Input() contactName?: string;
 
     get messageSent(): SenderData {
         const data = this.messageDataPipe.transform(this.message);
@@ -65,10 +65,7 @@ export class MessageInteractiveContentComponent {
     }
 
     get headerTypeAsMessageType(): MessageType {
-        switch (
-            this.messageSent.interactive?.header?.type ||
-            HeaderType.image
-        ) {
+        switch (this.messageSent.interactive?.header?.type || HeaderType.image) {
             case HeaderType.image:
                 return MessageType.image;
             case HeaderType.video:

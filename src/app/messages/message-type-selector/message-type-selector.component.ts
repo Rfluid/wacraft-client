@@ -1,4 +1,12 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    Output,
+    inject,
+} from "@angular/core";
 import { MessageType } from "../../../core/message/model/message-type.model";
 import { CommonModule } from "@angular/common";
 import { MatIconModule } from "@angular/material/icon";
@@ -12,16 +20,14 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class MessageTypeSelectorComponent {
+    private elementRef = inject(ElementRef);
+    private logger = inject(NGXLogger);
+
     MessageType = MessageType;
 
-    @Input("messageType") messageType!: MessageType | "raw";
+    @Input() messageType!: MessageType | "raw";
     @Output() selectedType = new EventEmitter<MessageType | "raw">();
     @Output() close = new EventEmitter<void>();
-
-    constructor(
-        private elementRef: ElementRef,
-        private logger: NGXLogger,
-    ) {}
 
     selectType(type: MessageType | "raw") {
         this.logger.debug("Selected type", type);

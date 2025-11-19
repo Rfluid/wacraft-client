@@ -1,6 +1,6 @@
 <a
     [ngClass]="{
-        'w-full flex items-center px-4 py-4 border-b border-gray-200 dark:border-gray-700': true,
+        'flex w-full items-center border-b border-gray-200 px-4 py-4 dark:border-gray-700': true,
         'bg-gray-200 dark:bg-gray-600': isSelected,
         'hover:bg-gray-300 dark:hover:bg-gray-700': !isSelected,
     }"
@@ -10,19 +10,19 @@
     #rootAnchor
 >
     <div class="ml-3 flex-1 truncate">
-        <div class="flex justify-between items-center mb-2">
+        <div class="mb-2 flex items-center justify-between">
             <span
-                class="text-gray-800 dark:text-gray-200 font-medium truncate"
+                class="truncate font-medium text-gray-800 dark:text-gray-200"
                 [textContent]="user.name"
             ></span>
             <span
-                class="text-gray-500 dark:text-gray-400 text-sm"
+                class="text-sm text-gray-500 dark:text-gray-400"
                 [textContent]="user.created_at | date: 'short'"
             ></span>
         </div>
-        <div class="w-full flex flex-row justify-between items-end">
+        <div class="flex w-full flex-row items-end justify-between">
             <span
-                class="text-gray-600 dark:text-gray-400 text-sm text-left truncate"
+                class="truncate text-left text-sm text-gray-600 dark:text-gray-400"
                 [textContent]="user.email"
             ></span>
             <span
@@ -30,7 +30,7 @@
                     'font-semibold': true,
                     'text-green-600': user.role === Role.user,
                     'text-blue-600': user.role === Role.admin,
-                    'text-yellow-600 ': user.role === Role.automation,
+                    'text-yellow-600': user.role === Role.automation,
                     'text-cyan-600': user.role === Role.developer,
                 }"
                 [textContent]="user.role"

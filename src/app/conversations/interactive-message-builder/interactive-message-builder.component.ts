@@ -6,6 +6,7 @@ import {
     Input,
     Output,
     ViewChild,
+    inject,
 } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HeaderType } from "../../../core/message/model/header-type.model";
@@ -31,16 +32,19 @@ import { FileUploadComponent } from "../../common/file-upload/file-upload.compon
     standalone: true,
 })
 export class InteractiveMessageBuilderComponent {
+    private messageController = inject(MessageControllerService);
+    private mediaController = inject(MediaControllerService);
+
     HeaderType = HeaderType;
     InteractiveType = InteractiveType;
 
-    interactiveHeaderString: string = "";
-    singleButtonText: string = "";
-    totalRows: number = 0;
+    interactiveHeaderString = "";
+    singleButtonText = "";
+    totalRows = 0;
     selectedFile?: File;
-    link: string = "";
-    caption: string = "";
-    mediaByUrl: boolean = false;
+    link = "";
+    caption = "";
+    mediaByUrl = false;
 
     @ViewChild("interactiveBodyArea")
     interactiveBodyArea!: ElementRef<HTMLTextAreaElement>;
@@ -50,18 +54,16 @@ export class InteractiveMessageBuilderComponent {
     headerMediaCaptionArea!: HTMLTextAreaElement;
     @Input("toId") toIdInput!: string;
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
-    @Output("sent") sent = new EventEmitter<SenderData>();
-    @Output("typing") typing = new EventEmitter<void>();
+    @Output() sent = new EventEmitter<SenderData>();
+    @Output() typing = new EventEmitter<void>();
 
     // Interactive Message Fields
     interactiveType: InteractiveType = InteractiveType.button; // default interactive type
     interactiveHeaderType: HeaderType = HeaderType.text;
-    interactiveBody: string = "";
-    interactiveFooter: string = "";
-    interactiveButtons: Array<{ id: string; title: string }> = [
-        { id: "button_1", title: "" },
-    ];
-    interactiveSections: Array<SectionData> = [
+    interactiveBody = "";
+    interactiveFooter = "";
+    interactiveButtons: { id: string; title: string }[] = [{ id: "button_1", title: "" }];
+    interactiveSections: SectionData[] = [
         {
             title: "",
             rows: [],
@@ -75,12 +77,7 @@ export class InteractiveMessageBuilderComponent {
         type: MessageType.interactive,
     };
 
-    errors: { [key: string]: string } = {};
-
-    constructor(
-        private messageController: MessageControllerService,
-        private mediaController: MediaControllerService,
-    ) {}
+    errors: Record<string, string> = {};
 
     adjustHeight(area: HTMLTextAreaElement): void {
         if (!area) return;
@@ -98,22 +95,16 @@ export class InteractiveMessageBuilderComponent {
     async buildInteractive() {
         let link: string | undefined = undefined;
         let id: string | undefined = undefined;
-        let filename: string | undefined = undefined;
 
-        if (
-            this.interactiveHeaderType &&
-            this.interactiveHeaderType !== HeaderType.text
-        ) {
+        if (this.interactiveHeaderType && this.interactiveHeaderType !== HeaderType.text) {
             if (this.selectedFile) {
                 const mimeType = this.selectedFile.type;
                 try {
-                    const uploadResponse =
-                        await this.mediaController.uploadMedia(
-                            this.selectedFile,
-                            mimeType,
-                        );
+                    const uploadResponse = await this.mediaController.uploadMedia(
+                        this.selectedFile,
+                        mimeType,
+                    );
                     id = uploadResponse.id;
-                    filename = this.selectedFile.name;
                 } catch (error) {
                     this.errors["media"] = "Failed to upload media.";
                     return Promise.reject(error);
@@ -136,10 +127,7 @@ export class InteractiveMessageBuilderComponent {
                           [this.interactiveHeaderType]: {
                               link,
                               id,
-                              caption:
-                                  this.caption === ""
-                                      ? undefined
-                                      : this.caption,
+                              caption: this.caption === "" ? undefined : this.caption,
                           },
                       }),
             },
@@ -153,7 +141,7 @@ export class InteractiveMessageBuilderComponent {
 
         if (this.interactiveType === InteractiveType.button)
             interactivePayload.action = {
-                buttons: this.interactiveButtons.map((button) => ({
+                buttons: this.interactiveButtons.map(button => ({
                     type: InteractiveButtonType.reply,
                     reply: {
                         title: button.title,
@@ -187,8 +175,7 @@ export class InteractiveMessageBuilderComponent {
         this.resetForm();
 
         try {
-            const data =
-                await this.messageController.sendWhatsAppMessage(payload);
+            const data = await this.messageController.sendWhatsAppMessage(payload);
 
             this.resetForm();
             return data;
@@ -209,18 +196,16 @@ export class InteractiveMessageBuilderComponent {
             case InteractiveType.button:
                 return this.interactiveButtons.reduce((acc, button) => {
                     if (!button.title) {
-                        this.errors["interactive"] =
-                            "Button title is required.";
+                        this.errors["interactive"] = "Button title is required.";
                         return false;
                     }
                     return acc;
                 }, true);
             case InteractiveType.list:
                 if (!this.singleButtonText) return false;
-                return this.interactiveSections.every((section) => {
-                    if (this.interactiveSections.length > 1 && !section.title)
-                        return false;
-                    return section.rows.every((row) => row.title !== "");
+                return this.interactiveSections.every(section => {
+                    if (this.interactiveSections.length > 1 && !section.title) return false;
+                    return section.rows.every(row => row.title !== "");
                 });
         }
         return false;
@@ -284,8 +269,7 @@ export class InteractiveMessageBuilderComponent {
 
     onFileSelected(event: Event) {
         const target = event.target as HTMLInputElement;
-        if (!target.files || target.files.length > 0)
-            return (this.selectedFile = undefined);
+        if (!target.files || target.files.length > 0) return (this.selectedFile = undefined);
 
         this.selectedFile = target.files[0];
     }

@@ -1,10 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const targetPath = path.join(
-    __dirname,
-    "../src/plugins-config/plugins-config.ts",
-);
+const targetPath = path.join(__dirname, "../src/plugins-config/plugins-config.ts");
 
 // Check if environment.ts already exists
 if (fs.existsSync(targetPath)) {
@@ -19,7 +16,7 @@ export const environment = {
 `;
 
 // Write the environment.ts file
-fs.writeFile(targetPath, pluginsConfigFile, (err) => {
+fs.writeFile(targetPath, pluginsConfigFile, err => {
     if (err) {
         console.error("Error writing plugins-config.ts:", err);
         process.exit(1);

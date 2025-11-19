@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { CampaignGatewayService } from './campaign-gateway.service';
+import { CampaignGatewayService } from "./campaign-gateway.service";
 
-describe('CampaignGatewayService', () => {
-  let service: CampaignGatewayService;
+describe("CampaignGatewayService", () => {
+    let service: CampaignGatewayService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(CampaignGatewayService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(CampaignGatewayService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it("should be created", () => {
+        expect(service).toBeTruthy();
+    });
 });

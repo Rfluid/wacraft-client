@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from "@angular/core";
+import { Component, Input, ViewChild, inject } from "@angular/core";
 import { Template } from "../../../core/template/model/template.model";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -29,6 +29,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MediaMessageFileUploadComponent } from "../../messages/media-message-file-upload/media-message-file-upload.component";
 import { ContactsModalComponent } from "../../contacts/contact-modal/contacts-modal.component";
 import { NGXLogger } from "ngx-logger";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 import { UserConversationsStoreService } from "../../../core/message/store/user-conversations-store.service";
 import { TemplateComponentTypeConverterPipe } from "../../../core/template/pipe/template-component-type-converter.pipe";
 import { TemplateModule } from "../../../core/template/template.module";
@@ -52,6 +53,12 @@ import { ButtonSubtype } from "../../../core/message/model/button-subtype.model"
     standalone: true,
 })
 export class TemplateMessageBuilderComponent {
+    private mediaController = inject(MediaControllerService);
+    private messageController = inject(MessageControllerService);
+    private logger = inject(NGXLogger);
+    private userConversationStore = inject(UserConversationsStoreService);
+    private typeConverter = inject(TemplateComponentTypeConverterPipe);
+
     TemplateComponentType = TemplateComponentType;
 
     @Input()
@@ -71,10 +78,10 @@ export class TemplateMessageBuilderComponent {
     templateMessage!: MessageTemplateContentComponent;
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
 
-    isModalOpen: boolean = false;
-    mediaByUrl: boolean = false;
+    isModalOpen = false;
+    mediaByUrl = false;
     selectedFile?: File;
-    headerMediaByUrl: boolean = false;
+    headerMediaByUrl = false;
     headerUseMedia: {
         caption: string;
         id: string;
@@ -90,14 +97,6 @@ export class TemplateMessageBuilderComponent {
         text: "",
         type: ParameterType.text,
     };
-
-    constructor(
-        private mediaController: MediaControllerService,
-        private messageController: MessageControllerService,
-        private logger: NGXLogger,
-        private userConversationStore: UserConversationsStoreService,
-        private typeConverter: TemplateComponentTypeConverterPipe,
-    ) {}
 
     adjustHeight(area: HTMLTextAreaElement): void {
         if (!area) return;
@@ -127,7 +126,10 @@ export class TemplateMessageBuilderComponent {
         this.components = this.template.components
             .flatMap(component => {
                 // For BUTTONS components, create separate entries for each button with variables
-                if (component.type.toLowerCase() === TemplateComponentType.buttons.toLowerCase() && component.buttons) {
+                if (
+                    component.type.toLowerCase() === TemplateComponentType.buttons.toLowerCase() &&
+                    component.buttons
+                ) {
                     return component.buttons
                         .map((button, buttonIndex) => {
                             if (button.url && this.extractVariables(button.url).length > 0) {
@@ -135,7 +137,10 @@ export class TemplateMessageBuilderComponent {
                             }
                             return null;
                         })
-                        .filter((comp): comp is UseTemplateComponent => comp !== null && comp.parameters.length > 0);
+                        .filter(
+                            (comp): comp is UseTemplateComponent =>
+                                comp !== null && comp.parameters.length > 0,
+                        );
                 }
 
                 // For other components, generate normally
@@ -148,7 +153,7 @@ export class TemplateMessageBuilderComponent {
         // Convert TemplateComponentType to UseTemplateComponentType (handles BUTTONS -> BUTTON)
         const useComponentType = this.typeConverter.transform(component.type);
 
-        let useComponent: UseTemplateComponent = {
+        const useComponent: UseTemplateComponent = {
             type: useComponentType,
             parameters: [],
         };
@@ -174,7 +179,7 @@ export class TemplateMessageBuilderComponent {
                 this.handleBodyComponent(component, useComponent, example);
                 break;
             case TemplateComponentType.footer.toLowerCase():
-                this.handleFooterComponent(component, useComponent, example);
+                this.handleFooterComponent(component, useComponent);
                 break;
             case TemplateComponentType.buttons.toLowerCase():
                 this.handleButtonsComponent(component, useComponent, example, buttonIndex);
@@ -198,12 +203,12 @@ export class TemplateMessageBuilderComponent {
                 [component.format?.toLowerCase() as ParameterType]: this.headerUseMedia,
             });
         } else if (example.header_text && example.header_text.length > 0) {
-            example.header_text.forEach((exampleValue) => {
+            example.header_text.forEach(exampleValue => {
                 useComponent.parameters.push({
                     type: ParameterType.text,
                     text: "",
                     placeholder: exampleValue || undefined,
-                } as any);
+                });
             });
         } else if (
             component.format?.toLowerCase() === TemplateComponentFormat.Text.toLowerCase() &&
@@ -211,12 +216,12 @@ export class TemplateMessageBuilderComponent {
         ) {
             // If no example data, extract variables directly from the header text
             const variables = this.extractVariables(component.text);
-            variables.forEach((variableName) => {
+            variables.forEach(variableName => {
                 useComponent.parameters.push({
                     type: ParameterType.text,
                     text: "",
                     placeholder: `Enter ${variableName}`,
-                } as any);
+                });
             });
         }
     }
@@ -234,7 +239,7 @@ export class TemplateMessageBuilderComponent {
                     type: ParameterType.text,
                     text: "",
                     placeholder: exampleValue || undefined,
-                } as any);
+                });
             });
             return;
         }
@@ -242,12 +247,12 @@ export class TemplateMessageBuilderComponent {
         // If no example data, extract variables directly from the component text
         if (component.text) {
             const variables = this.extractVariables(component.text);
-            variables.forEach((variableName) => {
+            variables.forEach(variableName => {
                 useComponent.parameters.push({
                     type: ParameterType.text,
                     text: "",
                     placeholder: `Enter ${variableName}`,
-                } as any);
+                });
             });
         }
     }
@@ -269,12 +274,25 @@ export class TemplateMessageBuilderComponent {
         return variables;
     }
 
-    handleFooterComponent(
-        component: TemplateComponent,
-        useComponent: UseTemplateComponent,
-        example: ComponentExample,
-    ) {
-        return;
+    handleFooterComponent(component: TemplateComponent, useComponent: UseTemplateComponent) {
+        if (!component.text) return;
+        const variables = this.extractVariables(component.text);
+        if (!variables.length) {
+            useComponent.parameters.push({
+                type: ParameterType.text,
+                text: "",
+                placeholder: component.text,
+            });
+            return;
+        }
+
+        variables.forEach(variableName => {
+            useComponent.parameters.push({
+                type: ParameterType.text,
+                text: "",
+                placeholder: `Enter ${variableName}`,
+            });
+        });
     }
 
     handleButtonsComponent(
@@ -300,7 +318,7 @@ export class TemplateMessageBuilderComponent {
                         type: ParameterType.text,
                         text: "",
                         placeholder,
-                    } as any);
+                    });
                 });
             }
             return;
@@ -319,7 +337,7 @@ export class TemplateMessageBuilderComponent {
                         type: ParameterType.text,
                         text: "",
                         placeholder,
-                    } as any);
+                    });
                 });
             }
         });
@@ -339,14 +357,14 @@ export class TemplateMessageBuilderComponent {
         const exampleValues: string[] = [];
 
         // If example is a full URL, try to extract variable values from it
-        if (exampleArray.length > 0 && exampleArray[0].startsWith('http')) {
+        if (exampleArray.length > 0 && exampleArray[0].startsWith("http")) {
             const exampleUrl = exampleArray[0];
 
             // Create a regex pattern from the template URL
             // Replace {{variable}} with a capture group
-            let pattern = templateUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escape special chars
+            let pattern = templateUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // Escape special chars
             variables.forEach(() => {
-                pattern = pattern.replace(/\\\{\\\{[^}]+\\\}\\\}/,  '(.+?)'); // Replace first variable with capture group
+                pattern = pattern.replace(/\\\{\\\{[^}]+\\\}\\\}/, "(.+?)"); // Replace first variable with capture group
             });
 
             const regex = new RegExp(pattern);
@@ -404,15 +422,20 @@ export class TemplateMessageBuilderComponent {
     }
 
     // Helper function to flatten nested objects, handling arrays as JSON strings
-    flattenObject(obj: any, parentKey: string = "", result: any = {}): any {
-        for (const key in obj) {
-            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    flattenObject(
+        obj: object,
+        parentKey = "",
+        result: Record<string, unknown> = {},
+    ): Record<string, unknown> {
+        const record = obj as Record<string, unknown>;
+        for (const key in record) {
+            if (Object.prototype.hasOwnProperty.call(record, key)) {
                 const newKey = parentKey ? `${parentKey}.${key}` : key;
-                const value = obj[key];
+                const value = record[key];
 
                 if (value && typeof value === "object" && !Array.isArray(value)) {
                     // Recursively flatten nested objects
-                    this.flattenObject(value, newKey, result);
+                    this.flattenObject(value as Record<string, unknown>, newKey, result);
                 } else if (Array.isArray(value)) {
                     // Serialize arrays as JSON strings
                     result[newKey] = JSON.stringify(value);
@@ -480,11 +503,17 @@ export class TemplateMessageBuilderComponent {
         await Promise.all(sendPromises);
     }
 
-    errorStr: string = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorStr = "";
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

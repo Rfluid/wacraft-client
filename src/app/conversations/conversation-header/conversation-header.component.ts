@@ -8,24 +8,17 @@ import { contactDetailsQueryParams } from "./constant/query-params.constant";
 
 @Component({
     selector: "app-conversation-header",
-    imports: [
-        CommonModule,
-        SmallButtonComponent,
-        RouterModule,
-        OptionsComponent,
-    ],
+    imports: [CommonModule, SmallButtonComponent, RouterModule, OptionsComponent],
     templateUrl: "./conversation-header.component.html",
     styleUrl: "./conversation-header.component.scss",
     standalone: true,
 })
 export class ConversationHeaderComponent {
-    optionsModalOpen: boolean = false;
+    optionsModalOpen = false;
 
-    @Input("messagingProductContact")
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
     @Output() searchAtContactId = new EventEmitter<string>();
-
-    constructor() {}
 
     contactDetailsQueryParams = contactDetailsQueryParams;
 

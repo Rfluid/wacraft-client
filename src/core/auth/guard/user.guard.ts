@@ -21,17 +21,13 @@ export const userGuard: CanActivateFn = async (route, state) => {
         await authService.checkAndRefreshToken();
 
         if (!authService.getToken()) {
-            return router.createUrlTree([
-                `/${RoutePath.auth}/${RoutePath.login}`,
-            ]);
+            return router.createUrlTree([`/${RoutePath.auth}/${RoutePath.login}`]);
         }
 
         const me = await userStore
             .getCurrent()
             .then(() => true)
-            .catch(() =>
-                router.createUrlTree([`/${RoutePath.auth}/${RoutePath.login}`]),
-            );
+            .catch(() => router.createUrlTree([`/${RoutePath.auth}/${RoutePath.login}`]));
 
         return me;
     } catch {

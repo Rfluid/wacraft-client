@@ -1,4 +1,13 @@
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    HostListener,
+    OnInit,
+    QueryList,
+    ViewChild,
+    ViewChildren,
+    inject,
+} from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -10,6 +19,7 @@ import { QueryParamsService } from "../../../core/navigation/service/query-param
 import { KeyboardNavigableList } from "../../common/keyboard/keyboard-navigable-list.base";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
 import { NGXLogger } from "ngx-logger";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-campaigns-sidebar",
@@ -27,20 +37,20 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class CampaignsSidebarComponent extends KeyboardNavigableList implements OnInit {
-    private scrolling: boolean = false;
+    queryParamsService = inject(QueryParamsService);
+    campaignStore = inject(CampaignStoreService);
+    private logger = inject(NGXLogger);
+
+    private scrolling = false;
+
+    constructor() {
+        super();
+    }
 
     @ViewChild("searchTextarea")
     searchTextarea!: ElementRef<HTMLTextAreaElement>;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        public queryParamsService: QueryParamsService,
-        public campaignStore: CampaignStoreService,
-        private logger: NGXLogger,
-    ) {
-        super();
-    }
 
     adjustHeight(event: Event): void {
         const element = event.target as HTMLElement;
@@ -162,11 +172,17 @@ export class CampaignsSidebarComponent extends KeyboardNavigableList implements 
         event.preventDefault(); // Prevent text selection
     }
 
-    errorStr: string = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorStr = "";
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

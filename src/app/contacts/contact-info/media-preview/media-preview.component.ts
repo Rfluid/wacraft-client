@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, inject } from "@angular/core";
 import { Conversation } from "../../../../core/message/model/conversation.model";
 import { CommonModule } from "@angular/common";
 import { MessageDataPipe } from "../../../../core/message/pipe/message-data.pipe";
@@ -20,21 +20,19 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class MediaPreviewComponent implements OnInit {
+    private messageDataPipe = inject(MessageDataPipe);
+    private messProdcContFromMessagePipe = inject(MessagingProductContactFromMessagePipe);
+    private mediaStore = inject(MediaStoreService);
+    private sanitizer = inject(DomSanitizer);
+    private logger = inject(NGXLogger);
+    private localSettings = inject(LocalSettingsService);
+
     MessageType = MessageType;
 
-    @Input("message") message!: Conversation;
+    @Input() message!: Conversation;
 
     mediaSafeUrl: SafeUrl = ""; // Safe URL for media
-    options: boolean = false;
-
-    constructor(
-        private messageDataPipe: MessageDataPipe,
-        private messProdcContFromMessagePipe: MessagingProductContactFromMessagePipe,
-        private mediaStore: MediaStoreService,
-        private sanitizer: DomSanitizer, // Inject DomSanitizer
-        private logger: NGXLogger,
-        private localSettings: LocalSettingsService,
-    ) {}
+    options = false;
 
     async ngOnInit(): Promise<void> {
         await this.handleAutoPreview();
@@ -49,9 +47,7 @@ export class MediaPreviewComponent implements OnInit {
             return;
         }
         if (!mediaData.id) return;
-        this.mediaSafeUrl = await this.mediaStore.downloadMediaById(
-            mediaData.id,
-        );
+        this.mediaSafeUrl = await this.mediaStore.downloadMediaById(mediaData.id);
     }
 
     async downloadMedia() {
@@ -69,9 +65,7 @@ export class MediaPreviewComponent implements OnInit {
         }
 
         if (!mediaData.id) return;
-        const safeUrl: SafeUrl = await this.mediaStore.downloadMediaById(
-            mediaData.id,
-        );
+        const safeUrl: SafeUrl = await this.mediaStore.downloadMediaById(mediaData.id);
 
         // Convert SafeUrl to a plain string
         const urlString = this.sanitizer.sanitize(4, safeUrl); // 4 represents the URL context
@@ -117,8 +111,9 @@ export class MediaPreviewComponent implements OnInit {
 
     get goToMessageQueryParams() {
         return {
-            "messaging_product_contact.id":
-                this.messProdcContFromMessagePipe.transform(this.message).id,
+            "messaging_product_contact.id": this.messProdcContFromMessagePipe.transform(
+                this.message,
+            ).id,
             "message.id": this.message.id,
             "message.created_at": this.message.created_at,
         };

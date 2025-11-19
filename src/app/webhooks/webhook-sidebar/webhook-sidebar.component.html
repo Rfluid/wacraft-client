@@ -1,6 +1,6 @@
-<div class="flex relative" #draggableContainer>
+<div class="relative flex" #draggableContainer>
     <div
-        class="dark:bg-gray-800 h-screen overflow-auto flex flex-col overflow-x-hidden"
+        class="flex h-screen flex-col overflow-auto overflow-x-hidden dark:bg-gray-800"
         [ngStyle]="{
             'width.px': queryParamsService.sidebarOpen ? sidebarWidth : 0,
         }"
@@ -9,9 +9,7 @@
         }"
     >
         <div class="px-4 py-4">
-            <h2
-                class="flex justify-between text-lg font-semibold text-gray-600 dark:text-gray-200"
-            >
+            <h2 class="flex justify-between text-lg font-semibold text-gray-600 dark:text-gray-200">
                 <span class="flex items-center"> Webhooks </span>
                 <a
                     [routerLink]="[]"
@@ -23,26 +21,22 @@
                 </a>
             </h2>
 
-            <div class="flex flex-row gap-2 relative w-full mt-4">
-                <i
-                    class="fas fa-search absolute left-3 top-3 text-gray-500 dark:text-gray-400"
-                ></i>
+            <div class="relative mt-4 flex w-full flex-row gap-2">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-500 dark:text-gray-400"></i>
                 <textarea
-                    class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 w-full p-2 pl-10 rounded-md resize-none outline-none overflow-hidden"
+                    class="w-full resize-none overflow-hidden rounded-md bg-gray-200 p-2 pl-10 text-gray-800 outline-none dark:bg-gray-700 dark:text-gray-200"
                     rows="1"
                     placeholder="Search"
                     i18n-placeholder
                     (input)="adjustHeight($event)"
-                    (keydown.control.enter)="
-                        webhookStore.getInitialSearchConcurrent()
-                    "
+                    (keydown.control.enter)="webhookStore.getInitialSearchConcurrent()"
                     [(ngModel)]="webhookStore.searchValue"
                     (ngModelChange)="webhookStore.getInitialSearchConcurrent()"
                     #searchTextarea
                 ></textarea>
 
                 <select
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
+                    class="rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     [(ngModel)]="webhookStore.searchMode"
                     (ngModelChange)="webhookStore.getInitialSearchConcurrent()"
                 >
@@ -54,29 +48,27 @@
 
             <!-- Filters -->
             <div
-                class="w-full mt-2 space-x-2 space-y-2"
+                class="mt-2 w-full space-x-2 space-y-2"
                 *ngIf="webhookStore.searchFilters.length > 0"
             >
                 <span
-                    class="inline-flex items-center border px-2 py-1 rounded-md border-blue-700 bg-blue-700/40 text-gray-400 text-sm font-thin font-mono"
+                    class="inline-flex items-center rounded-md border border-blue-700 bg-blue-700/40 px-2 py-1 font-mono text-sm font-thin text-gray-400"
                     *ngFor="let filter of webhookStore.searchFilters"
                 >
                     {{ filter.text }}
 
                     <button
-                        class="ml-1 w-6 aspect-square flex items-center justify-center rounded-full hover:bg-blue-600/40"
+                        class="ml-1 flex aspect-square w-6 items-center justify-center rounded-full hover:bg-blue-600/40"
                         (click)="webhookStore.removeFilter(filter)"
                     >
-                        <mat-icon class="material-icons-outlined !w-5 !h-5"
-                            >delete</mat-icon
-                        >
+                        <mat-icon class="material-icons-outlined !h-5 !w-5">delete</mat-icon>
                     </button>
                 </span>
             </div>
         </div>
 
         <ul
-            class="flex-1 overflow-y-auto scrollable"
+            class="scrollable flex-1 overflow-y-auto"
             (scroll)="onScroll($event)"
             *ngIf="!webhookStore.searchValue"
         >
@@ -86,7 +78,7 @@
         </ul>
 
         <ul
-            class="flex-1 overflow-y-auto scrollable"
+            class="scrollable flex-1 overflow-y-auto"
             (scroll)="onScroll($event)"
             *ngIf="webhookStore.searchValue"
         >
@@ -98,19 +90,21 @@
 
     <!-- Resize handle -->
     <div
-        class="border-r border-gray-200 dark:border-gray-700 h-full bg-gray-300 dark:bg-gray-600 cursor-col-resize absolute right-0 top-0"
+        class="absolute right-0 top-0 h-full cursor-col-resize border-r border-gray-200 bg-gray-300 dark:border-gray-700 dark:bg-gray-600"
         (mousedown)="startResizing($event)"
     >
         <div
-            class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-200 dark:bg-gray-600 rounded-full flex items-center justify-center cursor-col-resize z-10"
+            class="absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 cursor-col-resize items-center justify-center rounded-full bg-gray-200 dark:bg-gray-600"
         >
-            <span
-                class="material-icons text-sm text-gray-500 dark:text-gray-300 opacity-50"
-            >
+            <span class="material-icons text-sm text-gray-500 opacity-50 dark:text-gray-300">
                 drag_indicator
             </span>
         </div>
     </div>
 </div>
 
-<app-timeout-error-modal [message]="errorStr" [data]="errorData" #errorModal></app-timeout-error-modal>
+<app-timeout-error-modal
+    [message]="errorStr"
+    [data]="errorData"
+    #errorModal
+></app-timeout-error-modal>

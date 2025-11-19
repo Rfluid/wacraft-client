@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
 import { Template } from "../../../core/template/model/template.model";
 import { CommonModule } from "@angular/common";
 import { MessageDataPipe } from "../../../core/message/pipe/message-data.pipe";
@@ -30,9 +30,13 @@ import { MessageReplyHeaderComponent } from "../message-reply-header/message-rep
     standalone: true,
 })
 export class MessageTemplateContentComponent {
+    private templateStore = inject(TemplateStoreService);
+    private messageDataPipe = inject(MessageDataPipe);
+    private templateInterpolator = inject(TemplateInterpolatorService);
+
     MessageType = MessageType;
 
-    @Output("asyncContentLoaded") asyncContentLoaded = new EventEmitter();
+    @Output() asyncContentLoaded = new EventEmitter();
     @Input()
     get template(): Template {
         return this._template;
@@ -66,22 +70,16 @@ export class MessageTemplateContentComponent {
     }
     private _message!: Conversation;
 
-    @Input("sent") sent: boolean = true;
-    @Input("contactName") contactName?: string;
+    @Input() sent = true;
+    @Input() contactName?: string;
 
     // Template content built
-    headerText: string = "";
+    headerText = "";
     headerType: MessageType = MessageType.text;
     headerUseMedia: UseMedia = {};
-    bodyText: string = "";
-    footerText: string = "";
+    bodyText = "";
+    footerText = "";
     buttons: TemplateButton[] = [];
-
-    constructor(
-        private templateStore: TemplateStoreService,
-        private messageDataPipe: MessageDataPipe,
-        private templateInterpolator: TemplateInterpolatorService,
-    ) {}
 
     async loadTemplate(templateName: string) {
         if (!templateName) return;

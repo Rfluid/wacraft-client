@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, HostListener } from "@angular/core";
+import { Component, HostListener, inject } from "@angular/core";
 import { SidebarComponent } from "../common/sidebar/sidebar.component";
 import { RoutePath } from "../app.routes";
 import { QueryParamsService } from "../../core/navigation/service/query-params.service";
@@ -9,24 +9,17 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     selector: "app-users",
-    imports: [
-        CommonModule,
-        SidebarComponent,
-        UserSidebarComponent,
-        UserDetailsComponent,
-    ],
+    imports: [CommonModule, SidebarComponent, UserSidebarComponent, UserDetailsComponent],
     templateUrl: "./users.component.html",
     styleUrl: "./users.component.scss",
     standalone: true,
 })
 export class UsersComponent {
-    RoutePath = RoutePath;
+    queryParamsService = inject(QueryParamsService);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
 
-    constructor(
-        public queryParamsService: QueryParamsService,
-        private router: Router,
-        private route: ActivatedRoute,
-    ) {}
+    RoutePath = RoutePath;
 
     /** Close / clean-up when Esc is pressed */
     @HostListener("window:keydown.escape")

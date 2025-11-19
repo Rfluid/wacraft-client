@@ -3,6 +3,12 @@ import { Component, EventEmitter, HostListener, Input, Output } from "@angular/c
 import { MatIconModule } from "@angular/material/icon";
 import { SectionData } from "../../../core/message/model/section-data.model";
 
+interface ListOptionRow {
+    id: string;
+    title: string;
+    description?: string;
+}
+
 @Component({
     selector: "app-list-options-modal",
     imports: [CommonModule, MatIconModule, MatIconModule],
@@ -11,28 +17,18 @@ import { SectionData } from "../../../core/message/model/section-data.model";
     standalone: true,
 })
 export class ListOptionsModalComponent {
-    selectedRow?: {
-        id: string; // Unique identifier for the row
-        title: string; // Title of the row
-        description?: string; // Optional description
-    };
+    selectedRow?: ListOptionRow;
 
-    constructor() {}
+    @Input() listName!: string;
+    @Input() sections!: SectionData[];
+    @Output() close = new EventEmitter();
 
-    @Input("listName") listName!: string;
-    @Input("sections") sections!: SectionData[];
-    @Output("close") close = new EventEmitter();
-
-    selectRow(row: any): void {
+    selectRow(row: ListOptionRow): void {
         this.selectedRow = row;
     }
 
     // Method to check if a row is selected
-    isSelectedRow(row: {
-        id: string; // Unique identifier for the row
-        title: string; // Title of the row
-        description?: string; // Optional description
-    }): boolean {
+    isSelectedRow(row: ListOptionRow): boolean {
         return this.selectedRow ? this.selectedRow === row : false;
     }
 

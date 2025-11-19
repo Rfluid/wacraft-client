@@ -1,8 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { Component, Input, OnInit, ViewChild, inject } from "@angular/core";
 import { SmallButtonComponent } from "../../common/small-button/small-button.component";
 import { MediaPreviewComponent } from "../contact-info/media-preview/media-preview.component";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
-import { Conversation, ConversationMessagingProductContact } from "../../../core/message/model/conversation.model";
+import {
+    Conversation,
+    ConversationMessagingProductContact,
+} from "../../../core/message/model/conversation.model";
 import { CommonModule } from "@angular/common";
 import { MediaMode } from "./enum/media-mode.enum";
 import { ConversationControllerService } from "../../../core/message/controller/conversation-controller.service";
@@ -11,6 +14,7 @@ import { CapitalizeFirstLetterPipe } from "../../../core/common/pipe/capitalize-
 import { QueryParamsService } from "../../../core/navigation/service/query-params.service";
 import { NGXLogger } from "ngx-logger";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-contact-media",
@@ -27,29 +31,29 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
     standalone: true,
 })
 export class ContactMediaComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private conversationController = inject(ConversationControllerService);
+    private queryParamsService = inject(QueryParamsService);
+    private logger = inject(NGXLogger);
+
     MediaMode = MediaMode;
     mediaModes = Object.values(MediaMode) as MediaMode[];
 
-    @Input("messagingProductContact")
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
 
     currentMediaMode: MediaMode = MediaMode.image;
 
     // Pagination parameters and media content
-    mediaLimit: number = 40;
-    media = new Map<MediaMode, Conversation[]>(Object.values(MediaMode).map((value) => [value, []])); // Media content
-    scrolling = new Map<MediaMode, boolean>(Object.values(MediaMode).map((value) => [value, false])); // Scrolling status
-    reachedMaxMediaLimit = new Map<MediaMode, boolean>(Object.values(MediaMode).map((value) => [value, false]));
+    mediaLimit = 40;
+    media = new Map<MediaMode, Conversation[]>(Object.values(MediaMode).map(value => [value, []])); // Media content
+    scrolling = new Map<MediaMode, boolean>(Object.values(MediaMode).map(value => [value, false])); // Scrolling status
+    reachedMaxMediaLimit = new Map<MediaMode, boolean>(
+        Object.values(MediaMode).map(value => [value, false]),
+    );
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private conversationController: ConversationControllerService,
-        private queryParamsService: QueryParamsService,
-        private logger: NGXLogger,
-    ) {}
 
     ngOnInit(): void {
         this.watchQueryParams();
@@ -107,7 +111,7 @@ export class ContactMediaComponent implements OnInit {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const messagingProductContactId = params["messaging_product_contact.id"];
             if (
                 !messagingProductContactId ||
@@ -127,11 +131,17 @@ export class ContactMediaComponent implements OnInit {
         });
     }
 
-    errorStr: string = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorStr = "";
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

@@ -1,7 +1,7 @@
-import { MutexSwapper } from './mutex-swapper';
+import { MutexSwapper } from "./mutex-swapper";
 
-describe('MutexSwapper', () => {
-  it('should create an instance', () => {
-    expect(new MutexSwapper()).toBeTruthy();
-  });
+describe("MutexSwapper", () => {
+    it("should create an instance", () => {
+        expect(new MutexSwapper()).toBeTruthy();
+    });
 });

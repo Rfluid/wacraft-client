@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { UserPreviewComponent } from './user-preview.component';
+import { UserPreviewComponent } from "./user-preview.component";
 
-describe('UserPreviewComponent', () => {
-  let component: UserPreviewComponent;
-  let fixture: ComponentFixture<UserPreviewComponent>;
+describe("UserPreviewComponent", () => {
+    let component: UserPreviewComponent;
+    let fixture: ComponentFixture<UserPreviewComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [UserPreviewComponent]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [UserPreviewComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(UserPreviewComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(UserPreviewComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

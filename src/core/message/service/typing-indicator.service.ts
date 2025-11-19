@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy, inject } from "@angular/core";
 import { UserConversationsStoreService } from "../store/user-conversations-store.service";
 import { LocalSettingsService } from "../../../app/local-settings.service";
 import { Subject } from "rxjs";
@@ -19,7 +19,10 @@ import { Subject } from "rxjs";
 @Injectable({
     providedIn: "root",
 })
-export class TypingIndicatorService {
+export class TypingIndicatorService implements OnDestroy {
+    private userConversationsStore = inject(UserConversationsStoreService);
+    private localSettings = inject(LocalSettingsService);
+
     // WhatsApp typing indicator expires after 25 seconds
     private readonly TYPING_DURATION_MS = 25000;
 
@@ -39,11 +42,6 @@ export class TypingIndicatorService {
 
     // Subject to emit typing state changes per conversation
     private typingStateSubjects = new Map<string, Subject<boolean>>();
-
-    constructor(
-        private userConversationsStore: UserConversationsStoreService,
-        private localSettings: LocalSettingsService,
-    ) {}
 
     /**
      * Get or create a typing state subject for a conversation
@@ -72,7 +70,7 @@ export class TypingIndicatorService {
 
         // If we recently sent a typing indicator (within the refresh window),
         // don't send another one yet
-        if (lastSent && (now - lastSent) < this.REFRESH_INTERVAL_MS) {
+        if (lastSent && now - lastSent < this.REFRESH_INTERVAL_MS) {
             return;
         }
 

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, HostListener, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, HostListener, OnInit, Output, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ConversationComponent } from "./conversation/conversation.component";
 import { ConversationMessagingProductContact } from "../../core/message/model/conversation.model";
@@ -14,18 +14,16 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class ConversationsComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private messagingProductController = inject(MessagingProductContactControllerService);
+    private router = inject(Router);
+    private logger = inject(NGXLogger);
+
     @Output() searchAtContactId = new EventEmitter<string>();
 
     messagingProductContacts: ConversationMessagingProductContact[] = [];
 
-    currentMessagingProductContactId: string = "";
-
-    constructor(
-        private route: ActivatedRoute,
-        private messagingProductController: MessagingProductContactControllerService,
-        private router: Router,
-        private logger: NGXLogger,
-    ) {}
+    currentMessagingProductContactId = "";
 
     async ngOnInit() {
         const mpcId = this.route.snapshot.queryParamMap.get("messaging_product_contact.id");

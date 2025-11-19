@@ -8,11 +8,6 @@ import { EmojiToUnicodeEscapePipe } from "./pipe/emoji-to-unicode-escape.pipe";
 @NgModule({
     declarations: [],
     imports: [AngularCommon],
-    providers: [
-        UrlWithHttpPipe,
-        JsonPipe,
-        CapitalizeFirstLetterPipe,
-        EmojiToUnicodeEscapePipe,
-    ],
+    providers: [UrlWithHttpPipe, JsonPipe, CapitalizeFirstLetterPipe, EmojiToUnicodeEscapePipe],
 })
 export class CommonModule {}

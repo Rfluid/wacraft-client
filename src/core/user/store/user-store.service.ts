@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { User } from "../entity/user.entity";
 import { UserControllerService } from "../controller/user-controller.service";
 import { Query } from "../model/query.model";
@@ -9,15 +9,18 @@ import { NGXLogger } from "ngx-logger";
     providedIn: "root",
 })
 export class UserStoreService {
-    private paginationLimit: number = 15;
+    private userController = inject(UserControllerService);
+    private logger = inject(NGXLogger);
 
-    public reachedMaxLimit: boolean = false;
-    public reachedMaxSearchLimit: boolean = false;
+    private paginationLimit = 15;
+
+    public reachedMaxLimit = false;
+    public reachedMaxSearchLimit = false;
     currentUser!: User;
 
     searchMode: "email" | "name" | "role" = "email";
 
-    searchValue: string = "";
+    searchValue = "";
     searchFilters: {
         text: string;
         query?: Query;
@@ -29,11 +32,6 @@ export class UserStoreService {
 
     public isExecuting = false;
     public pendingExecution = false;
-
-    constructor(
-        private userController: UserControllerService,
-        private logger: NGXLogger,
-    ) {}
 
     async loadCurrent() {
         try {

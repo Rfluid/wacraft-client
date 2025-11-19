@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { MainServerControllerService } from "../../common/controller/main-server-controller.service";
-import { AuthService } from "../../auth/service/auth.service";
 import { ServerEndpoints } from "../../common/constant/server-endpoints.enum";
 import { Query } from "../model/query.model";
 import { Paginate } from "../../common/model/paginate.model";
@@ -12,8 +11,8 @@ import { WhereDateWithDeletedAt } from "../../common/model/where-date.model";
     providedIn: "root",
 })
 export class ConversationControllerService extends MainServerControllerService {
-    constructor(auth: AuthService) {
-        super(auth);
+    constructor() {
+        super();
         this.setPath(ServerEndpoints.message, ServerEndpoints.conversation);
         this.setHttp();
     }

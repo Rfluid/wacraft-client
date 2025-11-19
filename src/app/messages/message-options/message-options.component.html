@@ -4,17 +4,36 @@
 >
     <ul class="space-y-2">
         <!-- 'bg-gray-200 dark:bg-gray-800': messageType === 'raw', -->
-        <li (click)="onSelectMessage($event)">
+        <li
+            (click)="onSelectMessage($event)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="onSelectMessage($event)"
+            (keyup.space)="onSelectMessage($event)"
+        >
             <mat-icon class="material-symbols-outlined">select_check_box</mat-icon>
             <span i18n>Select</span>
         </li>
 
-        <li (click)="replyToMessage()">
+        <li
+            (click)="replyToMessage()"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="replyToMessage()"
+            (keyup.space)="replyToMessage()"
+        >
             <mat-icon class="material-icons-outlined">reply</mat-icon>
             <span i18n>Reply</span>
         </li>
 
-        <li (click)="markAsRead()" *ngIf="message.receiver_data">
+        <li
+            (click)="markAsRead()"
+            *ngIf="message.receiver_data"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="markAsRead()"
+            (keyup.space)="markAsRead()"
+        >
             <img
                 width="24"
                 src="assets/icons/flaticon/double-green-check-mark-24.png"
@@ -26,12 +45,22 @@
         <li
             (click)="toggleEmojiPicker()"
             *ngIf="(message | messageData).type !== MessageType.reaction"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="toggleEmojiPicker()"
+            (keyup.space)="toggleEmojiPicker()"
         >
             <mat-icon class="material-icons-outlined">add_reaction</mat-icon>
             <span i18n>Add reaction</span>
         </li>
 
-        <li (click)="openMessageInfo()">
+        <li
+            (click)="openMessageInfo()"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="openMessageInfo()"
+            (keyup.space)="openMessageInfo()"
+        >
             <mat-icon class="material-icons-outlined">info</mat-icon>
             <span i18n>Message data</span>
         </li>

@@ -11,7 +11,7 @@ import { MessageContentPreviewComponent } from "../../messages/message-content-p
     standalone: true,
 })
 export class MessageReactionContentComponent {
-    @Input("message") message!: Conversation;
-    @Input("isSent") isSent!: boolean;
-    @Input("sent") sent: boolean = true;
+    @Input() message!: Conversation;
+    @Input() isSent!: boolean;
+    @Input() sent = true;
 }

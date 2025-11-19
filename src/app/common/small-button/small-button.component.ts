@@ -1,11 +1,5 @@
 import { CommonModule } from "@angular/common";
-import {
-    Component,
-    Input,
-    ViewChild,
-    ContentChild,
-    TemplateRef,
-} from "@angular/core";
+import { Component, Input, ViewChild, ContentChild, TemplateRef } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
 
 @Component({
@@ -16,13 +10,14 @@ import { MatIconModule } from "@angular/material/icon";
     standalone: true,
 })
 export class SmallButtonComponent {
-    @Input("src") src: string = "";
-    @Input("matIcon") matIcon: string = "";
-    @Input("matSymbol") matSymbol: string = "";
-    @Input("active") active: boolean = false;
-    @Input("width") width: string = "40px";
+    @Input() src = "";
+    @Input() matIcon = "";
+    @Input() matSymbol = "";
+    @Input() active = false;
+    @Input() width = "40px";
+    @Input() alt = "";
     @ViewChild("button") button!: HTMLButtonElement;
-    @ContentChild(TemplateRef) customContent!: TemplateRef<any>;
+    @ContentChild(TemplateRef) customContent?: TemplateRef<unknown>;
 
     changeActive() {
         this.active = !this.active;

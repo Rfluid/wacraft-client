@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Output, ViewChild, OnInit, inject } from "@angular/core";
 import { CampaignMessageControllerService } from "../../../core/campaign/controller/campaign-message-controller.service";
 import { ActivatedRoute } from "@angular/router";
 import { CommonModule } from "@angular/common";
@@ -8,6 +8,8 @@ import * as Papa from "papaparse";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
 import { FileUploadComponent } from "../../common/file-upload/file-upload.component";
 import { NGXLogger } from "ngx-logger";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
+import { SenderData } from "../../../core/message/model/sender-data.model";
 
 @Component({
     selector: "app-campaign-message-builder",
@@ -22,29 +24,28 @@ import { NGXLogger } from "ngx-logger";
     styleUrl: "./campaign-message-builder.component.scss",
     standalone: true,
 })
-export class CampaignMessageBuilderComponent {
+export class CampaignMessageBuilderComponent implements OnInit {
+    private static readonly textFileError = "Error reading file";
+    private campaignMessagesController = inject(CampaignMessageControllerService);
+    private route = inject(ActivatedRoute);
+    private logger = inject(NGXLogger);
+
     campaignId?: string;
     selectedFile?: File;
     error?: string;
-    successes: number = 0;
-    errors: number = 0;
+    successes = 0;
+    errors = 0;
     uploadFileType: "json" | "csv" = "csv";
 
-    @Output("messagesAdded") messagesAdded = new EventEmitter();
+    @Output() messagesAdded = new EventEmitter();
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        private campaignMessagesController: CampaignMessageControllerService,
-        private route: ActivatedRoute,
-        private logger: NGXLogger,
-    ) {}
 
     async ngOnInit(): Promise<void> {
         this.watchQueryParams();
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const campaignId = params["campaign.id"];
             if (campaignId !== this.campaignId) {
                 this.campaignId = campaignId;
@@ -54,8 +55,7 @@ export class CampaignMessageBuilderComponent {
 
     async onFileSelected(event: Event) {
         const target = event.target as HTMLInputElement;
-        if (!target.files || target.files.length <= 0)
-            return (this.selectedFile = undefined);
+        if (!target.files || target.files.length <= 0) return (this.selectedFile = undefined);
 
         this.selectedFile = target.files[0];
         this.successes = 0;
@@ -69,12 +69,16 @@ export class CampaignMessageBuilderComponent {
     }
 
     // Existing readFile function
-    async readFile(file: File): Promise<any> {
+    async readFile(file: File): Promise<unknown> {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = (event: any) => {
+            reader.onload = (event: ProgressEvent<FileReader>) => {
                 try {
-                    const content = event.target.result;
+                    const content = event.target?.result;
+                    if (typeof content !== "string") {
+                        reject(CampaignMessageBuilderComponent.textFileError);
+                        return;
+                    }
                     resolve(JSON.parse(content));
                 } catch (err) {
                     this.handleErr("Failed to read file", err);
@@ -82,34 +86,36 @@ export class CampaignMessageBuilderComponent {
                 }
             };
             reader.onerror = () => {
-                reject("Error reading file");
+                reject(CampaignMessageBuilderComponent.textFileError);
             };
             reader.readAsText(file);
         });
     }
 
     // Helper function to unflatten objects with dot notation keys, parsing arrays from JSON strings
-    unflattenObject(data: any): any {
-        const result: any = {};
+    unflattenObject(data: Record<string, unknown>): Record<string, unknown> {
+        const result: Record<string, unknown> = {};
         for (const key in data) {
             if (Object.prototype.hasOwnProperty.call(data, key)) {
                 const keys = key.split(".");
-                keys.reduce((acc, part, index) => {
+                keys.reduce<Record<string, unknown>>((acc, part, index) => {
                     if (index === keys.length - 1) {
                         const value = data[key];
                         // Attempt to parse JSON strings to reconstruct arrays
                         try {
-                            const parsed = JSON.parse(value);
+                            const parsed = typeof value === "string" ? JSON.parse(value) : value;
                             acc[part] = Array.isArray(parsed) ? parsed : parsed;
                         } catch {
                             acc[part] = value;
                         }
                     } else {
                         if (!acc[part]) {
-                            acc[part] = {};
+                            acc[part] = {} as Record<string, unknown>;
                         }
-                        return acc[part];
+                        return acc[part] as Record<string, unknown>;
                     }
+
+                    return acc;
                 }, result);
             }
         }
@@ -133,18 +139,17 @@ export class CampaignMessageBuilderComponent {
         switch (this.uploadFileType) {
             case "json":
                 try {
-                    const jsonData = await this.readFile(this.selectedFile);
+                    const jsonData = (await this.readFile(this.selectedFile)) as unknown;
                     if (!jsonData) {
                         this.error = "Invalid file format.";
                         return;
                     } else if (!Array.isArray(jsonData)) {
-                        this.error =
-                            "Invalid file format. JSON must be an array.";
+                        this.error = "Invalid file format. JSON must be an array.";
                         return;
                     }
                     await Promise.all(
-                        jsonData.map(async (data: any) => {
-                            if (!data.to) {
+                        jsonData.map(async (data: Record<string, unknown>) => {
+                            if (!data["to"]) {
                                 this.errors++;
                                 return;
                             }
@@ -155,7 +160,8 @@ export class CampaignMessageBuilderComponent {
                                         messaging_product: "whatsapp",
                                         recipient_type: "individual",
                                         ...data,
-                                    },
+                                        to: `${data["to"]}`,
+                                    } as SenderData,
                                 });
                                 this.successes++;
                             } catch {
@@ -171,9 +177,7 @@ export class CampaignMessageBuilderComponent {
 
             case "csv":
                 try {
-                    const csvContent = await this.readFileAsText(
-                        this.selectedFile,
-                    );
+                    const csvContent = await this.readFileAsText(this.selectedFile);
                     const parsed = Papa.parse(csvContent, {
                         header: true,
                         skipEmptyLines: true,
@@ -185,7 +189,7 @@ export class CampaignMessageBuilderComponent {
                         return;
                     }
 
-                    const jsonData = parsed.data as any[];
+                    const jsonData = parsed.data as Record<string, unknown>[];
 
                     if (!Array.isArray(jsonData)) {
                         this.error = "Invalid CSV format.";
@@ -193,15 +197,15 @@ export class CampaignMessageBuilderComponent {
                     }
 
                     // Unflatten each object if necessary
-                    const processedData = jsonData.map((item) => {
+                    const processedData = jsonData.map(item => {
                         const unflatten = this.unflattenObject(item);
-                        unflatten.to = `${unflatten.to}`;
+                        unflatten["to"] = `${unflatten["to"] ?? ""}`;
                         return unflatten;
                     });
 
                     await Promise.all(
-                        processedData.map(async (data: any) => {
-                            if (!data.to) {
+                        processedData.map(async (data: Record<string, unknown>) => {
+                            if (!data["to"]) {
                                 this.errors++;
                                 return;
                             }
@@ -212,7 +216,8 @@ export class CampaignMessageBuilderComponent {
                                         messaging_product: "whatsapp",
                                         recipient_type: "individual",
                                         ...data,
-                                    },
+                                        to: `${data["to"]}`,
+                                    } as SenderData,
                                 });
                                 this.successes++;
                             } catch {
@@ -238,21 +243,32 @@ export class CampaignMessageBuilderComponent {
     readFileAsText(file: File): Promise<string> {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
-            reader.onload = (event: any) => {
-                resolve(event.target.result);
+            reader.onload = (event: ProgressEvent<FileReader>) => {
+                const result = event.target?.result;
+                if (typeof result === "string") {
+                    resolve(result);
+                } else {
+                    reject(CampaignMessageBuilderComponent.textFileError);
+                }
             };
             reader.onerror = () => {
-                reject("Error reading file");
+                reject(CampaignMessageBuilderComponent.textFileError);
             };
             reader.readAsText(file);
         });
     }
 
-    errorStr: string = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorStr = "";
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

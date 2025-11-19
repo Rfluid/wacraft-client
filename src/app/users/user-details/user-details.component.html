@@ -1,76 +1,65 @@
-<div
-    class="h-full mx-auto p-6 dark:bg-gray-900 dark:text-gray-100 scrollable overflow-y-scroll"
->
-    <h3
-        class="text-gray-600 dark:text-gray-200 text-xl font-semibold mb-4"
-        i18n
-    >
-        User settings
-    </h3>
+<div class="scrollable mx-auto h-full overflow-y-scroll p-6 dark:bg-gray-900 dark:text-gray-100">
+    <h3 class="mb-4 text-xl font-semibold text-gray-600 dark:text-gray-200" i18n>User settings</h3>
 
     <div
         *ngIf="user"
-        class="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg mb-6 grid grid-cols-12 gap-4"
+        class="mb-6 grid grid-cols-12 gap-4 rounded-lg bg-gray-100 p-6 dark:bg-gray-700"
     >
         <!-- URL Field with Copy Button -->
         <div
-            class="col-span-10 relative"
+            class="relative col-span-10"
             [ngClass]="{ 'md:col-span-5': !userId, 'md:col-span-10': userId }"
         >
-            <label class="block text-sm font-medium mb-2" i18n>Name</label>
+            <label class="mb-2 block text-sm font-medium" i18n for="user-name">Name</label>
             <div class="relative">
                 <input
                     type="url"
+                    id="user-name"
                     [(ngModel)]="user.name"
                     [disabled]="!isEditing"
-                    class="bg-gray-200 dark:text-white p-2 rounded w-full dark:bg-gray-600 outline-none"
+                    class="w-full rounded bg-gray-200 p-2 outline-none dark:bg-gray-600 dark:text-white"
                 />
             </div>
         </div>
 
         <!-- URL Field with Copy Button -->
-        <div
-            class="col-span-12 md:col-span-5 relative"
-            *ngIf="isEditing && !userId"
-        >
-            <label class="block text-sm font-medium mb-2" i18n>Password</label>
+        <div class="relative col-span-12 md:col-span-5" *ngIf="isEditing && !userId">
+            <label class="mb-2 block text-sm font-medium" i18n for="user-password">Password</label>
             <div class="relative">
                 <input
                     [type]="showPassword ? 'text' : 'password'"
+                    id="user-password"
                     [(ngModel)]="user.password"
                     [disabled]="!isEditing"
-                    class="bg-gray-200 text-white p-2 rounded w-full dark:bg-gray-600 outline-none pr-10"
+                    class="w-full rounded bg-gray-200 p-2 pr-10 text-white outline-none dark:bg-gray-600"
                 />
             </div>
             <!-- Toggle Button with Material Icon -->
             <button
                 type="button"
-                class="absolute right-2 top-9 text-gray-600 dark:text-gray-300 focus:outline-none"
+                class="absolute right-2 top-9 text-gray-600 focus:outline-none dark:text-gray-300"
                 (click)="togglePasswordVisibility()"
                 aria-label="Toggle password visibility"
             >
                 <span class="material-icons-outlined text-xl">
-                    {{ showPassword ? 'visibility_off' : 'visibility' }}
+                    {{ showPassword ? "visibility_off" : "visibility" }}
                 </span>
             </button>
         </div>
 
-        <div class="col-span-12 md:col-span-2 relative">
-            <label class="block text-sm font-medium mb-2" i18n>Role</label>
+        <div class="relative col-span-12 md:col-span-2">
+            <label class="mb-2 block text-sm font-medium" i18n for="user-role">Role</label>
             <div class="relative">
                 <select
-                    class="bg-gray-50 border text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:ring-blue-500 outline-none font-semibold"
+                    id="user-role"
+                    class="block w-full rounded-lg border bg-gray-50 p-2.5 text-sm font-semibold outline-none focus:ring-blue-500 dark:bg-gray-700 dark:placeholder-gray-400 dark:focus:ring-blue-500"
                     [disabled]="!isEditing"
                     [(ngModel)]="user.role"
                     [ngClass]="{
-                        'text-green-600 border-green-600':
-                            user.role === Role.user,
-                        'text-blue-600 border-blue-600':
-                            user.role === Role.admin,
-                        'text-yellow-600 border-yellow-600':
-                            user.role === Role.automation,
-                        'text-cyan-600 border-cyan-600':
-                            user.role === Role.developer,
+                        'border-green-600 text-green-600': user.role === Role.user,
+                        'border-blue-600 text-blue-600': user.role === Role.admin,
+                        'border-yellow-600 text-yellow-600': user.role === Role.automation,
+                        'border-cyan-600 text-cyan-600': user.role === Role.developer,
                     }"
                 >
                     <option [value]="Role.user">{{ Role.user }}</option>
@@ -86,17 +75,18 @@
         </div>
 
         <!-- Authorization Field with Copy Button -->
-        <div class="col-span-12 relative">
-            <label class="block text-sm font-medium mb-2">Email</label>
+        <div class="relative col-span-12">
+            <label class="mb-2 block text-sm font-medium" for="user-email">Email</label>
             <div class="relative">
                 <input
+                    id="user-email"
                     [(ngModel)]="user.email"
                     [disabled]="!isEditing"
-                    class="bg-gray-200 dark:text-white p-2 rounded w-full dark:bg-gray-600 outline-none pr-10"
+                    class="w-full rounded bg-gray-200 p-2 pr-10 outline-none dark:bg-gray-600 dark:text-white"
                 />
                 <button
                     mat-icon-button
-                    class="absolute right-2 top-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition"
+                    class="absolute right-2 top-2 text-gray-500 transition hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
                     (click)="copyToClipboard(user.email)"
                     matTooltip="Copy email"
                 >
@@ -109,20 +99,17 @@
         <div class="col-span-6 flex flex-col items-center" *ngIf="!isEditing">
             <button
                 (click)="toggleEdit()"
-                class="w-full py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded dark:bg-green-500 dark:hover:bg-green-600"
+                class="w-full rounded bg-green-600 py-2 font-bold text-white hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600"
                 i18n
             >
                 Edit
             </button>
         </div>
 
-        <div
-            class="col-span-6 flex flex-col items-center"
-            *ngIf="!isEditing && userId"
-        >
+        <div class="col-span-6 flex flex-col items-center" *ngIf="!isEditing && userId">
             <button
                 (click)="delete()"
-                class="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded dark:bg-red-500 dark:hover:bg-red-600"
+                class="w-full rounded bg-red-600 py-2 font-bold text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
                 i18n
             >
                 Delete
@@ -133,7 +120,7 @@
         <div class="col-span-6 flex flex-col items-center" *ngIf="isEditing">
             <button
                 (click)="cancelEdit()"
-                class="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded dark:bg-red-500 dark:hover:bg-red-600"
+                class="w-full rounded bg-red-600 py-2 font-bold text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
                 i18n
             >
                 Cancel
@@ -143,7 +130,7 @@
         <div class="col-span-6 flex flex-col items-center" *ngIf="isEditing">
             <button
                 (click)="saveChanges()"
-                class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded dark:bg-blue-500 dark:hover:bg-blue-600"
+                class="w-full rounded bg-blue-600 py-2 font-bold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
                 i18n
             >
                 Save
@@ -152,4 +139,8 @@
     </div>
 </div>
 
-<app-timeout-error-modal [message]="errorStr" [data]="errorData" #errorModal></app-timeout-error-modal>
+<app-timeout-error-modal
+    [message]="errorStr"
+    [data]="errorData"
+    #errorModal
+></app-timeout-error-modal>

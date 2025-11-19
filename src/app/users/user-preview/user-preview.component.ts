@@ -5,6 +5,8 @@ import {
     HostListener,
     Input,
     ViewChild,
+    OnInit,
+    inject,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ActivatedRoute, RouterModule } from "@angular/router";
@@ -18,21 +20,21 @@ import { User } from "../../../core/user/entity/user.entity";
     styleUrl: "./user-preview.component.scss",
     standalone: true,
 })
-export class UserPreviewComponent {
+export class UserPreviewComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+
     Role = Role;
 
-    @Input("user") user!: User;
+    @Input() user!: User;
 
-    isSelected: boolean = false;
-
-    constructor(private route: ActivatedRoute) {}
+    isSelected = false;
 
     ngOnInit() {
         this.watchQueryParams();
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe((params) => {
+        this.route.queryParams.subscribe(params => {
             this.isSelected = params["user.id"] === this.user.id;
         });
     }

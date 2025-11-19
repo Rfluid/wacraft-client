@@ -24,16 +24,18 @@
                 *ngIf="userStore.currentUser"
                 class="relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
             >
-                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 p-6 lg:grid-cols-3">
+                <div class="grid grid-cols-1 gap-4 p-6 sm:grid-cols-2 lg:grid-cols-3">
                     <!-- Name Field -->
                     <div class="col-span-1">
                         <label
                             class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                             i18n
+                            for="account-name"
                             >Name</label
                         >
                         <input
                             type="text"
+                            id="account-name"
                             [(ngModel)]="userStore.currentUser.name"
                             [disabled]="!isEditing"
                             class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
@@ -45,10 +47,12 @@
                         <label
                             class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                             i18n
+                            for="account-email"
                             >Email</label
                         >
                         <input
                             type="email"
+                            id="account-email"
                             [(ngModel)]="userStore.currentUser.email"
                             [disabled]="!isEditing"
                             class="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
@@ -60,10 +64,12 @@
                         <label
                             class="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
                             i18n
+                            for="account-new-password"
                             >New Password</label
                         >
                         <input
                             type="password"
+                            id="account-new-password"
                             [(ngModel)]="userStore.currentUser.password"
                             placeholder="Leave empty to keep current"
                             i18n-placeholder
@@ -73,7 +79,9 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="flex flex-col gap-3 border-t border-gray-200 pt-6 dark:border-gray-700 sm:flex-row p-6">
+                <div
+                    class="flex flex-col gap-3 border-t border-gray-200 p-6 pt-6 dark:border-gray-700 sm:flex-row"
+                >
                     <button
                         *ngIf="!isEditing"
                         (click)="toggleEdit()"
@@ -102,9 +110,9 @@
                             i18n
                         >
                             <mat-icon class="mr-2 !h-5 !w-5 text-sm">{{
-                                loading ? 'hourglass_empty' : 'save'
+                                loading ? "hourglass_empty" : "save"
                             }}</mat-icon>
-                            {{ loading ? 'Saving...' : 'Save Changes' }}
+                            {{ loading ? "Saving..." : "Save Changes" }}
                         </button>
                     </div>
                 </div>
@@ -125,11 +133,12 @@
                     <div class="p-6">
                         <div class="mb-3 flex items-start justify-between">
                             <div>
-                                <label
+                                <p
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     i18n
-                                    >Auto Preview</label
                                 >
+                                    Auto Preview
+                                </p>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
                                     Select media types to preview automatically
                                 </p>
@@ -161,14 +170,19 @@
                                 *ngIf="isDropdownOpen"
                                 class="absolute z-10 mt-2 w-full divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white shadow-lg dark:divide-gray-600 dark:border-gray-600 dark:bg-gray-700"
                             >
-                                <li class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <li
+                                    class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600"
+                                >
                                     <label class="flex cursor-pointer items-center">
                                         <input
                                             type="checkbox"
                                             class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                                             [(ngModel)]="localSettings.autoPreview.image"
                                             (ngModelChange)="
-                                                localSettings.setAutoPreviewSettings('image', $event)
+                                                localSettings.setAutoPreviewSettings(
+                                                    'image',
+                                                    $event
+                                                )
                                             "
                                         />
                                         <span
@@ -178,14 +192,19 @@
                                         >
                                     </label>
                                 </li>
-                                <li class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <li
+                                    class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600"
+                                >
                                     <label class="flex cursor-pointer items-center">
                                         <input
                                             type="checkbox"
                                             class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                                             [(ngModel)]="localSettings.autoPreview.video"
                                             (ngModelChange)="
-                                                localSettings.setAutoPreviewSettings('video', $event)
+                                                localSettings.setAutoPreviewSettings(
+                                                    'video',
+                                                    $event
+                                                )
                                             "
                                         />
                                         <span
@@ -195,14 +214,19 @@
                                         >
                                     </label>
                                 </li>
-                                <li class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <li
+                                    class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600"
+                                >
                                     <label class="flex cursor-pointer items-center">
                                         <input
                                             type="checkbox"
                                             class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                                             [(ngModel)]="localSettings.autoPreview.audio"
                                             (ngModelChange)="
-                                                localSettings.setAutoPreviewSettings('audio', $event)
+                                                localSettings.setAutoPreviewSettings(
+                                                    'audio',
+                                                    $event
+                                                )
                                             "
                                         />
                                         <span
@@ -212,14 +236,19 @@
                                         >
                                     </label>
                                 </li>
-                                <li class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <li
+                                    class="px-4 py-3 transition-colors hover:bg-gray-50 dark:hover:bg-gray-600"
+                                >
                                     <label class="flex cursor-pointer items-center">
                                         <input
                                             type="checkbox"
                                             class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
                                             [(ngModel)]="localSettings.autoPreview.sticker"
                                             (ngModelChange)="
-                                                localSettings.setAutoPreviewSettings('sticker', $event)
+                                                localSettings.setAutoPreviewSettings(
+                                                    'sticker',
+                                                    $event
+                                                )
                                             "
                                         />
                                         <span
@@ -236,7 +265,7 @@
                     <!-- Read Control Setting -->
                     <div class="p-6" id="unread-mode-selector">
                         <div class="mb-3">
-                            <label
+                            <p
                                 class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-300"
                                 matTooltip="Defines where your message read will be registered. Used to track messages you didn't read yet."
                                 i18n-matTooltip
@@ -246,7 +275,7 @@
                                     class="material-icons-outlined ml-1 !h-4 !w-4 cursor-help text-sm text-gray-500 dark:text-gray-400"
                                     >info</mat-icon
                                 >
-                            </label>
+                            </p>
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
                                 Choose how message read status is tracked
                             </p>
@@ -267,22 +296,24 @@
                     <!-- Theme Setting -->
                     <div class="p-6" id="theme-mode-selector">
                         <div class="mb-3">
-                            <label
-                                class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                                i18n
-                                >Theme</label
-                            >
+                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300" i18n>
+                                Theme
+                            </p>
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
                                 Choose your preferred color scheme
                             </p>
                         </div>
-                        <div class="inline-flex rounded-lg border border-gray-200 p-1 dark:border-gray-600">
+                        <div
+                            class="inline-flex rounded-lg border border-gray-200 p-1 dark:border-gray-600"
+                        >
                             <button
                                 (click)="toggleTheme(ThemeMode.light)"
                                 [class.bg-blue-600]="localSettings.themeMode === ThemeMode.light"
                                 [class.text-white]="localSettings.themeMode === ThemeMode.light"
                                 class="rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-                                [class.hover:!bg-blue-700]="localSettings.themeMode === ThemeMode.light"
+                                [class.hover:!bg-blue-700]="
+                                    localSettings.themeMode === ThemeMode.light
+                                "
                                 type="button"
                             >
                                 <span class="mr-1">☀️</span>
@@ -293,7 +324,9 @@
                                 [class.bg-blue-600]="localSettings.themeMode === ThemeMode.dark"
                                 [class.text-white]="localSettings.themeMode === ThemeMode.dark"
                                 class="rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-                                [class.hover:!bg-blue-700]="localSettings.themeMode === ThemeMode.dark"
+                                [class.hover:!bg-blue-700]="
+                                    localSettings.themeMode === ThemeMode.dark
+                                "
                                 type="button"
                             >
                                 <span class="mr-1">🌙</span>
@@ -304,7 +337,9 @@
                                 [class.bg-blue-600]="localSettings.themeMode === ThemeMode.system"
                                 [class.text-white]="localSettings.themeMode === ThemeMode.system"
                                 class="rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-                                [class.hover:!bg-blue-700]="localSettings.themeMode === ThemeMode.system"
+                                [class.hover:!bg-blue-700]="
+                                    localSettings.themeMode === ThemeMode.system
+                                "
                                 type="button"
                             >
                                 <span class="mr-1">💻</span>
@@ -317,11 +352,12 @@
                     <div class="p-6" id="auto-read-selector">
                         <div class="flex items-center justify-between">
                             <div>
-                                <label
+                                <p
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     i18n
-                                    >Auto Mark as Read</label
                                 >
+                                    Auto Mark as Read
+                                </p>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
                                     Automatically mark messages as read when viewed
                                 </p>
@@ -353,11 +389,12 @@
                     <div class="p-6" id="send-typing-selector">
                         <div class="flex items-center justify-between">
                             <div>
-                                <label
+                                <p
                                     class="text-sm font-medium text-gray-700 dark:text-gray-300"
                                     i18n
-                                    >Send Typing Indicator</label
                                 >
+                                    Send Typing Indicator
+                                </p>
                                 <p class="mt-1 text-xs text-gray-500 dark:text-gray-400" i18n>
                                     Send typing notifications to users when composing messages
                                 </p>

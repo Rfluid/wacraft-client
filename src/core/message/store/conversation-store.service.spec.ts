@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { ConversationStoreService } from './conversation-store.service';
+import { ConversationStoreService } from "./conversation-store.service";
 
-describe('ConversationStoreService', () => {
-  let service: ConversationStoreService;
+describe("ConversationStoreService", () => {
+    let service: ConversationStoreService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(ConversationStoreService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(ConversationStoreService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it("should be created", () => {
+        expect(service).toBeTruthy();
+    });
 });

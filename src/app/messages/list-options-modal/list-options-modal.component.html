@@ -1,8 +1,21 @@
 <div
     class="fixed bottom-0 left-0 right-0 top-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-70 py-8"
     (click)="close.emit()"
+    role="button"
+    tabindex="0"
+    (keyup.enter)="close.emit()"
+    (keyup.space)="close.emit()"
+    aria-label="Close modal"
 >
-    <div class="flex h-full max-w-md flex-col" id="content" (click)="$event.stopPropagation()">
+    <div
+        class="flex h-full max-w-md flex-col"
+        id="content"
+        (click)="$event.stopPropagation()"
+        tabindex="0"
+        role="dialog"
+        (keyup.enter)="$event.stopPropagation()"
+        (keyup.space)="$event.stopPropagation()"
+    >
         <!-- Header -->
         <div
             class="flex w-full items-center justify-start bg-blue-800 px-6 py-2 text-white dark:bg-gray-700"
@@ -37,13 +50,26 @@
                         class="min-h-18 juftify-between flex w-full items-center px-6 hover:bg-gray-100 dark:hover:bg-gray-800"
                         (click)="selectRow(row)"
                         *ngFor="let row of section.rows"
+                        role="button"
+                        tabindex="0"
+                        (keyup.enter)="selectRow(row)"
+                        (keyup.space)="selectRow(row)"
+                        [attr.aria-pressed]="isSelectedRow(row)"
                     >
                         <div class="flex w-full flex-col py-3">
                             <span class="text-lg dark:text-white">{{ row.title }}</span>
                             <span class="text-base text-gray-600">{{ row.description }}</span>
                         </div>
                         <!-- Selector Div -->
-                        <div class="selector aspect-square h-6 w-6" (click)="selectRow(row)">
+                        <div
+                            class="selector aspect-square h-6 w-6"
+                            (click)="selectRow(row)"
+                            role="button"
+                            tabindex="0"
+                            (keyup.enter)="selectRow(row)"
+                            (keyup.space)="selectRow(row)"
+                            [attr.aria-pressed]="isSelectedRow(row)"
+                        >
                             <mat-icon
                                 class="material-symbols-outlined"
                                 *ngIf="isSelectedRow(row)"

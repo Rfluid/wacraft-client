@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ContactMediaComponent } from './contact-media.component';
+import { ContactMediaComponent } from "./contact-media.component";
 
-describe('ContactMediaComponent', () => {
-  let component: ContactMediaComponent;
-  let fixture: ComponentFixture<ContactMediaComponent>;
+describe("ContactMediaComponent", () => {
+    let component: ContactMediaComponent;
+    let fixture: ComponentFixture<ContactMediaComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ContactMediaComponent]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [ContactMediaComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(ContactMediaComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(ContactMediaComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

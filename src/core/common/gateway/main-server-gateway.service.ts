@@ -8,7 +8,7 @@
  *  Otherwise tweak sendPingPayload().
  */
 
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { AuthService } from "../../auth/service/auth.service";
 import { environment } from "../../../environments/environment";
 import { ServerEndpoints } from "../constant/server-endpoints.enum";
@@ -18,6 +18,9 @@ import { NGXLogger } from "ngx-logger";
 
 @Injectable({ providedIn: "root" })
 export class MainServerGatewayService {
+    private auth = inject(AuthService);
+    private logger = inject(NGXLogger);
+
     /* ───── Connection target ───── */
     private readonly prefix = `ws${environment.mainServerSecurity ? "s" : ""}://${environment.mainServerUrl}`;
     private path: string[] = [];
@@ -35,7 +38,7 @@ export class MainServerGatewayService {
     /* ───── Message subject ───── */
     /* The message event is used to avoid monitoring the WebSocket directly,
     as this may lead to unexpected behavior when the WebSocket reconnects. */
-    messageSubject = new Subject<MessageEvent<any>>();
+    messageSubject = new Subject<MessageEvent>();
 
     /* ───── Reconnection knobs ───── */
     autoReconnect = true;
@@ -51,10 +54,7 @@ export class MainServerGatewayService {
     private pingTimers = new WeakMap<WebSocket, ReturnType<typeof setInterval>>(); // One timer per socket
 
     /* ───── ctor ───── */
-    constructor(
-        private auth: AuthService,
-        private logger: NGXLogger,
-    ) {
+    constructor() {
         this.watchToken(); // auto-initialises socket and hot-swaps token
     }
 

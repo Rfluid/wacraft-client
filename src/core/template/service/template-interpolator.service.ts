@@ -3,7 +3,11 @@ import { Template } from "../../template/model/template.model";
 import { Conversation } from "../../message/model/conversation.model";
 import { MessageType } from "../../message/model/message-type.model";
 import { UseTemplate } from "../../message/model/use-template.model";
-import { ComponentParameters } from "../../message/model/use-template-component.model";
+import {
+    ComponentParameters,
+    UseTemplateComponent,
+    UseTemplateComponentType,
+} from "../../message/model/use-template-component.model";
 import { UseMedia } from "../../message/model/media-data.model";
 import { TemplateButton, TemplateComponent } from "../model/template-component.model";
 import { TemplateComponentType } from "../model/template-component-type.model";
@@ -13,8 +17,6 @@ import { TemplateComponentFormat } from "../model/template-component-format.mode
     providedIn: "root",
 })
 export class TemplateInterpolatorService {
-    constructor() {}
-
     interpolateTemplate(
         template: Template,
         message: Conversation,
@@ -36,12 +38,13 @@ export class TemplateInterpolatorService {
 
         template.components.forEach(component => {
             switch (component.type.toLowerCase()) {
-                case TemplateComponentType.header.toLowerCase():
+                case TemplateComponentType.header.toLowerCase(): {
                     const header = this.loadHeader(component, getTemplateData);
                     headerText = header.headerText;
                     headerType = header.headerType;
                     headerUseMedia = header.headerUseMedia;
                     break;
+                }
                 case TemplateComponentType.body.toLowerCase():
                     bodyText = this.loadBody(component, getTemplateData);
                     break;
@@ -66,7 +69,7 @@ export class TemplateInterpolatorService {
 
     private loadHeader(component: TemplateComponent, getTemplateData: () => UseTemplate) {
         const example = component.example;
-        let headerType: MessageType = component?.format
+        const headerType: MessageType = component?.format
             ? (component?.format.toLowerCase() as MessageType)
             : MessageType.text;
         let headerText = "";
@@ -84,15 +87,15 @@ export class TemplateInterpolatorService {
                     getTemplateData,
                 );
 
-                const key = component.format.toLowerCase() as keyof UseMedia;
+                const mediaKey = this.getMediaParameterKey(component.format);
+                if (!mediaKey) return;
 
-                // Type Assertion: Inform TypeScript that componentParams has the key from UseMedia
-                const media = (componentParams as any)[key] as UseMedia[keyof UseMedia];
+                const media = componentParams[mediaKey];
 
                 if (media) {
                     headerUseMedia = {
                         ...headerUseMedia,
-                        [key]: media,
+                        ...media,
                     };
                 }
             });
@@ -210,18 +213,21 @@ export class TemplateInterpolatorService {
         // Get all BUTTON components from the message data
         // Note: Message data uses "BUTTON" (singular) while template uses "BUTTONS" (plural)
         const templateData = getTemplateData();
-        const buttonComponents = templateData.components.filter((comp: any) => {
+        const buttonComponents = templateData.components.filter((comp: UseTemplateComponent) => {
             const type = comp.type?.toLowerCase();
-            return type === "button" || type === "buttons";
+            return (
+                type === UseTemplateComponentType.button.toLowerCase() ||
+                type === TemplateComponentType.buttons.toLowerCase()
+            );
         });
 
         // Process each button and find its corresponding parameters
         buttons.forEach((button, buttonIndex) => {
             try {
                 // Find the BUTTON component that matches this button's index
-                const buttonComponent = buttonComponents.find((comp: any) => {
+                const buttonComponent = buttonComponents.find(comp => {
                     const compIndex = comp.index !== undefined ? comp.index : comp.sub_type;
-                    return compIndex === buttonIndex.toString() || compIndex === buttonIndex;
+                    return compIndex?.toString() === buttonIndex.toString();
                 });
 
                 if (
@@ -291,7 +297,7 @@ export class TemplateInterpolatorService {
                     const textVariables = this.extractVariables(button.text);
 
                     if (textVariables.length > 0) {
-                        textVariables.forEach((variable, i) => {
+                        textVariables.forEach(variable => {
                             // Use named variable replacement
                             const escapedVariable = variable.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
                             button.text = button.text!.replace(
@@ -311,7 +317,7 @@ export class TemplateInterpolatorService {
                     const phoneVariables = this.extractVariables(button.phone_number);
 
                     if (phoneVariables.length > 0) {
-                        phoneVariables.forEach((variable, i) => {
+                        phoneVariables.forEach(variable => {
                             // Use named variable replacement
                             const escapedVariable = variable.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
                             button.phone_number = button.phone_number!.replace(
@@ -364,4 +370,26 @@ export class TemplateInterpolatorService {
 
         return variables;
     }
+
+    private getMediaParameterKey(format?: TemplateComponentFormat): MediaParameterKey | undefined {
+        switch (format) {
+            case TemplateComponentFormat.Image:
+                return "image";
+            case TemplateComponentFormat.Video:
+                return "video";
+            case TemplateComponentFormat.Audio:
+                return "audio";
+            case TemplateComponentFormat.Document:
+                return "document";
+            case TemplateComponentFormat.Sticker:
+                return "sticker";
+            default:
+                return undefined;
+        }
+    }
 }
+
+type MediaParameterKey = Extract<
+    keyof ComponentParameters,
+    "image" | "video" | "audio" | "document" | "sticker"
+>;

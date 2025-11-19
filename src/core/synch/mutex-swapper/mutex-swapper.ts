@@ -5,7 +5,7 @@ export class MutexSwapper<T> {
     private mutexes = new Map<T, Mutex>();
     private usageCount = new Map<T, number>();
 
-    async acquire<R>(msgId: T) {
+    async acquire(msgId: T) {
         await this.mu.acquire();
         let mutex = this.mutexes.get(msgId);
 
@@ -21,10 +21,10 @@ export class MutexSwapper<T> {
         await mutex.acquire();
     }
 
-    async release<R>(msgId: T) {
+    async release(msgId: T) {
         await this.mu.acquire();
 
-        let mutex = this.mutexes.get(msgId);
+        const mutex = this.mutexes.get(msgId);
         if (!mutex) return this.mu.release();
 
         let qttAcquired = this.usageCount.get(msgId);

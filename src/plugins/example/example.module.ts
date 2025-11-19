@@ -9,4 +9,4 @@ import { CampaignsComponent } from "./campaigns/campaigns.component";
     declarations: [],
     exports: [RouterModule],
 })
-export class VmlavModule {}
+export class PluginExampleModule {}

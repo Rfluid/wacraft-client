@@ -2,7 +2,6 @@
 
 import { HeaderType } from "./header-type.model";
 import { UseMedia } from "./media-data.model";
-import { TextData } from "./text-data.model";
 
 export interface Header {
     type: HeaderType; // Type of the header

@@ -1,6 +1,5 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { MainServerControllerService } from "../../common/controller/main-server-controller.service";
-import { AuthService } from "../../auth/service/auth.service";
 import { ServerEndpoints } from "../../common/constant/server-endpoints.enum";
 import { MediaInfo } from "../model/media-info.model";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
@@ -9,11 +8,10 @@ import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
     providedIn: "root",
 })
 export class MediaControllerService extends MainServerControllerService {
-    constructor(
-        auth: AuthService,
-        private sanitizer: DomSanitizer,
-    ) {
-        super(auth);
+    private sanitizer = inject(DomSanitizer);
+
+    constructor() {
+        super();
         this.setPath(ServerEndpoints.media, ServerEndpoints.whatsapp);
         this.setHttp();
     }
@@ -33,13 +31,9 @@ export class MediaControllerService extends MainServerControllerService {
 
     // Download media using MediaInfo and get SafeUrl to display in browser
     async downloadMediaByInfo(mediaInfo: MediaInfo): Promise<SafeUrl> {
-        const response = await this.http.post(
-            `/media-info/download`,
-            mediaInfo,
-            {
-                responseType: "blob",
-            },
-        );
+        const response = await this.http.post(`/media-info/download`, mediaInfo, {
+            responseType: "blob",
+        });
         return this.createSafeUrl(response.data);
     }
 
@@ -53,13 +47,9 @@ export class MediaControllerService extends MainServerControllerService {
 
     // Download media using MediaInfo to save on PC
     async saveMediaByInfo(mediaInfo: MediaInfo): Promise<void> {
-        const response = await this.http.post(
-            `/media-info/download`,
-            mediaInfo,
-            {
-                responseType: "blob",
-            },
-        );
+        const response = await this.http.post(`/media-info/download`, mediaInfo, {
+            responseType: "blob",
+        });
         this.downloadFile(response.data, mediaInfo.id);
     }
 

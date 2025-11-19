@@ -4,23 +4,41 @@
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-9">
             <!-- Filter by HTTP Response Code -->
             <div class="col-span-2">
-                <label class="text-sm text-gray-700 dark:text-gray-300">Message ID</label>
-                <input type="number" [(ngModel)]="id" class="" placeholder="e.g. 200" />
+                <label class="text-sm text-gray-700 dark:text-gray-300" for="message-id-filter"
+                    >Message ID</label
+                >
+                <input
+                    type="number"
+                    id="message-id-filter"
+                    [(ngModel)]="id"
+                    class=""
+                    placeholder="e.g. 200"
+                />
             </div>
             <!-- Filter by Created Date (from) -->
             <div class="col-span-2">
-                <label class="text-sm text-gray-700 dark:text-gray-300">Created After</label>
-                <input type="datetime-local" [(ngModel)]="createdAtGte" />
+                <label class="text-sm text-gray-700 dark:text-gray-300" for="created-after-filter"
+                    >Created After</label
+                >
+                <input type="datetime-local" id="created-after-filter" [(ngModel)]="createdAtGte" />
             </div>
             <!-- Filter by Created Date (to) -->
             <div class="col-span-2">
-                <label class="text-sm text-gray-700 dark:text-gray-300">Created Before</label>
-                <input type="datetime-local" [(ngModel)]="createdAtLte" />
+                <label class="text-sm text-gray-700 dark:text-gray-300" for="created-before-filter"
+                    >Created Before</label
+                >
+                <input
+                    type="datetime-local"
+                    id="created-before-filter"
+                    [(ngModel)]="createdAtLte"
+                />
             </div>
             <!-- Order by Created Date -->
             <div class="col-span-1">
-                <label class="text-sm text-gray-700 dark:text-gray-300">Created at order</label>
-                <select [(ngModel)]="dateOrder">
+                <label class="text-sm text-gray-700 dark:text-gray-300" for="created-order-select"
+                    >Created at order</label
+                >
+                <select id="created-order-select" [(ngModel)]="dateOrder">
                     <option [value]="DateOrderEnum.desc">
                         {{ DateOrderEnum.desc }}
                     </option>
@@ -32,8 +50,10 @@
 
             <!-- Order by Created Date -->
             <div class="col-span-1">
-                <label class="text-sm text-gray-700 dark:text-gray-300"> Message state </label>
-                <select [(ngModel)]="messageState">
+                <label class="text-sm text-gray-700 dark:text-gray-300" for="message-state-select">
+                    Message state
+                </label>
+                <select id="message-state-select" [(ngModel)]="messageState">
                     <option [value]="'all'">All</option>
                     <option [value]="'sent'">Sent</option>
                     <option [value]="'unsent'">Unsent</option>
@@ -55,7 +75,14 @@
             *ngFor="let message of messages; let i = index"
             class="mb-2 rounded-lg bg-gray-100 p-4 dark:bg-gray-800"
         >
-            <div class="flex cursor-pointer items-center justify-between" (click)="toggleExpand(i)">
+            <div
+                class="flex cursor-pointer items-center justify-between"
+                (click)="toggleExpand(i)"
+                role="button"
+                tabindex="0"
+                (keyup.enter)="toggleExpand(i)"
+                (keyup.space)="toggleExpand(i)"
+            >
                 <div>
                     <!-- Main Message Info with Colored if sent -->
                     <p

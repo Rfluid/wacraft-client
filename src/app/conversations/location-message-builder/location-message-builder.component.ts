@@ -8,6 +8,7 @@ import {
     OnInit,
     AfterViewInit,
     NgZone,
+    inject,
 } from "@angular/core";
 import { SenderData } from "../../../core/message/model/sender-data.model";
 import { MessageType } from "../../../core/message/model/message-type.model";
@@ -26,17 +27,21 @@ import { NGXLogger } from "ngx-logger";
     standalone: true,
 })
 export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
+    private messageController = inject(MessageControllerService);
+    private ngZone = inject(NgZone);
+    private logger = inject(NGXLogger);
+
     @Input("toId") toIdInput!: string;
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
-    @Output("sent") sent = new EventEmitter<SenderData>();
+    @Output() sent = new EventEmitter<SenderData>();
 
     @ViewChild("nameArea") nameArea!: ElementRef<HTMLTextAreaElement>;
     @ViewChild("addressArea") addressArea!: ElementRef<HTMLTextAreaElement>;
     @ViewChild("searchInput") searchInput!: ElementRef<HTMLInputElement>;
 
     locationType: "self" | "map" = "self";
-    name: string = "";
-    address: string = "";
+    name = "";
+    address = "";
 
     senderData: SenderData = {
         messaging_product: "whatsapp",
@@ -53,15 +58,9 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
 
     options?: google.maps.MapOptions;
     markerPosition?: google.maps.LatLngLiteral;
-    error: string = "";
+    error = "";
 
     autocomplete?: google.maps.places.Autocomplete;
-
-    constructor(
-        private messageController: MessageControllerService,
-        private ngZone: NgZone,
-        private logger: NGXLogger,
-    ) {}
 
     ngOnInit() {
         this.initializeMap();
@@ -81,7 +80,7 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
         if (this.locationType === "self") {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
-                    (position) => {
+                    position => {
                         this.markerPosition = {
                             lat: position.coords.latitude,
                             lng: position.coords.longitude,
@@ -91,11 +90,8 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
                             zoom: 16,
                         };
                     },
-                    (error) => {
-                        this.logger.error(
-                            "Error getting current position",
-                            error,
-                        );
+                    error => {
+                        this.logger.error("Error getting current position", error);
                         this.error = "Unable to get your current location.";
                     },
                 );
@@ -146,12 +142,9 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
         }
         this.logger.log("Autocomplete initialized");
 
-        const autocomplete = new google.maps.places.Autocomplete(
-            this.searchInput.nativeElement,
-            {
-                types: ["geocode", "establishment"],
-            },
-        );
+        const autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
+            types: ["geocode", "establishment"],
+        });
 
         autocomplete.addListener("place_changed", () => {
             this.ngZone.run(() => {
@@ -170,8 +163,7 @@ export class LocationMessageBuilderComponent implements OnInit, AfterViewInit {
                     this.name = place.name || "";
                     this.address = place.formatted_address || "";
                 } else {
-                    this.error =
-                        "No details available for the selected location.";
+                    this.error = "No details available for the selected location.";
                 }
             });
         });

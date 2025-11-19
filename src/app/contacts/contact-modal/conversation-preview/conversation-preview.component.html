@@ -1,6 +1,6 @@
 <button
     [ngClass]="{
-        'w-full flex items-center px-4 py-4 border-b border-gray-200 dark:border-gray-700': true,
+        'flex w-full items-center border-b border-gray-200 px-4 py-4 dark:border-gray-700': true,
         'bg-gray-200 dark:bg-gray-600': selected,
         'hover:bg-gray-300 dark:hover:bg-gray-700': !selected,
     }"
@@ -11,82 +11,71 @@
         <img
             [src]="messagingProductContact.contact.photo_path"
             alt="Profile Picture"
-            class="rounded-full w-12 h-12"
+            class="h-12 w-12 rounded-full"
             *ngIf="messagingProductContact.contact.photo_path"
         />
 
         <!-- Show Font Awesome icon if profilePictureSrcInput is not provided -->
         <i
-            class="fas fa-user-circle text-gray-500 dark:text-gray-400 text-5xl"
+            class="fas fa-user-circle text-5xl text-gray-500 dark:text-gray-400"
             *ngIf="!messagingProductContact.contact.photo_path"
         ></i>
     </div>
 
     <div class="ml-3 flex-1 truncate">
-        <div class="flex justify-between items-center">
+        <div class="flex items-center justify-between">
             <span
-                class="text-gray-800 dark:text-gray-200 font-medium truncate"
+                class="truncate font-medium text-gray-800 dark:text-gray-200"
                 [textContent]="
                     messagingProductContact.contact.name ||
                     messagingProductContact.product_details.phone_number
                 "
             ></span>
             <span
-                class="text-gray-500 dark:text-gray-400 text-sm"
+                class="text-sm text-gray-500 dark:text-gray-400"
                 [textContent]="date | date: 'short'"
             ></span>
         </div>
-        <div class="w-full flex flex-row justify-between">
+        <div class="flex w-full flex-row justify-between">
             <div class="flex flex-row">
                 <div class="flex flex-row items-center justify-center">
                     <div
-                        *ngIf="
-                            lastMessage.statuses && lastMessage.statuses.length
-                        "
-                        class="brightness-50 dark:brightness-100 flex items-center justify-center mr-1"
+                        *ngIf="lastMessage.statuses && lastMessage.statuses.length"
+                        class="mr-1 flex items-center justify-center brightness-50 dark:brightness-100"
                     >
                         <img
                             width="10px"
                             src="assets/icons/flaticon/check-mark.png"
-                            *ngIf="
-                                lastMessage.statuses[0].product_data.status ===
-                                'sent'
-                            "
+                            alt="Message sent"
+                            *ngIf="lastMessage.statuses[0].product_data.status === 'sent'"
                         />
                         <img
                             width="15px"
                             src="assets/icons/flaticon/double-check-mark.png"
-                            *ngIf="
-                                lastMessage.statuses[0].product_data.status ===
-                                'delivered'
-                            "
+                            alt="Message delivered"
+                            *ngIf="lastMessage.statuses[0].product_data.status === 'delivered'"
                         />
                         <img
                             width="15px"
                             src="assets/icons/flaticon/double-green-check-mark.png"
-                            *ngIf="
-                                lastMessage.statuses[0].product_data.status ===
-                                'read'
-                            "
+                            alt="Message read"
+                            *ngIf="lastMessage.statuses[0].product_data.status === 'read'"
                         />
 
                         <i
-                            class="fa fa-exclamation-circle text-red-600 text-xm"
-                            *ngIf="
-                                lastMessage.statuses[0].product_data.status ===
-                                'failed'
-                            "
+                            class="fa fa-exclamation-circle text-xm text-red-600"
+                            *ngIf="lastMessage.statuses[0].product_data.status === 'failed'"
                         ></i>
                     </div>
                 </div>
                 <app-message-content-preview
                     [message]="lastMessage | messageData"
-                    class="text-gray-600 dark:text-gray-400 text-sm text-left truncate"
+                    class="truncate text-left text-sm text-gray-600 dark:text-gray-400"
                 ></app-message-content-preview>
             </div>
             <div class="flex-shrink-0">
                 <span
-                    class="text-xs text-gray-800 text-thin flex items-center justify-center bg-blue-500 rounded-full aspect-square w-5 h-5"
+                    class="text-thin flex aspect-square h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-gray-800"
                     *ngIf="unread > 0"
                     >{{ unread }}</span
                 >

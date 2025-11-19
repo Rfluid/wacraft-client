@@ -1,7 +1,4 @@
-import {
-    InteractiveType,
-    ReceivedInteractiveType,
-} from "./interactive-type.model";
+import { InteractiveType, ReceivedInteractiveType } from "./interactive-type.model";
 import { Header } from "./header.model";
 import { Body } from "./body.model";
 import { Footer } from "./footer.model";
@@ -26,10 +23,7 @@ export interface ReceivedInteractive {
     list_reply?: ListReplyData;
 }
 
-export function compareInteractive(
-    interactive1: Interactive,
-    interactive2: Interactive,
-): boolean {
+export function compareInteractive(interactive1: Interactive, interactive2: Interactive): boolean {
     if (interactive1.type !== interactive2.type) return false;
 
     const header1 = interactive1.header;
@@ -41,35 +35,28 @@ export function compareInteractive(
 
         switch (header1.type) {
             case HeaderType.text:
-                if (
-                    (header1.text || header2.text) &&
-                    header1.text !== header2.text
-                )
-                    return false;
+                if ((header1.text || header2.text) && header1.text !== header2.text) return false;
                 break;
-            default:
+            default: {
                 const headerData1 = header1[header1.type] as UseMedia;
                 const headerData2 = header2[header2.type] as UseMedia;
 
-                const useMediaComparison = compareUseMedia(
-                    headerData1,
-                    headerData2,
-                );
+                const useMediaComparison = compareUseMedia(headerData1, headerData2);
                 if (!useMediaComparison) return false;
+                break;
+            }
         }
     }
 
     const body1 = interactive1.body;
     const body2 = interactive2.body;
 
-    if ((body1?.text || body2?.text) && body1?.text !== body2?.text)
-        return false;
+    if ((body1?.text || body2?.text) && body1?.text !== body2?.text) return false;
 
     const footer1 = interactive1.footer;
     const footer2 = interactive2.footer;
 
-    if ((footer1?.text || footer2?.text) && footer1?.text !== footer2?.text)
-        return false;
+    if ((footer1?.text || footer2?.text) && footer1?.text !== footer2?.text) return false;
 
     const action1 = interactive1.action;
     const action2 = interactive2.action;

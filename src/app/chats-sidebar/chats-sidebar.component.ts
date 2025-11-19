@@ -8,6 +8,7 @@ import {
     QueryList,
     ViewChild,
     ViewChildren,
+    inject,
 } from "@angular/core";
 import { ConversationMessagingProductContact } from "../../core/message/model/conversation.model";
 import { CommonModule } from "@angular/common";
@@ -23,6 +24,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { KeyboardNavigableList } from "../common/keyboard/keyboard-navigable-list.base";
 import { NGXLogger } from "ngx-logger";
 import { TimeoutErrorModalComponent } from "../common/timeout-error-modal/timeout-error-modal.component";
+import { isHttpError } from "../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-chats-sidebar",
@@ -42,25 +44,26 @@ import { TimeoutErrorModalComponent } from "../common/timeout-error-modal/timeou
     standalone: true,
 })
 export class ChatsSidebarComponent extends KeyboardNavigableList implements OnInit {
-    private scrolling: boolean = false;
+    private route = inject(ActivatedRoute);
+    queryParamsService = inject(QueryParamsService);
+    conversationStore = inject(ConversationStoreService);
+    private logger = inject(NGXLogger);
+
+    private scrolling = false;
+
+    constructor() {
+        super();
+    }
 
     @ViewChild("searchTextarea")
     searchTextarea!: ElementRef<HTMLTextAreaElement>;
 
-    @Output("select") select = new EventEmitter<ConversationMessagingProductContact>();
+    @Output() selectMessagingProductContact =
+        new EventEmitter<ConversationMessagingProductContact>();
 
     messagingProductContactIdFilter?: string;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        private route: ActivatedRoute,
-        public queryParamsService: QueryParamsService,
-        public conversationStore: ConversationStoreService,
-        private logger: NGXLogger,
-    ) {
-        super();
-    }
 
     ngOnInit() {
         this.conversationStore.initConditionally(this.route);
@@ -153,7 +156,7 @@ export class ChatsSidebarComponent extends KeyboardNavigableList implements OnIn
 
     // Handle message read.
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const messagingProductContactId = params["messaging_product_contact.id"];
             if (!messagingProductContactId) return;
             this.conversationStore.read(messagingProductContactId);
@@ -207,11 +210,17 @@ export class ChatsSidebarComponent extends KeyboardNavigableList implements OnIn
         event.preventDefault(); // Prevent text selection
     }
 
-    errorStr: string = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorStr = "";
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

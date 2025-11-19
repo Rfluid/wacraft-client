@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { GoogleMapsModule } from "@angular/google-maps";
 import { Title } from "@angular/platform-browser";
@@ -12,7 +12,9 @@ import { environment } from "../environments/environment";
     standalone: true,
 })
 export class AppComponent {
-    constructor(private titleService: Title) {
+    private titleService = inject(Title);
+
+    constructor() {
         this.titleService.setTitle(environment.appTitle);
     }
 

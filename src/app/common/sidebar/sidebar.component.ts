@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, HostListener, Input, OnInit } from "@angular/core";
+import { Component, HostListener, Input, OnInit, inject } from "@angular/core";
 import { SmallButtonComponent } from "../small-button/small-button.component";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { UserControllerService } from "../../../core/user/controller/user-controller.service";
@@ -27,6 +27,12 @@ import { environment } from "../../../environments/environment";
     standalone: true,
 })
 export class SidebarComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    queryParamsService = inject(QueryParamsService);
+    userController = inject(UserControllerService);
+    userStore = inject(UserStoreService);
+    private router = inject(Router);
+
     // Global variables that are used in HTML and we need to define here.
     environment = environment;
     Role = Role;
@@ -35,32 +41,19 @@ export class SidebarComponent implements OnInit {
 
     @Input() activePage: RoutePath | HomeFragment = RoutePath.home;
 
-    // URL handled variables.
-
-    constructor(
-        private route: ActivatedRoute,
-        public queryParamsService: QueryParamsService,
-        public userController: UserControllerService,
-        public userStore: UserStoreService,
-        private router: Router,
-    ) {}
-
     async ngOnInit() {
         this.watchQueryParams();
     }
 
     watchQueryParams() {
         // Watch for sidebar query param and update.
-        this.route.queryParams.subscribe(async (params) => {
-            this.queryParamsService.sidebarOpen =
-                params["sidebar_open"] !== "false";
+        this.route.queryParams.subscribe(async params => {
+            this.queryParamsService.sidebarOpen = params["sidebar_open"] !== "false";
         });
     }
 
     get isCollapsed(): boolean {
-        return [RoutePath.account, RoutePath.automation].includes(
-            this.activePage as RoutePath,
-        );
+        return [RoutePath.account, RoutePath.automation].includes(this.activePage as RoutePath);
     }
 
     get navItems(): NavItem[] {
@@ -99,14 +92,13 @@ export class SidebarComponent implements OnInit {
             {
                 route: ["/", RoutePath.users],
                 visible: () =>
-                    !!this.userStore.currentUser &&
-                    this.userStore.currentUser.role === Role.admin,
+                    !!this.userStore.currentUser && this.userStore.currentUser.role === Role.admin,
             },
             {
                 route: ["/", RoutePath.account],
                 visible: () => true, // “account” goes at the bottom
             },
-        ].filter((x) => x.visible());
+        ].filter(x => x.visible());
     }
 
     showShortcuts = false;
@@ -119,11 +111,7 @@ export class SidebarComponent implements OnInit {
             return;
         }
         const t = e.target as HTMLElement;
-        if (
-            t?.tagName === "INPUT" ||
-            t?.tagName === "TEXTAREA" ||
-            t?.isContentEditable
-        ) {
+        if (t?.tagName === "INPUT" || t?.tagName === "TEXTAREA" || t?.isContentEditable) {
             return;
         }
 

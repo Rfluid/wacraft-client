@@ -1,8 +1,7 @@
 import { CommonModule } from "@angular/common";
-import { Component, HostListener, Input, TemplateRef } from "@angular/core";
+import { Component, HostListener, Input } from "@angular/core";
 import { Conversation } from "../../../core/message/model/conversation.model";
 import { MatIconModule } from "@angular/material/icon";
-import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
@@ -13,10 +12,8 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     standalone: true,
 })
 export class MessageInfoComponent {
-    @Input("message") message!: Conversation;
-    @Input("sent") sent: boolean = true;
-
-    constructor() {}
+    @Input() message!: Conversation;
+    @Input() sent = true;
 
     showErrorModal = false;
 

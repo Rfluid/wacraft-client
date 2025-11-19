@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { WebhookControllerService } from "../controller/webhook-controller.service";
 import { Webhook } from "../entity/webhook.entity";
 import { Query } from "../model/query.model";
@@ -9,15 +9,18 @@ import { NGXLogger } from "ngx-logger";
     providedIn: "root",
 })
 export class WebhookStoreService {
-    private paginationLimit: number = 15;
+    private webhookController = inject(WebhookControllerService);
+    private logger = inject(NGXLogger);
 
-    public reachedMaxLimit: boolean = false;
-    public reachedMaxSearchLimit: boolean = false;
+    private paginationLimit = 15;
+
+    public reachedMaxLimit = false;
+    public reachedMaxSearchLimit = false;
     currentWebhook!: Webhook;
 
     searchMode: "url" | "http_method" | "event" = "url";
 
-    searchValue: string = "";
+    searchValue = "";
     searchFilters: {
         text: string;
         query?: Query;
@@ -29,11 +32,6 @@ export class WebhookStoreService {
 
     public isExecuting = false;
     public pendingExecution = false;
-
-    constructor(
-        private webhookController: WebhookControllerService,
-        private logger: NGXLogger,
-    ) {}
 
     async get(): Promise<void> {
         const webhooks = await this.webhookController.get(

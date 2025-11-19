@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -31,27 +31,25 @@ import { MatTooltipModule } from "@angular/material/tooltip";
     preserveWhitespaces: false,
     standalone: true,
 })
-export class CampaignDetailsComponent {
+export class CampaignDetailsComponent implements OnInit {
+    private campaignController = inject(CampaignControllerService);
+    private campaignStore = inject(CampaignStoreService);
+    private messageController = inject(CampaignMessageControllerService);
+    private messagingProductController = inject(MessagingProductControllerService);
+    private queryParamsService = inject(QueryParamsService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private logger = inject(NGXLogger);
+
     Event = Event;
 
     campaign!: CampaignFields;
     campaignId?: string;
-    totalMessages: number = 0;
-    unsentMessages: number = 0;
-    messagesSent: number = 0;
+    totalMessages = 0;
+    unsentMessages = 0;
+    messagesSent = 0;
 
     isEditing = false;
-
-    constructor(
-        private campaignController: CampaignControllerService,
-        private campaignStore: CampaignStoreService,
-        private messageController: CampaignMessageControllerService,
-        private messagingProductController: MessagingProductControllerService,
-        private queryParamsService: QueryParamsService,
-        private route: ActivatedRoute,
-        private router: Router,
-        private logger: NGXLogger,
-    ) {}
 
     ngOnInit(): void {
         this.watchQueryParams();
@@ -93,22 +91,16 @@ export class CampaignDetailsComponent {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const campaignId = params["campaign.id"];
             if (campaignId == this.campaignId) return await this.loadCampaign();
             this.campaignId = campaignId;
-            return await Promise.all([
-                this.loadMessageCount(),
-                this.loadCampaign(),
-            ]);
+            return await Promise.all([this.loadMessageCount(), this.loadCampaign()]);
         });
     }
 
     async loadCampaignDataAndStatuses() {
-        return await Promise.all([
-            this.loadMessageCount(),
-            this.loadCampaign(),
-        ]);
+        return await Promise.all([this.loadMessageCount(), this.loadCampaign()]);
     }
 
     async loadCampaign() {
@@ -183,17 +175,16 @@ export class CampaignDetailsComponent {
     }
 
     async loadMessageCount() {
-        [this.totalMessages, this.messagesSent, this.unsentMessages] =
-            await Promise.all([
-                this.messageController.count({
-                    campaign_id: this.campaignId,
-                }),
-                this.messageController.countSent({
-                    campaign_id: this.campaignId,
-                }),
-                this.messageController.countUnsent({
-                    campaign_id: this.campaignId,
-                }),
-            ]);
+        [this.totalMessages, this.messagesSent, this.unsentMessages] = await Promise.all([
+            this.messageController.count({
+                campaign_id: this.campaignId,
+            }),
+            this.messageController.countSent({
+                campaign_id: this.campaignId,
+            }),
+            this.messageController.countUnsent({
+                campaign_id: this.campaignId,
+            }),
+        ]);
     }
 }

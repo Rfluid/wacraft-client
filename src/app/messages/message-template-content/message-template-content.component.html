@@ -1,17 +1,13 @@
 <div
     class="max-w-xs"
-    *ngIf="
-        message &&
-        (message | messageData).type === MessageType.template &&
-        messageSent.template
-    "
+    *ngIf="message && (message | messageData).type === MessageType.template && messageSent.template"
     [ngStyle]="{
         'word-break': 'break-word',
         'white-space': 'pre-wrap',
     }"
 >
     <div
-        class="pt-1 px-1"
+        class="px-1 pt-1"
         *ngIf="
             message.receiver_data?.context &&
             (message.receiver_data?.context?.forwarded ||
@@ -24,11 +20,8 @@
     </div>
 
     <div
-        class="w-full pt-1 px-1"
-        *ngIf="
-            message.sender_data?.context?.message_id ||
-            message.receiver_data?.context?.id
-        "
+        class="w-full px-1 pt-1"
+        *ngIf="message.sender_data?.context?.message_id || message.receiver_data?.context?.id"
     >
         <app-message-reply-header
             [message]="message"
@@ -44,10 +37,10 @@
             'rounded-md bg-blue-300 dark:bg-blue-800': true,
         }"
     >
-        <div class="px-1 pt-1 pb-1">
+        <div class="px-1 pb-1 pt-1">
             <!-- Header -->
             <div
-                class="text-base mb-2"
+                class="mb-2 text-base"
                 id="header"
                 *ngIf="headerText || headerUseMedia.link || headerUseMedia.id"
             >
@@ -56,7 +49,7 @@
                 </p>
 
                 <app-message-media-content
-                    *ngIf="headerType != 'text'"
+                    *ngIf="headerType !== 'text'"
                     [isSent]="true"
                     [mediaData]="headerUseMedia"
                     [messageType]="headerType"
@@ -70,18 +63,14 @@
 
             <!-- Footer -->
             <p
-                class="text-xs text-gray-600 dark:text-gray-200 font-light mt-2"
+                class="mt-2 text-xs font-light text-gray-600 dark:text-gray-200"
                 id="footer"
                 *ngIf="footerText"
             >
                 {{ footerText }}
             </p>
 
-            <app-message-info
-                class="pb-1"
-                [sent]="sent"
-                [message]="message"
-            ></app-message-info>
+            <app-message-info class="pb-1" [sent]="sent" [message]="message"></app-message-info>
         </div>
     </div>
 
@@ -90,18 +79,16 @@
         <button
             type=""
             [ngClass]="{
-                'flex items-center justify-center w-full h-10 rounded-md opacity-100 relative': true,
+                'relative flex h-10 w-full items-center justify-center rounded-md opacity-100': true,
                 'bg-blue-300 dark:bg-blue-800': true,
             }"
-            (click)="
-                copyText(button.url || button.phone_number || button.text || '')
-            "
+            (click)="copyText(button.url || button.phone_number || button.text || '')"
             *ngFor="let button of buttons"
         >
             <a
                 *ngIf="button.url"
                 href="{{ button.url }}"
-                class="flex items-center justify-center w-full h-full"
+                class="flex h-full w-full items-center justify-center"
             >
                 <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>
 
@@ -110,7 +97,7 @@
 
             <span
                 *ngIf="button.phone_number"
-                class="flex items-center justify-center w-full h-full"
+                class="flex h-full w-full items-center justify-center"
             >
                 <i class="fa-solid fa-phone mr-1"></i>
 
@@ -119,15 +106,13 @@
 
             <span
                 *ngIf="!button.phone_number && !button.url"
-                class="flex items-center justify-center w-full h-full"
+                class="flex h-full w-full items-center justify-center"
             >
                 {{ button.text }}
             </span>
 
             <!-- Bottom left reply id -->
-            <span
-                class="absolute bottom-1 right-1 text-xs/2 font-light text-gray-200"
-            >
+            <span class="text-xs/2 absolute bottom-1 right-1 font-light text-gray-200">
                 {{ button.flow_id }}
             </span>
         </button>

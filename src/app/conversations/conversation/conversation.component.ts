@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, inject } from "@angular/core";
 import { ConversationHeaderComponent } from "../conversation-header/conversation-header.component";
 import { ConversationFooterComponent } from "../conversation-footer/conversation-footer.component";
 import { ConversationBodyComponent } from "../conversation-body/conversation-body.component";
@@ -27,7 +27,11 @@ import { MessageActionsFooterComponent } from "../message-actions-footer/message
     standalone: true,
 })
 export class ConversationComponent implements OnInit {
-    @Input("messagingProductContact")
+    private route = inject(ActivatedRoute);
+    userConversationStore = inject(UserConversationsStoreService);
+    private logger = inject(NGXLogger);
+
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
     @Output()
     searchAtContactId = new EventEmitter<string>();
@@ -35,15 +39,9 @@ export class ConversationComponent implements OnInit {
     @ViewChild("conversationFooter")
     conversationFooter!: ConversationFooterComponent;
 
-    contactInfoEnabled: boolean = false;
-    contactMediaEnabled: boolean = false;
-    isTyping: boolean = false;
-
-    constructor(
-        private route: ActivatedRoute,
-        public userConversationStore: UserConversationsStoreService,
-        private logger: NGXLogger,
-    ) {}
+    contactInfoEnabled = false;
+    contactMediaEnabled = false;
+    isTyping = false;
 
     onTypingStateChange(isTyping: boolean): void {
         this.isTyping = isTyping;
@@ -73,8 +71,6 @@ export class ConversationComponent implements OnInit {
             return;
         });
     }
-
-    ngAfterViewInit(): void {}
 
     closeContactInfo() {
         this.contactInfoEnabled = false;

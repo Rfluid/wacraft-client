@@ -6,6 +6,7 @@ import {
     HostListener,
     Input,
     Output,
+    inject,
 } from "@angular/core";
 import { ContactData } from "../../../core/message/model/contact-data.model";
 import { MatIconModule } from "@angular/material/icon";
@@ -20,13 +21,11 @@ import { QueryParamsService } from "../../../core/navigation/service/query-param
     standalone: true,
 })
 export class MessageContactsModalComponent {
-    @Input() contacts!: ContactData[];
-    @Output("close") close = new EventEmitter();
+    queryParamsService = inject(QueryParamsService);
+    private elementRef = inject(ElementRef);
 
-    constructor(
-        public queryParamsService: QueryParamsService,
-        private elementRef: ElementRef,
-    ) {}
+    @Input() contacts!: ContactData[];
+    @Output() close = new EventEmitter();
 
     closeModal() {
         this.close.emit();
@@ -42,9 +41,7 @@ export class MessageContactsModalComponent {
     // Shortcuts
     @HostListener("document:click", ["$event"])
     onDocumentClick(event: MouseEvent) {
-        const clickedInside = this.elementRef.nativeElement.contains(
-            event.target,
-        );
+        const clickedInside = this.elementRef.nativeElement.contains(event.target);
         if (!clickedInside) this.close.emit();
     }
 }

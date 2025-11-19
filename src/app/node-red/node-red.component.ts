@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { CommonModule } from "@angular/common";
 import { SafeUrlPipe } from "../../core/common/pipe/safe-url.pipe";
@@ -13,15 +13,18 @@ import { AuthService } from "../../core/auth/service/auth.service";
     standalone: true,
 })
 export class NodeRedComponent implements OnInit {
-    environment = environment;
-    accessToken: string = "";
+    authService = inject(AuthService);
 
-    constructor(public authService: AuthService) {}
+    environment = environment;
+    accessToken = "";
 
     ngOnInit() {
         this.accessToken = this.authService.getToken();
-        this.authService.token.subscribe((token) => {
+        this.authService.token.subscribe(token => {
             this.authService.setAuthCookie();
+            if (token) {
+                this.accessToken = token;
+            }
         });
     }
 }

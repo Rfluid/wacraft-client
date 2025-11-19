@@ -6,6 +6,7 @@ import {
     Input,
     Output,
     ViewChild,
+    inject,
 } from "@angular/core";
 import {
     Conversation,
@@ -57,31 +58,29 @@ import { MessageReplyHeaderComponent } from "../message-reply-header/message-rep
     standalone: true,
 })
 export class ConversationMessageComponent {
+    private messageDataPipe = inject(MessageDataPipe);
+
     MessageType = MessageType;
     ReceivedMessageType = ReceivedMessageType;
 
-    @Input("message") message!: Conversation;
-    @Input("contactName") contactName!: string;
-    @Input("sent") sent: boolean = true;
+    @Input() message!: Conversation;
+    @Input() contactName!: string;
+    @Input() sent = true;
 
-    @Output("reply") reply = new EventEmitter();
-    @Output("asyncContentLoaded") asyncContentLoaded = new EventEmitter();
-    @Output("reactionSent") reactionSent = new EventEmitter<SenderData>();
-    @Output("selectMessage") selectMessage = new EventEmitter();
+    @Output() reply = new EventEmitter();
+    @Output() asyncContentLoaded = new EventEmitter();
+    @Output() reactionSent = new EventEmitter<SenderData>();
+    @Output() selectMessage = new EventEmitter();
 
     @ViewChild("templateMessage")
     templateMessage!: MessageTemplateContentComponent;
     @ViewChild("options") options!: ElementRef;
-    @Input("messagingProductContact")
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
 
     mediaSafeUrl: SafeUrl = ""; // Safe URL for media
-    optionsArrow: boolean = false;
-    optionsOpen: boolean = false;
-
-    constructor(private messageDataPipe: MessageDataPipe) {}
-
-    async ngOnInit() {}
+    optionsArrow = false;
+    optionsOpen = false;
 
     get isMediaType(): boolean {
         return isMediaType(this.messageType);
@@ -126,7 +125,8 @@ export class ConversationMessageComponent {
 
     // Listen for clicks in this component
     @HostListener("keydown.enter", ["$event"])
-    private onEnter(event: MouseEvent) {
+    private onEnter(event: KeyboardEvent) {
+        event.preventDefault();
         this.showOptionsArrow();
         this.optionsOpen = true;
     }

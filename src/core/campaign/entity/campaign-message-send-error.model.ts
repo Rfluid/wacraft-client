@@ -2,11 +2,10 @@ import { Audit } from "../../common/model/audit.model";
 import { CampaignMessageFields } from "./campaign-message.entity";
 
 export interface CampaignMessageSendErrorFields extends Audit {
-    error_data: any;
+    error_data: unknown;
     campaign_message_id: string;
 }
 
-export interface CampaignMessageSendError
-    extends CampaignMessageSendErrorFields {
+export interface CampaignMessageSendError extends CampaignMessageSendErrorFields {
     campaign_message: CampaignMessageFields;
 }

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import axios, { AxiosInstance } from "axios";
 import { AuthService } from "../../auth/service/auth.service";
 import { environment } from "../../../environments/environment";
@@ -8,7 +8,9 @@ import { ServerEndpoints } from "../constant/server-endpoints.enum";
     providedIn: "root",
 })
 export class MainServerControllerService {
-    prefix: string = `http${environment.mainServerSecurity ? "s" : ""}://${environment.mainServerUrl}`;
+    protected auth = inject(AuthService);
+
+    prefix = `http${environment.mainServerSecurity ? "s" : ""}://${environment.mainServerUrl}`;
     path: ServerEndpoints[] = [];
 
     http: AxiosInstance = axios.create({
@@ -18,7 +20,7 @@ export class MainServerControllerService {
         },
     });
 
-    constructor(protected auth: AuthService) {
+    constructor() {
         this.watchToken();
     }
 
@@ -37,7 +39,7 @@ export class MainServerControllerService {
     }
 
     watchToken(): void {
-        this.auth.token.subscribe((token) => {
+        this.auth.token.subscribe(token => {
             this.setHttp(token);
         });
     }

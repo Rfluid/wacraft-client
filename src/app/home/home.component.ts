@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, inject } from "@angular/core";
 import { SidebarComponent } from "../common/sidebar/sidebar.component";
 import { ChatsSidebarComponent } from "../chats-sidebar/chats-sidebar.component";
 import { CommonModule } from "@angular/common";
@@ -31,6 +31,10 @@ import { environment } from "../../environments/environment";
     standalone: true,
 })
 export class HomeComponent implements OnInit {
+    queryParamsService = inject(QueryParamsService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+
     HomeFragment = HomeFragment;
     environment = environment;
 
@@ -39,19 +43,13 @@ export class HomeComponent implements OnInit {
 
     currentFragment!: HomeFragment;
 
-    constructor(
-        public queryParamsService: QueryParamsService,
-        private route: ActivatedRoute,
-        private router: Router,
-    ) {}
-
     async ngOnInit() {
         this.watchQueryParams();
     }
 
     watchQueryParams() {
         // Handle home fragments
-        this.route.fragment.subscribe((fragment) => {
+        this.route.fragment.subscribe(fragment => {
             if (!fragment) {
                 // If there's no fragment, set it to HomeFragment.chats
                 this.router.navigate([], {
@@ -61,8 +59,7 @@ export class HomeComponent implements OnInit {
                 return;
             }
             // Handle existing fragment if needed
-            this.currentFragment =
-                HomeFragment[fragment as keyof typeof HomeFragment];
+            this.currentFragment = HomeFragment[fragment as keyof typeof HomeFragment];
         });
     }
 

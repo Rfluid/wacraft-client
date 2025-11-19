@@ -1,5 +1,4 @@
 import {
-    ChangeDetectorRef,
     Component,
     ElementRef,
     EventEmitter,
@@ -9,6 +8,7 @@ import {
     QueryList,
     ViewChild,
     ViewChildren,
+    inject,
 } from "@angular/core";
 import {
     Conversation,
@@ -35,26 +35,26 @@ import { KeyboardNavigableList } from "../../common/keyboard/keyboard-navigable-
     standalone: true,
 })
 export class ConversationBodyComponent extends KeyboardNavigableList implements OnInit {
-    private scrollingUp: boolean = false;
-    private scrollingDown: boolean = false;
+    private conversationController = inject(ConversationControllerService);
+    private localSettings = inject(LocalSettingsService);
+    private route = inject(ActivatedRoute);
+    userConversationStore = inject(UserConversationsStoreService);
+    private logger = inject(NGXLogger);
+
+    private scrollingUp = false;
+    private scrollingDown = false;
 
     @ViewChild("mainList") mainList!: ElementRef;
 
-    @Input("messagingProductContact")
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
-    @Input("contactName") contactName!: string;
-    @Input("isTyping") isTyping: boolean = false;
+    @Input() contactName!: string;
+    @Input() isTyping = false;
 
-    @Output("reply") reply = new EventEmitter<Conversation>();
-    @Output("reactionSent") reactionSent = new EventEmitter<SenderData>();
+    @Output() reply = new EventEmitter<Conversation>();
+    @Output() reactionSent = new EventEmitter<SenderData>();
 
-    constructor(
-        private conversationController: ConversationControllerService,
-        private localSettings: LocalSettingsService,
-        private route: ActivatedRoute,
-        public userConversationStore: UserConversationsStoreService,
-        private logger: NGXLogger,
-    ) {
+    constructor() {
         super(undefined, ";");
     }
 
@@ -67,7 +67,7 @@ export class ConversationBodyComponent extends KeyboardNavigableList implements 
         const sub = this.userConversationStore.newBottomMessageFromConversations.get(
             this.messagingProductContact.id,
         ) as Subject<Conversation>;
-        sub.subscribe(_ => {
+        sub.subscribe(() => {
             this.scrollIfAtBottom();
         });
 
@@ -216,10 +216,14 @@ export class ConversationBodyComponent extends KeyboardNavigableList implements 
     }
 
     // Flag to prevent multiple adjustments
-    onAsyncContentLoaded(): void {}
+    onAsyncContentLoaded(): void {
+        this.scrollIfAtBottom();
+    }
 
     @ViewChildren(ConversationMessageComponent, { read: ElementRef })
     protected rows!: QueryList<ElementRef<HTMLElement>>;
 
-    protected onEnter(i: number) {}
+    protected onEnter(index: number) {
+        this.rows.toArray()[index]?.nativeElement.click();
+    }
 }

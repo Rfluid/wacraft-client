@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
-import { Conversation, ConversationMessagingProductContact } from "../../../core/message/model/conversation.model";
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, inject } from "@angular/core";
+import {
+    Conversation,
+    ConversationMessagingProductContact,
+} from "../../../core/message/model/conversation.model";
 import { CommonModule } from "@angular/common";
 import { FormControl, FormsModule, NgForm, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ContactControllerService } from "../../../core/contact/controller/contact-controller.service";
@@ -17,7 +20,7 @@ import { NGXLogger } from "ngx-logger";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { NgxIntlTelInputModule } from "ngx-intl-tel-input";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
-import { MessagingProductControllerService } from "../../../core/messaging-product/controller/messaging-product-controller.service";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-contact-info",
@@ -40,30 +43,36 @@ import { MessagingProductControllerService } from "../../../core/messaging-produ
     standalone: true,
 })
 export class ContactInfoComponent implements OnInit {
+    private contactControllerService = inject(ContactControllerService);
+    private messagingProductContactController = inject(MessagingProductContactControllerService);
+    private conversationController = inject(ConversationControllerService);
+    private queryParamsService = inject(QueryParamsService);
+    private router = inject(Router);
+    private logger = inject(NGXLogger);
+
     // Existing properties
-    isEditing: boolean = false;
-    isLoading: boolean = false; // General loading state
+    isEditing = false;
+    isLoading = false; // General loading state
     originalContact: ConversationMessagingProductContact | null = null;
-    quantityOfMediaLinksAndDocs: number = 0;
+    quantityOfMediaLinksAndDocs = 0;
     media: Conversation[] = [];
 
     @Input() messagingProductContact!: ConversationMessagingProductContact;
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
 
-    isDeleting: boolean = false;
-    isBlocking: boolean = false;
-    isUnblocking: boolean = false;
+    isDeleting = false;
+    isBlocking = false;
+    isUnblocking = false;
 
-    phoneControl = new FormControl<any>(null, [Validators.required]);
+    private static readonly EMPTY_PHONE_VALUE = {
+        number: "",
+        countryCode: "",
+        e164Number: "",
+    };
 
-    constructor(
-        private contactControllerService: ContactControllerService,
-        private messagingProductContactController: MessagingProductContactControllerService,
-        private conversationController: ConversationControllerService,
-        private queryParamsService: QueryParamsService,
-        private router: Router,
-        private logger: NGXLogger,
-    ) {}
+    phoneControl = new FormControl<typeof ContactInfoComponent.EMPTY_PHONE_VALUE | null>(null, [
+        Validators.required,
+    ]);
 
     async ngOnInit(): Promise<void> {
         this.isLoading = true; // Start general loading
@@ -76,7 +85,7 @@ export class ContactInfoComponent implements OnInit {
             //         value || "";
             // });
 
-            this.phoneControl.valueChanges.subscribe((value) => {
+            this.phoneControl.valueChanges.subscribe(value => {
                 if (!value?.e164Number) return;
                 this.messagingProductContact.product_details.phone_number = value?.e164Number || "";
             });
@@ -88,10 +97,10 @@ export class ContactInfoComponent implements OnInit {
                     const phoneNumber = parsePhoneNumberFromString(
                         rawPhone.startsWith("+") ? rawPhone : `+${rawPhone}`,
                     );
-                    const phoneValueToSet = {
-                        number: phoneNumber?.nationalNumber || "",
-                        countryCode: phoneNumber?.country || "",
-                        e164Number: phoneNumber?.number,
+                    const phoneValueToSet: typeof ContactInfoComponent.EMPTY_PHONE_VALUE = {
+                        number: `${phoneNumber?.nationalNumber ?? ""}`,
+                        countryCode: phoneNumber?.country ?? "",
+                        e164Number: phoneNumber?.number ?? "",
                     };
                     this.phoneControl.setValue(phoneValueToSet);
                 }
@@ -177,15 +186,19 @@ export class ContactInfoComponent implements OnInit {
         this.isLoading = true; // Start general loading
         try {
             if (!this.messagingProductContact?.id) {
-                const contact = await this.contactControllerService.create(this.messagingProductContact.contact);
-                const phoneNumber = this.messagingProductContact.product_details.phone_number.replace(/\D/g, "");
-                const messagingProductContact = await this.messagingProductContactController.createWhatsAppContact({
-                    contact_id: contact.id,
-                    product_details: {
-                        phone_number: phoneNumber,
-                        wa_id: phoneNumber,
-                    },
-                });
+                const contact = await this.contactControllerService.create(
+                    this.messagingProductContact.contact,
+                );
+                const phoneNumber =
+                    this.messagingProductContact.product_details.phone_number.replace(/\D/g, "");
+                const messagingProductContact =
+                    await this.messagingProductContactController.createWhatsAppContact({
+                        contact_id: contact.id,
+                        product_details: {
+                            phone_number: phoneNumber,
+                            wa_id: phoneNumber,
+                        },
+                    });
 
                 const mpc = (
                     await this.messagingProductContactController.getWhatsAppContacts(
@@ -275,7 +288,7 @@ export class ContactInfoComponent implements OnInit {
                 await this.contactControllerService.delete(this.messagingProductContact.contact_id);
                 await this.router.navigate(["/home"], { fragment: "chats" });
                 window.location.reload();
-            } catch (error: any) {
+            } catch (error: unknown) {
                 this.handleErr("Failed to delete contact. Please try again.", error);
             } finally {
                 this.isDeleting = false; // End deleting loading state
@@ -293,10 +306,12 @@ export class ContactInfoComponent implements OnInit {
         if (confirmDelete) {
             this.isDeleting = true; // Start deleting loading state
             try {
-                await this.messagingProductContactController.delete(this.messagingProductContact.contact_id);
+                await this.messagingProductContactController.delete(
+                    this.messagingProductContact.contact_id,
+                );
                 await this.router.navigate(["/home"], { fragment: "chats" });
                 window.location.reload();
-            } catch (error: any) {
+            } catch (error: unknown) {
                 this.handleErr("Failed to delete contact. Please try again.", error);
             } finally {
                 this.isDeleting = false; // End deleting loading state
@@ -312,7 +327,7 @@ export class ContactInfoComponent implements OnInit {
         try {
             await this.messagingProductContactController.unblock(this.messagingProductContact.id);
             this.messagingProductContact.blocked = false;
-        } catch (error: any) {
+        } catch (error: unknown) {
             this.handleErr("Failed to unblock contact. Please try again.", error);
         } finally {
             this.isUnblocking = false; // End unblocking loading state
@@ -321,11 +336,12 @@ export class ContactInfoComponent implements OnInit {
 
     async countMediaLinksAndDocs() {
         try {
-            this.quantityOfMediaLinksAndDocs = await this.conversationController.countConversationContentLike(
-                this.messagingProductContact.id,
-                'type:\\s*"(image|video|document)"',
-            );
-        } catch (error: any) {
+            this.quantityOfMediaLinksAndDocs =
+                await this.conversationController.countConversationContentLike(
+                    this.messagingProductContact.id,
+                    'type:\\s*"(image|video|document)"',
+                );
+        } catch (error: unknown) {
             this.handleErr("Failed to count media and documents.", error);
         }
     }
@@ -339,7 +355,7 @@ export class ContactInfoComponent implements OnInit {
                 { limit: 5, offset: 0 },
                 { created_at: DateOrderEnum.desc },
             );
-        } catch (error: any) {
+        } catch (error: unknown) {
             this.handleErr("Failed to load media and documents.", error);
         }
     }
@@ -352,11 +368,17 @@ export class ContactInfoComponent implements OnInit {
         mode: "contact_media",
     };
 
-    errorStr: string = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorStr = "";
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

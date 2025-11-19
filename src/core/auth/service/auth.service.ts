@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import axios, { AxiosInstance } from "axios";
 import { ServerEndpoints } from "../../common/constant/server-endpoints.enum";
 import { Subject } from "rxjs";
@@ -14,17 +14,17 @@ import { GrantType } from "../enum/grant-type.enum";
     providedIn: "root",
 })
 export class AuthService {
-    private prefix: string = "";
+    private router = inject(Router);
+    private cookieService = inject(CookieService);
+    private logger = inject(NGXLogger);
+
+    private prefix = "";
     private http: AxiosInstance;
-    private refreshTokenTimeout: any;
+    private refreshTokenTimeout!: NodeJS.Timeout;
 
     token: Subject<string> = new Subject<string>();
 
-    constructor(
-        private router: Router,
-        private cookieService: CookieService,
-        private logger: NGXLogger,
-    ) {
+    constructor() {
         this.prefix = `http${environment.mainServerSecurity ? "s" : ""}://${
             environment.mainServerUrl
         }/${ServerEndpoints.user}/${ServerEndpoints.oauth}`;
@@ -35,14 +35,11 @@ export class AuthService {
     }
 
     async login(username: string, password: string): Promise<TokenResponse> {
-        const response = await this.http.post<TokenResponse>(
-            `${ServerEndpoints.token}`,
-            {
-                username,
-                password,
-                grant_type: GrantType.password,
-            } as TokenRequest,
-        );
+        const response = await this.http.post<TokenResponse>(`${ServerEndpoints.token}`, {
+            username,
+            password,
+            grant_type: GrantType.password,
+        } as TokenRequest);
         this.setToken(response.data.access_token);
         localStorage.setItem("refreshToken", response.data.refresh_token);
 
@@ -57,13 +54,10 @@ export class AuthService {
 
     async refreshAuthToken(): Promise<TokenResponse> {
         const refresh_token = localStorage.getItem("refreshToken");
-        const response = await this.http.post<TokenResponse>(
-            `${ServerEndpoints.token}`,
-            {
-                refresh_token,
-                grant_type: GrantType.refresh_token,
-            } as TokenRequest,
-        );
+        const response = await this.http.post<TokenResponse>(`${ServerEndpoints.token}`, {
+            refresh_token,
+            grant_type: GrantType.refresh_token,
+        } as TokenRequest);
         this.setToken(response.data.access_token);
         localStorage.setItem("refreshToken", response.data.refresh_token);
 
@@ -146,14 +140,12 @@ export class AuthService {
     getParentTransform(subdomainUrl: string): string {
         try {
             // Prepend protocol if missing to create a valid URL
-            if (!/^https?:\/\//i.test(subdomainUrl))
-                subdomainUrl = `https://${subdomainUrl}`;
+            if (!/^https?:\/\//i.test(subdomainUrl)) subdomainUrl = `https://${subdomainUrl}`;
             const url = new URL(subdomainUrl);
             const hostnameParts = url.hostname.split(".");
 
             // Assuming the parent domain is the last three parts (e.g., whatsappmanager.criaup.com.br)
-            if (hostnameParts.length >= 3)
-                return hostnameParts.slice(-3).join(".");
+            if (hostnameParts.length >= 3) return hostnameParts.slice(-3).join(".");
             else return url.hostname;
             // Fallback to the full hostname if it's shorter than expected
         } catch (error) {

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { Component, ElementRef, ViewChild, OnInit, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { SmallButtonComponent } from "../../common/small-button/small-button.component";
 import { CampaignMessage } from "../../../core/campaign/entity/campaign-message.entity";
@@ -13,15 +13,27 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
 import { CampaignMessageSendError } from "../../../core/campaign/entity/campaign-message-send-error.model";
 import { NGXLogger } from "ngx-logger";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-campaign-messages",
-    imports: [CommonModule, FormsModule, SmallButtonComponent, TimeoutErrorModalComponent, NgxJsonViewerModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        SmallButtonComponent,
+        TimeoutErrorModalComponent,
+        NgxJsonViewerModule,
+    ],
     templateUrl: "./campaign-messages.component.html",
     styleUrl: "./campaign-messages.component.scss",
     standalone: true,
 })
-export class CampaignMessagesComponent {
+export class CampaignMessagesComponent implements OnInit {
+    private campaignMessagesController = inject(CampaignMessageControllerService);
+    private messageSendErrorController = inject(CampaignMessageSendErrorControllerService);
+    private route = inject(ActivatedRoute);
+    private logger = inject(NGXLogger);
+
     DateOrderEnum = DateOrderEnum; // For template access
 
     @ViewChild("scrollAnchor", { static: false }) scrollAnchor!: ElementRef;
@@ -29,11 +41,11 @@ export class CampaignMessagesComponent {
 
     campaignId?: string;
     messages: CampaignMessage[] = [];
-    errors: { [messageId: string]: CampaignMessageSendError[] } = {};
-    isLoadingError: { [messageId: string]: boolean } = {};
-    limit: number = 20;
-    isLoading: boolean = false;
-    reachedEnd: boolean = false;
+    errors: Record<string, CampaignMessageSendError[]> = {};
+    isLoadingError: Record<string, boolean> = {};
+    limit = 20;
+    isLoading = false;
+    reachedEnd = false;
     expandedMessageIndex: number | null = null; // Tracks the expanded message
     getPromise: Promise<void> = Promise.resolve();
 
@@ -43,13 +55,6 @@ export class CampaignMessagesComponent {
     createdAtLte?: string;
     dateOrder: DateOrderEnum = DateOrderEnum.desc;
     messageState: "all" | "sent" | "unsent" = "all";
-
-    constructor(
-        private campaignMessagesController: CampaignMessageControllerService,
-        private messageSendErrorController: CampaignMessageSendErrorControllerService,
-        private route: ActivatedRoute,
-        private logger: NGXLogger,
-    ) {}
 
     async ngOnInit(): Promise<void> {
         this.watchQueryParams();
@@ -107,13 +112,28 @@ export class CampaignMessagesComponent {
             let newMessages: CampaignMessage[] = [];
             switch (this.messageState) {
                 case "all":
-                    newMessages = await this.campaignMessagesController.get(query, pagination, order, whereDate);
+                    newMessages = await this.campaignMessagesController.get(
+                        query,
+                        pagination,
+                        order,
+                        whereDate,
+                    );
                     break;
                 case "sent":
-                    newMessages = await this.campaignMessagesController.getSent(query, pagination, order, whereDate);
+                    newMessages = await this.campaignMessagesController.getSent(
+                        query,
+                        pagination,
+                        order,
+                        whereDate,
+                    );
                     break;
                 case "unsent":
-                    newMessages = await this.campaignMessagesController.getUnsent(query, pagination, order, whereDate);
+                    newMessages = await this.campaignMessagesController.getUnsent(
+                        query,
+                        pagination,
+                        order,
+                        whereDate,
+                    );
                     break;
             }
             if (newMessages.length < this.limit) {
@@ -136,7 +156,7 @@ export class CampaignMessagesComponent {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const campaignId = params["campaign.id"];
             if (campaignId !== this.campaignId) {
                 this.campaignId = campaignId;
@@ -159,18 +179,28 @@ export class CampaignMessagesComponent {
 
     onScroll(event: Event): void {
         const element = event.target as HTMLElement;
-        if (!(element.scrollHeight - element.scrollTop <= element.clientHeight + 100) || this.isLoading) return;
+        if (
+            !(element.scrollHeight - element.scrollTop <= element.clientHeight + 100) ||
+            this.isLoading
+        )
+            return;
 
         this.getPromise.then(() => {
             this.getPromise = this.loadMessages();
         });
     }
 
-    errorStr: string = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorStr = "";
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

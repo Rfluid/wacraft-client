@@ -1,11 +1,20 @@
 <div
     class="fixed bottom-0 left-0 right-0 top-0 z-10 flex items-center justify-center bg-gray-800 bg-opacity-70 py-8"
     (click)="closeModal()"
+    role="button"
+    tabindex="0"
+    aria-label="Close contacts modal"
+    (keyup.enter)="closeModal()"
+    (keyup.space)="closeModal()"
 >
     <div
         class="flex h-full max-h-full max-w-md flex-col"
         id="content"
         (click)="$event.stopPropagation()"
+        tabindex="0"
+        role="dialog"
+        (keyup.enter)="$event.stopPropagation()"
+        (keyup.space)="$event.stopPropagation()"
     >
         <!-- Header -->
         <div

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
@@ -9,19 +9,32 @@ import { QueryParamsService } from "../../../core/navigation/service/query-param
 import { UserControllerService } from "../../../core/user/controller/user-controller.service";
 import { UserStoreService } from "../../../core/user/store/user-store.service";
 import { NGXLogger } from "ngx-logger";
-import { MatButtonModule } from "@angular/material/button";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-user-details",
-    imports: [FormsModule, CommonModule, MatIconModule, MatTooltipModule, TimeoutErrorModalComponent],
+    imports: [
+        FormsModule,
+        CommonModule,
+        MatIconModule,
+        MatTooltipModule,
+        TimeoutErrorModalComponent,
+    ],
     templateUrl: "./user-details.component.html",
     styleUrl: "./user-details.component.scss",
     preserveWhitespaces: false,
     standalone: true,
 })
 export class UserDetailsComponent implements OnInit {
+    private queryParamsService = inject(QueryParamsService);
+    private userController = inject(UserControllerService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    userStore = inject(UserStoreService);
+    private logger = inject(NGXLogger);
+
     Role = Role;
     Event = Event;
 
@@ -31,15 +44,6 @@ export class UserDetailsComponent implements OnInit {
     isEditing = false;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        private queryParamsService: QueryParamsService,
-        private userController: UserControllerService,
-        private route: ActivatedRoute,
-        private router: Router,
-        public userStore: UserStoreService,
-        private logger: NGXLogger,
-    ) {}
 
     ngOnInit(): void {
         this.watchQueryParams();
@@ -80,7 +84,7 @@ export class UserDetailsComponent implements OnInit {
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe(async (params) => {
+        this.route.queryParams.subscribe(async params => {
             const userId = params["user.id"];
             if (!(userId != this.userId)) return await this.loadUser();
             this.userId = userId;
@@ -137,7 +141,9 @@ export class UserDetailsComponent implements OnInit {
         if (!this.userId) return;
 
         // Show confirmation alert
-        const confirmed = window.confirm("Are you sure you want to delete this user? This action cannot be undone.");
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this user? This action cannot be undone.",
+        );
 
         // If the user confirms, proceed with the deletion
         if (confirmed) {
@@ -168,16 +174,22 @@ export class UserDetailsComponent implements OnInit {
         }
     }
 
-    showPassword: boolean = false;
+    showPassword = false;
     togglePasswordVisibility(): void {
         this.showPassword = !this.showPassword;
     }
 
-    errorStr: string = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorStr = "";
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

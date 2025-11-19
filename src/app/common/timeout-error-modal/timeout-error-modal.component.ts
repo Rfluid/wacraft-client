@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Component, Input, OnDestroy } from "@angular/core";
 
 @Component({
     selector: "app-timeout-error-modal",
@@ -12,12 +12,12 @@ export class TimeoutErrorModalComponent implements OnDestroy {
     @Input() timeout = 7000; // Default timeout to 7 seconds
     @Input() headerMessage = "An error occurred";
     @Input() message?: string;
-    @Input() data: any; // JSON data to display
+    @Input() data: unknown; // JSON data to display
 
     isVisible = false;
     showData = false;
     progress = 100;
-    intervalId: any;
+    intervalId?: ReturnType<typeof setInterval>;
 
     ngOnDestroy() {
         this.stopTimer();
@@ -47,7 +47,10 @@ export class TimeoutErrorModalComponent implements OnDestroy {
     }
 
     stopTimer() {
-        clearInterval(this.intervalId);
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = undefined;
+        }
     }
 
     toggleData() {

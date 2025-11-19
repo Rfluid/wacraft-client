@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MessageFields } from "../../../core/message/entity/message.entity";
 import { MessageControllerService } from "../../../core/message/controller/message-controller.service";
@@ -21,15 +21,19 @@ import { MessageContentPreviewComponent } from "../../messages/message-content-p
     standalone: true,
 })
 export class MessageReplyHeaderComponent implements OnInit {
-    @Input("message") message?: Conversation;
-    @Input("sent") sent!: boolean;
-    @Input("backgroundColor") backgroundColor: "blue" | "gray" = this.sent
-        ? "blue"
-        : "gray";
-    @Input("contactName") contactName?: string;
-    @Input("replyToMessage")
+    private messageController = inject(MessageControllerService);
+    private messageDataPipe = inject(MessageDataPipe);
+    private templateInterpolator = inject(TemplateInterpolatorService);
+    private templateStore = inject(TemplateStoreService);
+    private router = inject(Router);
+
+    @Input() message?: Conversation;
+    @Input() sent!: boolean;
+    @Input() backgroundColor: "blue" | "gray" = this.sent ? "blue" : "gray";
+    @Input() contactName?: string;
+    @Input()
     replyToMessage?: MessageFields;
-    @Output("asyncContentLoaded") asyncContentLoaded = new EventEmitter();
+    @Output() asyncContentLoaded = new EventEmitter();
 
     interpolatedTemplate: {
         headerText: string;
@@ -46,14 +50,6 @@ export class MessageReplyHeaderComponent implements OnInit {
         footerText: "",
         buttons: [],
     };
-
-    constructor(
-        private messageController: MessageControllerService,
-        private messageDataPipe: MessageDataPipe,
-        private templateInterpolator: TemplateInterpolatorService,
-        private templateStore: TemplateStoreService,
-        private router: Router,
-    ) {}
 
     async ngOnInit(): Promise<void> {
         await this.setMessage();
@@ -87,14 +83,13 @@ export class MessageReplyHeaderComponent implements OnInit {
         const template = await this.templateStore.getByName(templateName);
         if (!template) return;
         const useTemplate = messageData.template;
-        this.interpolatedTemplate =
-            this.templateInterpolator.interpolateTemplate(
-                template,
-                this.replyToMessage,
-                () => {
-                    return useTemplate;
-                },
-            );
+        this.interpolatedTemplate = this.templateInterpolator.interpolateTemplate(
+            template,
+            this.replyToMessage,
+            () => {
+                return useTemplate;
+            },
+        );
     }
 
     get headerUseMediaAsSenderData(): SenderData {
@@ -103,8 +98,7 @@ export class MessageReplyHeaderComponent implements OnInit {
             messaging_product: "whatsapp",
             recipient_type: "individual",
             to: "",
-            [this.interpolatedTemplate.headerType]:
-                this.interpolatedTemplate.headerUseMedia,
+            [this.interpolatedTemplate.headerType]: this.interpolatedTemplate.headerUseMedia,
         };
     }
 

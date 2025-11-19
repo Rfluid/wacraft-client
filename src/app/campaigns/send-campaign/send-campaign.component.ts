@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output, OnInit, inject } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { CampaignGatewayService } from "../../../core/campaign/gateway/campaign-gateway.service";
 import { CampaignResults } from "../../../core/campaign/model/campaign-results.model";
@@ -25,26 +25,24 @@ import { ThemeMode } from "../../../core/common/model/theme-modes.model";
     styleUrl: "./send-campaign.component.scss",
     standalone: true,
 })
-export class SendCampaignComponent {
+export class SendCampaignComponent implements OnInit {
+    private campaignGateway = inject(CampaignGatewayService);
+    private route = inject(ActivatedRoute);
+    private localSettings = inject(LocalSettingsService);
+
     // @ViewChild("chart") chart!: ChartComponent;
 
     campaignId?: string;
-    @Input("total") total: number = 0;
+    @Input() total = 0;
     batchSize: number = this.total;
-    sent: number = 0;
-    errors: number = 0;
-    success: number = 0;
+    sent = 0;
+    errors = 0;
+    success = 0;
 
-    loading: boolean = false;
-    sending: boolean = false;
+    loading = false;
+    sending = false;
 
-    @Output("done") done = new EventEmitter<void>();
-
-    constructor(
-        private campaignGateway: CampaignGatewayService,
-        private route: ActivatedRoute,
-        private localSettings: LocalSettingsService,
-    ) {}
+    @Output() done = new EventEmitter<void>();
 
     async ngOnInit(): Promise<void> {
         const themeMode = this.localSettings.themeMode;

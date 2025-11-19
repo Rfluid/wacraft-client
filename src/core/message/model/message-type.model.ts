@@ -35,9 +35,7 @@ export enum MediaType {
     document = "document",
 }
 
-export function isMediaType(
-    type?: MessageType | ReceivedMessageType | string,
-): boolean {
+export function isMediaType(type?: MessageType | ReceivedMessageType | string): boolean {
     if (!type) return false;
     return (
         type === MessageType.image ||

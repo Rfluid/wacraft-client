@@ -8,8 +8,7 @@ import { MessageFields } from "../entity/message.entity";
 export class MessageIdPipe implements PipeTransform {
     transform(conversation: MessageFields): string {
         const messageId =
-            conversation.receiver_data?.id ||
-            conversation.product_data?.messages[0].id;
+            conversation.receiver_data?.id || conversation.product_data?.messages[0].id;
 
         if (!messageId) throw new Error("Message ID not found");
 

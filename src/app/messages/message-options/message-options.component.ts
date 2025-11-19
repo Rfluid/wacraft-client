@@ -7,6 +7,7 @@ import {
     Input,
     Output,
     ViewChild,
+    inject,
 } from "@angular/core";
 import { MessageInfoDataComponent } from "../message-info-data/message-info-data.component";
 import { Conversation } from "../../../core/message/model/conversation.model";
@@ -22,6 +23,13 @@ import { MessageIdPipe } from "../../../core/message/pipe/message-id.pipe";
 import { MessageFields } from "../../../core/message/entity/message.entity";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
 import { MessageDataPipe } from "../../../core/message/pipe/message-data.pipe";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
+
+interface EmojiSelectEvent {
+    emoji: {
+        native: string;
+    };
+}
 
 @Component({
     selector: "app-message-options",
@@ -38,24 +46,29 @@ import { MessageDataPipe } from "../../../core/message/pipe/message-data.pipe";
     standalone: true,
 })
 export class MessageOptionsComponent {
+    private elementRef = inject(ElementRef);
+    private messageController = inject(MessageControllerService);
+    private messageIdPipe = inject(MessageIdPipe);
+    private logger = inject(NGXLogger);
+
     MessageType = MessageType;
 
-    @Input("message") message!: Conversation;
+    @Input() message!: Conversation;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-    @Output("reply") reply = new EventEmitter();
-    @Output("close") close = new EventEmitter();
-    @Output("reactionSent") reactionSent = new EventEmitter<SenderData>();
+    @Output() reply = new EventEmitter();
+    @Output() close = new EventEmitter();
+    @Output() reactionSent = new EventEmitter<SenderData>();
     @Input("toPhoneNumber") toPhoneNumberInput!: string;
     @Input("toId") toIdInput!: string;
-    @Output("selectMessage") selectMessage = new EventEmitter();
+    @Output() selectMessage = new EventEmitter();
 
-    reaction: string = "";
+    reaction = "";
 
-    showMessageInfo: boolean = false;
+    showMessageInfo = false;
 
-    errorStr: string = "";
-    errorData: any;
+    errorStr = "";
+    errorData: unknown;
 
     get senderData(): SenderData {
         return {
@@ -69,13 +82,6 @@ export class MessageOptionsComponent {
             type: MessageType.reaction,
         };
     }
-
-    constructor(
-        private elementRef: ElementRef,
-        private messageController: MessageControllerService,
-        private messageIdPipe: MessageIdPipe,
-        private logger: NGXLogger,
-    ) {}
 
     replyToMessage(): void {
         this.reply.emit();
@@ -91,7 +97,7 @@ export class MessageOptionsComponent {
         this.close.emit();
     }
 
-    onSelectMessage(event: MouseEvent) {
+    onSelectMessage(event: Event) {
         event.stopPropagation(); // ✅ Prevents click from reaching <li>
         this.selectMessage.emit(this.message);
         this.close.emit();
@@ -102,10 +108,11 @@ export class MessageOptionsComponent {
         this.showEmojiPicker = !this.showEmojiPicker;
     }
 
-    async onEmojiSelect(event: any) {
+    async onEmojiSelect(event: EmojiSelectEvent) {
         this.logger.debug("Emoji selected", event);
-        // Send message
-        this.reaction = event.emoji.native;
+        const nativeEmoji = event.emoji?.native;
+        if (!nativeEmoji) return;
+        this.reaction = nativeEmoji;
         await this.sendReaction();
 
         // Close UI helpers
@@ -154,9 +161,15 @@ export class MessageOptionsComponent {
         }
     }
 
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

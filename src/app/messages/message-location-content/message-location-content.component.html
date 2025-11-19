@@ -1,19 +1,12 @@
 <div id="content">
     <div class="mb-2">
         <google-map height="250px" id="map" [options]="options" *ngIf="options">
-            <map-marker
-                [position]="markerPosition"
-                *ngIf="markerPosition"
-            ></map-marker>
+            <map-marker [position]="markerPosition" *ngIf="markerPosition"></map-marker>
         </google-map>
     </div>
 
     <!-- Header with Google Maps link -->
-    <div
-        class="text-base"
-        id="header"
-        *ngIf="(message | messageData)?.location?.name"
-    >
+    <div class="text-base" id="header" *ngIf="(message | messageData)?.location?.name">
         <p class="">
             <a
                 [href]="
@@ -26,16 +19,14 @@
                 "
                 target="_blank"
                 rel="noopener noreferrer"
-                [textContent]="(message | messageData)?.location?.name"
-            ></a>
+            >
+                {{ (message | messageData)?.location?.name }}
+            </a>
         </p>
     </div>
 
     <!-- Body -->
-    <p
-        class=""
-        id="body"
-        *ngIf="(message | messageData)?.location?.address"
-        [textContent]="(message | messageData)?.location?.address"
-    ></p>
+    <p class="" id="body" *ngIf="(message | messageData)?.location?.address">
+        {{ (message | messageData)?.location?.address }}
+    </p>
 </div>

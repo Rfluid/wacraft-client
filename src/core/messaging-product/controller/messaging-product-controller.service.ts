@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { MainServerControllerService } from "../../common/controller/main-server-controller.service";
-import { AuthService } from "../../auth/service/auth.service";
 import { ServerEndpoints } from "../../common/constant/server-endpoints.enum";
 import { Paginate } from "../../common/model/paginate.model";
 import { DateOrder } from "../../common/model/date-order.model";
@@ -12,8 +11,8 @@ import { Query } from "../model/query.model";
     providedIn: "root",
 })
 export class MessagingProductControllerService extends MainServerControllerService {
-    constructor(auth: AuthService) {
-        super(auth);
+    constructor() {
+        super();
         this.setPath(ServerEndpoints.messaging_product);
         this.setHttp();
     }

@@ -11,5 +11,5 @@ import { MatIconModule } from "@angular/material/icon";
     standalone: true,
 })
 export class MessageForwardedHeaderComponent {
-    @Input("context") context?: ReceivedContext;
+    @Input() context?: ReceivedContext;
 }

@@ -1,6 +1,6 @@
 <a
     [ngClass]="{
-        'w-full flex items-center px-4 py-4 border-b border-gray-200 dark:border-gray-700': true,
+        'flex w-full items-center border-b border-gray-200 px-4 py-4 dark:border-gray-700': true,
         'bg-gray-200 dark:bg-gray-600': isSelected,
         'hover:bg-gray-300 dark:hover:bg-gray-700': !isSelected,
     }"
@@ -10,17 +10,17 @@
     #rootAnchor
 >
     <div class="ml-3 flex-1 truncate">
-        <div class="flex justify-between items-center mb-2">
+        <div class="mb-2 flex items-center justify-between">
             <span
-                class="text-gray-800 dark:text-gray-200 font-medium truncate"
+                class="truncate font-medium text-gray-800 dark:text-gray-200"
                 [textContent]="webhook.url"
             ></span>
             <span
-                class="text-gray-500 dark:text-gray-400 text-sm"
+                class="text-sm text-gray-500 dark:text-gray-400"
                 [textContent]="webhook.created_at | date: 'short'"
             ></span>
         </div>
-        <div class="w-full flex flex-row justify-between items-end">
+        <div class="flex w-full flex-row items-end justify-between">
             <span
                 [ngClass]="{
                     'text-green-600': webhook.http_method === 'GET',
@@ -29,11 +29,11 @@
                     'text-red-600': webhook.http_method === 'DELETE',
                     'text-orange-600': webhook.http_method === 'PATCH',
                 }"
-                class="text-md font-semibold text-left truncate"
+                class="text-md truncate text-left font-semibold"
                 [textContent]="webhook.http_method"
             ></span>
             <code
-                class="flex-shrink-0 dark:text-gray-500 text-sm"
+                class="flex-shrink-0 text-sm dark:text-gray-500"
                 [textContent]="webhook.event"
             ></code>
         </div>

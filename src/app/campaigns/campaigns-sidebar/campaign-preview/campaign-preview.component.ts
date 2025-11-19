@@ -5,6 +5,8 @@ import {
     HostListener,
     Input,
     ViewChild,
+    OnInit,
+    inject,
 } from "@angular/core";
 import { CampaignFields } from "../../../../core/campaign/entity/campaign.entity";
 import { ActivatedRoute, RouterModule } from "@angular/router";
@@ -17,19 +19,19 @@ import { CommonModule } from "@angular/common";
     styleUrl: "./campaign-preview.component.scss",
     standalone: true,
 })
-export class CampaignPreviewComponent {
-    @Input("campaign") campaign!: CampaignFields;
+export class CampaignPreviewComponent implements OnInit {
+    private route = inject(ActivatedRoute);
 
-    isSelected: boolean = false;
+    @Input() campaign!: CampaignFields;
 
-    constructor(private route: ActivatedRoute) {}
+    isSelected = false;
 
     ngOnInit() {
         this.watchQueryParams();
     }
 
     watchQueryParams() {
-        this.route.queryParams.subscribe((params) => {
+        this.route.queryParams.subscribe(params => {
             this.isSelected = params["campaign.id"] === this.campaign.id;
         });
     }

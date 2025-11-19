@@ -1,16 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { LocalSettingsService } from './local-settings.service';
+import { LocalSettingsService } from "./local-settings.service";
 
-describe('LocalSettingsService', () => {
-  let service: LocalSettingsService;
+describe("LocalSettingsService", () => {
+    let service: LocalSettingsService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(LocalSettingsService);
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        service = TestBed.inject(LocalSettingsService);
+    });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it("should be created", () => {
+        expect(service).toBeTruthy();
+    });
 });

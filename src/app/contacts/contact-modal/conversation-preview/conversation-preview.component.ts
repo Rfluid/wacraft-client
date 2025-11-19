@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
     Conversation,
@@ -16,28 +16,22 @@ import { MessageContentPreviewComponent } from "../../../messages/message-conten
     styleUrl: "./conversation-preview.component.scss",
     standalone: true,
 })
-export class ConversationPreviewComponent implements OnInit {
-    @Input("messagingProductContact")
+export class ConversationPreviewComponent {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private statusGateway = inject(StatusGatewayService);
+
+    @Input()
     messagingProductContact!: ConversationMessagingProductContact;
 
-    @Input("messageId") messageId?: string;
-    @Input("lastMessage") lastMessage!: Conversation;
-    @Input("date") date!: Date;
-    @Input("unread") unread: number = 0;
-    @Input("selected") selected: boolean = false;
+    @Input() messageId?: string;
+    @Input() lastMessage!: Conversation;
+    @Input() date!: Date;
+    @Input() unread = 0;
+    @Input() selected = false;
 
-    @Output("select") select =
-        new EventEmitter<ConversationMessagingProductContact>();
-    @Output("unSelect") unSelect =
-        new EventEmitter<ConversationMessagingProductContact>();
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private statusGateway: StatusGatewayService,
-    ) {}
-
-    async ngOnInit() {}
+    @Output() select = new EventEmitter<ConversationMessagingProductContact>();
+    @Output() unSelect = new EventEmitter<ConversationMessagingProductContact>();
 
     handleClick() {
         if (this.selected) {

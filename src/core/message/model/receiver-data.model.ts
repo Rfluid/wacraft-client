@@ -32,5 +32,5 @@ export interface ReceiverData {
 
     button?: ButtonData;
 
-    [key: string]: any;
+    [key: string]: unknown;
 }

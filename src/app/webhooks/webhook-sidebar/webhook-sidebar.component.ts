@@ -1,5 +1,14 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChild, ViewChildren } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    HostListener,
+    OnInit,
+    QueryList,
+    ViewChild,
+    ViewChildren,
+    inject,
+} from "@angular/core";
 import { WebhookPreviewComponent } from "./webhook-preview/webhook-preview.component";
 import { RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
@@ -10,6 +19,7 @@ import { SmallButtonComponent } from "../../common/small-button/small-button.com
 import { KeyboardNavigableList } from "../../common/keyboard/keyboard-navigable-list.base";
 import { NGXLogger } from "ngx-logger";
 import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/timeout-error-modal.component";
+import { isHttpError } from "../../../core/common/model/http-error-shape.model";
 
 @Component({
     selector: "app-webhook-sidebar",
@@ -27,20 +37,20 @@ import { TimeoutErrorModalComponent } from "../../common/timeout-error-modal/tim
     standalone: true,
 })
 export class WebhookSidebarComponent extends KeyboardNavigableList implements OnInit {
-    private scrolling: boolean = false;
+    queryParamsService = inject(QueryParamsService);
+    webhookStore = inject(WebhookStoreService);
+    private logger = inject(NGXLogger);
+
+    private scrolling = false;
+
+    constructor() {
+        super();
+    }
 
     @ViewChild("searchTextarea")
     searchTextarea!: ElementRef<HTMLTextAreaElement>;
 
     @ViewChild("errorModal") errorModal!: TimeoutErrorModalComponent;
-
-    constructor(
-        public queryParamsService: QueryParamsService,
-        public webhookStore: WebhookStoreService,
-        private logger: NGXLogger,
-    ) {
-        super();
-    }
 
     adjustHeight(event: Event): void {
         const element = event.target as HTMLElement;
@@ -162,11 +172,17 @@ export class WebhookSidebarComponent extends KeyboardNavigableList implements On
         event.preventDefault(); // Prevent text selection
     }
 
-    errorStr: string = "";
-    errorData: any;
-    handleErr(message: string, err: any) {
-        this.errorData = err?.response?.data;
-        this.errorStr = err?.response?.data?.description || message;
+    errorStr = "";
+    errorData: unknown;
+    handleErr(message: string, err: unknown) {
+        if (isHttpError(err)) {
+            this.errorData = err.response?.data;
+            this.errorStr = err.response?.data?.description ?? message;
+        } else {
+            this.errorData = err;
+            this.errorStr = message;
+        }
+
         this.logger.error("Async error", err);
         this.errorModal.openModal();
     }

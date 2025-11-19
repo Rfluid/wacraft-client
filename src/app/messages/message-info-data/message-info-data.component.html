@@ -1,40 +1,43 @@
 <div
-    class="max-h-screen py-8 fixed top-0 left-0 bottom-0 right-0 flex items-center justify-center bg-gray-800 bg-opacity-70 z-10"
+    class="fixed bottom-0 left-0 right-0 top-0 z-10 flex max-h-screen items-center justify-center bg-gray-800 bg-opacity-70 py-8"
 >
     <div
-        class="flex flex-col max-h-full w-[800px] max-w-full rounded-sm shadow-lg overflow-y-hidden"
+        class="flex max-h-full w-[800px] max-w-full flex-col overflow-y-hidden rounded-sm shadow-lg"
+        role="dialog"
+        tabindex="0"
     >
         <div
-            class="flex-grow-0 px-6 py-2 bg-blue-600 dark:bg-gray-700 text-white flex justify-between items-center"
+            class="flex flex-grow-0 items-center justify-between bg-blue-600 px-6 py-2 text-white dark:bg-gray-700"
         >
             <h2 class="text-xl font-medium" i18n>Message details</h2>
             <div class="flex gap-2">
                 <div
-                    class="w-10 aspect-square flex items-center justify-center rounded-full active:bg-gray-200 dark:active:bg-gray-600 outline-none"
+                    class="flex aspect-square w-10 items-center justify-center rounded-full outline-none active:bg-gray-200 dark:active:bg-gray-600"
                     role="button"
                     [ngClass]="{
                         'bg-gray-300 dark:bg-gray-500': copied,
                         'hover:bg-gray-400 dark:hover:bg-gray-600': !copied,
                     }"
                     (click)="copyToClipboard()"
+                    tabindex="0"
+                    (keyup.enter)="copyToClipboard()"
+                    (keyup.space)="copyToClipboard()"
                 >
                     <!-- Material Icon -->
-                    <mat-icon
-                        class="aspect-square text-white material-icons-outlined"
+                    <mat-icon class="material-icons-outlined aspect-square text-white"
                         >content_copy</mat-icon
                     >
                 </div>
 
                 <button
-                    class="w-10 aspect-square flex items-center justify-center rounded-full active:bg-gray-200 dark:active:bg-gray-600 outline-none"
+                    class="flex aspect-square w-10 items-center justify-center rounded-full outline-none active:bg-gray-200 dark:active:bg-gray-600"
                     [ngClass]="{
                         'hover:bg-gray-400 dark:hover:bg-gray-600': true,
                     }"
                     (click)="close()"
                 >
                     <!-- Material Icon -->
-                    <mat-icon
-                        class="aspect-square text-white material-icons-outlined"
+                    <mat-icon class="material-icons-outlined aspect-square text-white"
                         >close</mat-icon
                     >
                 </button>
@@ -43,13 +46,9 @@
 
         <!-- JSON Viewer -->
         <div
-            class="flex-grow-1 p-4 max-h-full h-auto w-full bg-white dark:bg-gray-900 overflow-y-auto scrollable"
+            class="flex-grow-1 scrollable h-auto max-h-full w-full overflow-y-auto bg-white p-4 dark:bg-gray-900"
         >
-            <ngx-json-viewer
-                [json]="message"
-                [expanded]="true"
-                [depth]="2"
-            ></ngx-json-viewer>
+            <ngx-json-viewer [json]="message" [expanded]="true" [depth]="2"></ngx-json-viewer>
         </div>
     </div>
 </div>
