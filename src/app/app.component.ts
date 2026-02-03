@@ -23,8 +23,8 @@ export class AppComponent {
 
         this.router.events
             .pipe(
-                filter((event) => event instanceof NavigationEnd),
-                take(1)
+                filter(event => event instanceof NavigationEnd),
+                take(1),
             )
             .subscribe(() => {
                 this.isLoading.set(false);
