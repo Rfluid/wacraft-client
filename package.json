@@ -11,8 +11,8 @@
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
         "lint": "ng lint",
-        "format": "prettier . --write",
-        "format:check": "prettier . --check"
+        "format": "prettier . --write --cache",
+        "format:check": "prettier . --check --cache"
     },
     "private": true,
     "dependencies": {

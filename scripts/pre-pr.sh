@@ -38,7 +38,7 @@ has_tool() { command -v "$1" &>/dev/null; }
 # ── hints (shown on failure) ──────────────────────────────────────────────────
 declare -A HINTS
 HINTS[lint]="ng lint --fix could not resolve all violations; fix remaining ESLint errors manually"
-HINTS[prettier]="prettier --write failed; check for syntax errors in the files above"
+HINTS[prettier]="prettier --write --cache failed; check for syntax errors in the files above"
 HINTS[npm_audit]="npm audit fix --audit-level=high --omit=dev could not resolve all vulnerabilities; upgrade remaining packages manually"
 HINTS[build]="fix the build errors above; run: npm run build for details"
 HINTS[conftest]="fix the Dockerfile policy violations listed above"
