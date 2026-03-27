@@ -169,4 +169,13 @@ export class BillingSubscriptionStoreService {
             throw error;
         }
     }
+
+    async retry(id: string, withWorkspace = false): Promise<string | null> {
+        try {
+            return await this.subscriptionController.retry(id, withWorkspace);
+        } catch (error) {
+            this.logger.error("Error retrying subscription", error);
+            return null;
+        }
+    }
 }

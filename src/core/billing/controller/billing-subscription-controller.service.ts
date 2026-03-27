@@ -90,4 +90,13 @@ export class BillingSubscriptionControllerService extends MainServerControllerSe
         }
         return (await this.requestWithoutWorkspace<Subscription>("post", url, { params })).data;
     }
+
+    async retry(id: string, withWorkspace = true): Promise<string> {
+        const url = `${ServerEndpoints.billing_subscription}/${ServerEndpoints.billing_retry}`;
+        const params = { id };
+        if (withWorkspace) {
+            return (await this.http.post<string>(url, null, { params })).data;
+        }
+        return (await this.requestWithoutWorkspace<string>("post", url, { params })).data;
+    }
 }
