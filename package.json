@@ -1,6 +1,6 @@
 {
     "name": "wacraft-client",
-    "version": "0.2.6",
+    "version": "0.2.7",
     "scripts": {
         "ng": "ng",
         "generateenv": "node ./scripts/generate-env.js",

@@ -19,6 +19,7 @@ export class BillingSubscriptionsComponent implements OnInit {
     private scrolling = false;
 
     syncingSubscriptionId: string | null = null;
+    retryingSubscriptionId: string | null = null;
 
     // Subscription scope
     subscriptionScope: "user" | "workspace" = "user";
@@ -188,6 +189,34 @@ export class BillingSubscriptionsComponent implements OnInit {
             this.errorMessage = "Failed to sync subscription. Please try again.";
         } finally {
             this.syncingSubscriptionId = null;
+        }
+    }
+
+    canRetry(sub: Subscription): boolean {
+        return (
+            this.subscriptionStatus(sub) === "expired" &&
+            sub.payment_mode === "subscription" &&
+            !!sub.stripe_subscription_id
+        );
+    }
+
+    async retrySubscription(sub: Subscription): Promise<void> {
+        this.retryingSubscriptionId = sub.id;
+        this.errorMessage = "";
+        try {
+            const url = await this.subscriptionStore.retry(
+                sub.id,
+                this.subscriptionScope === "workspace",
+            );
+            if (url) {
+                window.location.href = url;
+            } else {
+                this.errorMessage = "Failed to get retry URL. Please try again.";
+            }
+        } catch {
+            this.errorMessage = "Failed to get retry URL. Please try again.";
+        } finally {
+            this.retryingSubscriptionId = null;
         }
     }
 }

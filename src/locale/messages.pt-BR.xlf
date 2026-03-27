@@ -318,6 +318,10 @@
         <source>Interactive message body...</source>
         <target>Corpo da mensagem interativa...</target>
       </trans-unit>
+      <trans-unit id="2574404777478478520" datatype="html">
+        <source>Refresh usage</source>
+        <target state="translated">Atualizar uso</target>
+      </trans-unit>
       <trans-unit id="2575216557756164032" datatype="html">
         <source>Plan description (optional)</source>
         <target>Descrição do plano (opcional)</target>
@@ -978,6 +982,10 @@
         <source>Read Control</source>
         <target>Controle de leitura</target>
       </trans-unit>
+      <trans-unit id="6266463461240217677" datatype="html">
+        <source> Retry Payment </source>
+        <target state="translated"> Repetir pagamento </target>
+      </trans-unit>
       <trans-unit id="626781142089573549" datatype="html">
         <source>Click to upload</source>
         <target>Clique para carregar</target>
@@ -1222,6 +1230,10 @@
         <source>Open help</source>
         <target>Abrir ajuda</target>
       </trans-unit>
+      <trans-unit id="631870821641035760" datatype="html">
+        <source>Auto-refresh</source>
+        <target state="translated">Atualização automática</target>
+      </trans-unit>
       <trans-unit id="639280859923525431" datatype="html">
         <source> Phone number in international format </source>
         <target> Número de telefone no formato internacional </target>
@@ -1245,6 +1257,10 @@
       <trans-unit id="3120567507750501007" datatype="html">
         <source><x id="START_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;svg class=&quot;h-4 w-4 text-slate-400&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot; &gt;"/><x id="START_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot; d=&quot;M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z&quot; /&gt;"/><x id="CLOSE_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot; d=&quot;M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z&quot; /&gt;"/><x id="CLOSE_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;/svg&gt;"/> WhatsApp Business API Configuration </source>
         <target><x id="START_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;svg class=&quot;h-4 w-4 text-slate-400&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; viewBox=&quot;0 0 24 24&quot; &gt;"/><x id="START_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot; d=&quot;M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z&quot; /&gt;"/><x id="CLOSE_TAG__SVG_PATH" ctype="x-_svg_path" equiv-text="&lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; stroke-width=&quot;2&quot; d=&quot;M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z&quot; /&gt;"/><x id="CLOSE_TAG__SVG_SVG" ctype="x-_svg_svg" equiv-text="&lt;/svg&gt;"/> Configuração da API WhatsApp Business </target>
+      </trans-unit>
+      <trans-unit id="3133539296286953705" datatype="html">
+        <source>Stop</source>
+        <target state="translated">Parar</target>
       </trans-unit>
       <trans-unit id="3135690277375936874" datatype="html">
         <source> All credential fields are required for new configurations </source>
