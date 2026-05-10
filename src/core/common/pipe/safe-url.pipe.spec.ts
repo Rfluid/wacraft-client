@@ -19,7 +19,6 @@ describe("SafeUrlPipe", () => {
 
         // Set up environment for testing
         environment.mainServerUrl = "trusted.com";
-        environment.automationServerUrl = "automation.io";
     });
 
     it("create an instance", () => {
@@ -38,16 +37,6 @@ describe("SafeUrlPipe", () => {
 
     it("should allow URLs from mainServerUrl", () => {
         const trustedUrl = "https://trusted.com/api/data";
-        sanitizer.bypassSecurityTrustResourceUrl.and.returnValue(trustedUrl as SafeResourceUrl);
-
-        const result = pipe.transform(trustedUrl);
-
-        expect(result).toBe(trustedUrl as SafeResourceUrl);
-        expect(sanitizer.bypassSecurityTrustResourceUrl).toHaveBeenCalledWith(trustedUrl);
-    });
-
-    it("should allow URLs from automationServerUrl", () => {
-        const trustedUrl = "https://automation.io/dashboard";
         sanitizer.bypassSecurityTrustResourceUrl.and.returnValue(trustedUrl as SafeResourceUrl);
 
         const result = pipe.transform(trustedUrl);

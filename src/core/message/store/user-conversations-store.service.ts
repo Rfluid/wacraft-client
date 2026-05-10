@@ -159,7 +159,7 @@ export class UserConversationsStoreService {
     }
 
     private unshift(conversations: Conversation[], messagingProductContactId: string) {
-        const currentConversations = this.messageHistory.get(messagingProductContactId) || [];
+        const currentConversations = this.messageHistory.get(messagingProductContactId);
 
         if (currentConversations) return currentConversations.unshift(...conversations);
 

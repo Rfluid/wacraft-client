@@ -28,33 +28,8 @@ import { DevtoolsComponent } from "./devtools/devtools.component";
 import { TokenReplacerComponent } from "./devtools/tools/token-replacer/token-replacer.component";
 import { devtoolsGuard } from "../core/auth/guard/devtools.guard";
 
-export enum RoutePath {
-    home = "home",
-    account = "account",
-    auth = "auth",
-    login = "login",
-    webhooks = "webhooks",
-    users = "users",
-    workspaceSettings = "workspace-settings",
-    workspaceMembers = "workspace-members",
-    phoneConfigs = "phone-configs",
-    phoneConfigNew = "phone-configs/new",
-    phoneConfigDetail = "phone-configs/:id",
-    register = "register",
-    verifyEmail = "verify-email",
-    forgotPassword = "forgot-password",
-    resetPassword = "reset-password",
-    acceptInvitation = "accept-invitation",
-    invitation = "invitation",
-    verifyEmailRequired = "verify-email-required",
-    privacyPolicy = "privacy-policy",
-    termsOfService = "terms-of-service",
-    billing = "billing",
-    billingAdmin = "billing-admin",
-    billingSuccess = "billing-success",
-    billingCancel = "billing-cancel",
-    devtools = "devtools",
-}
+export { RoutePath } from "../core/common/constant/route-path.enum";
+import { RoutePath } from "../core/common/constant/route-path.enum";
 
 export const routes: Routes = [
     // Public auth routes
