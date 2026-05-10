@@ -9,12 +9,16 @@
 #   conftest  → conftest test       (check only — no action equivalent)
 #   gitleaks  → gitleaks detect     (check only — no action equivalent)
 #   npm_audit → npm audit fix       (auto-fixes what it can; remaining vulnerabilities fail the gate)
+#   test      → ng test             (check only — Karma + Jasmine, headless Chrome)
 #   build     → npm run build       (check only — no action equivalent)
 #
-# Dependency graph (matches CI jobs):
+# Dependency graph (similar to CI; test serialized after npm_audit because
+# `npm audit fix` mutates node_modules in this script — running it in
+# parallel with `ng test` causes Karma to read a half-rewritten dep tree):
 #   Wave 1 (parallel): lint | prettier | conftest | gitleaks
-#   Wave 2:            npm_audit    <- needs lint + prettier
-#   Wave 3:            build        <- needs npm_audit
+#   Wave 2:            npm_audit            <- needs lint + prettier
+#   Wave 3:            test                 <- needs npm_audit (serial)
+#   Wave 4:            build                <- needs test
 #   conftest / gitleaks run freely and never block other waves.
 set -uo pipefail
 
@@ -40,6 +44,7 @@ declare -A HINTS
 HINTS[lint]="ng lint --fix could not resolve all violations; fix remaining ESLint errors manually"
 HINTS[prettier]="prettier --write --cache failed; check for syntax errors in the files above"
 HINTS[npm_audit]="npm audit fix --audit-level=high --omit=dev could not resolve all vulnerabilities; upgrade remaining packages manually"
+HINTS[test]="fix failing specs; run: npx ng test --watch=false --browsers=ChromeHeadless for details"
 HINTS[build]="fix the build errors above; run: npm run build for details"
 HINTS[conftest]="fix the Dockerfile policy violations listed above"
 HINTS[gitleaks]="remove the secret from history; see: git-filter-repo or BFG"
@@ -175,7 +180,7 @@ banner "Gate — lint | prettier"
 wait_for lint prettier
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Wave 2 — npm audit (needs lint-and-format gate)
+# Wave 2 — npm_audit (mutates node_modules; must finish before test/build)
 # ─────────────────────────────────────────────────────────────────────────────
 if gate_ok lint prettier; then
     banner "Wave 2 — npm_audit"
@@ -184,16 +189,29 @@ if gate_ok lint prettier; then
     banner "Gate — npm_audit"
     wait_for npm_audit
 
-    # ── Wave 3 — build (needs npm audit) ──────────────────────────────────
+    # ── Wave 3 — test (needs settled node_modules from npm_audit) ────────
     if gate_ok npm_audit; then
-        banner "Wave 3 — build"
-        launch build npm run build
-        wait_for build
+        banner "Wave 3 — test"
+        launch test npx ng test --watch=false --browsers=ChromeHeadless
+
+        banner "Gate — test"
+        wait_for test
+
+        # ── Wave 4 — build (needs test) ──────────────────────────────────
+        if gate_ok test; then
+            banner "Wave 4 — build"
+            launch build npm run build
+            wait_for build
+        else
+            mark_skip build "test failed"
+        fi
     else
+        mark_skip test  "npm_audit failed"
         mark_skip build "npm_audit failed"
     fi
 else
     mark_skip npm_audit "lint/prettier gate failed"
+    mark_skip test      "lint/prettier gate failed"
     mark_skip build     "lint/prettier gate failed"
 fi
 
