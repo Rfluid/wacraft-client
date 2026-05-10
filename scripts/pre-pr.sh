@@ -44,7 +44,7 @@ declare -A HINTS
 HINTS[lint]="ng lint --fix could not resolve all violations; fix remaining ESLint errors manually"
 HINTS[prettier]="prettier --write --cache failed; check for syntax errors in the files above"
 HINTS[npm_audit]="npm audit fix --audit-level=high --omit=dev could not resolve all vulnerabilities; upgrade remaining packages manually"
-HINTS[test]="fix failing specs; run: npx ng test --watch=false --browsers=ChromeHeadless for details"
+HINTS[test]="fix failing specs; run: npm test -- --watch=false --browsers=ChromeHeadless for details"
 HINTS[build]="fix the build errors above; run: npm run build for details"
 HINTS[conftest]="fix the Dockerfile policy violations listed above"
 HINTS[gitleaks]="remove the secret from history; see: git-filter-repo or BFG"
@@ -192,7 +192,9 @@ if gate_ok lint prettier; then
     # ── Wave 3 — test (needs settled node_modules from npm_audit) ────────
     if gate_ok npm_audit; then
         banner "Wave 3 — test"
-        launch test npx ng test --watch=false --browsers=ChromeHeadless
+        # Routed through `npm test` so the `pretest` hook regenerates the
+        # gitignored env/plugins-config files before Karma compiles.
+        launch test npm test -- --watch=false --browsers=ChromeHeadless
 
         banner "Gate — test"
         wait_for test

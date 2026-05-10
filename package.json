@@ -6,6 +6,7 @@
         "generateenv": "node ./scripts/generate-env.js",
         "generatepluginsconfig": "node ./scripts/generate-plugins-config.js",
         "prebuild": "npm run generateenv && npm run generatepluginsconfig",
+        "pretest": "npm run generateenv && npm run generatepluginsconfig",
         "start": "ng serve",
         "build": "ng build --localize",
         "watch": "ng build --watch --configuration development",

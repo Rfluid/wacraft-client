@@ -51,7 +51,10 @@ jobs:
                   cache-dependency-path: "package-lock.json"
             - run: npm ci
             - name: Run unit tests (headless Chrome, single run)
-              run: npx ng test --watch=false --browsers=ChromeHeadless
+              # `npm test` triggers the `pretest` hook that generates
+              # src/environments/environment.ts and src/plugins-config/plugins-config.ts
+              # (both gitignored — produced from .env / process.env).
+              run: npm test -- --watch=false --browsers=ChromeHeadless
 
     security:
         name: Dependency Security Scan
