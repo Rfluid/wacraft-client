@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { LoggerTestingModule } from "ngx-logger/testing";
+import { provideRouter } from "@angular/router";
 
 import { MessageInfoDataComponent } from "./message-info-data.component";
 
@@ -8,7 +10,8 @@ describe("MessageInfoDataComponent", () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [MessageInfoDataComponent],
+            imports: [LoggerTestingModule, MessageInfoDataComponent],
+            providers: [provideRouter([])],
         }).compileComponents();
 
         fixture = TestBed.createComponent(MessageInfoDataComponent);

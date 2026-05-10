@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { SidebarComponent } from "../sidebar/sidebar.component";
-import { RoutePath } from "../../app.routes";
+import { RoutePath } from "../../../core/common/constant/route-path.enum";
 import { HomeFragment } from "../../home/model/home-fragment.model";
 
 @Component({

@@ -174,7 +174,7 @@ export class ConversationStoreService {
             return;
         }
 
-        this.add(conversations);
+        await this.add(conversations);
     }
 
     read(messagingProductContactId: string) {

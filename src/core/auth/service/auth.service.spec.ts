@@ -156,4 +156,33 @@ describe("AuthService", () => {
         expect(service.loginTime).toBe(0);
         expect(localStorage.getItem("loginTime")).toBeNull();
     });
+
+    it("logout clears tokens, loginTime, the refresh timer, and routes to /auth/login", () => {
+        localStorage.setItem("accessToken", "tok");
+        localStorage.setItem("refreshToken", "rfr");
+        service.loginTime = new Date();
+        const tokenSpy = spyOn(service.token, "next").and.callThrough();
+
+        service.logout();
+
+        expect(localStorage.getItem("accessToken")).toBeNull();
+        expect(localStorage.getItem("refreshToken")).toBeNull();
+        expect(service.loginTime).toBe(0);
+        expect(tokenSpy).toHaveBeenCalledWith("");
+        expect(router.navigate).toHaveBeenCalledWith(["/auth/login"]);
+    });
+
+    it("setToken emits on the token Subject and persists to localStorage", () => {
+        const seen: string[] = [];
+        service.token.subscribe(t => seen.push(t));
+        service.setToken("tok-new");
+        expect(seen).toEqual(["tok-new"]);
+        expect(localStorage.getItem("accessToken")).toBe("tok-new");
+    });
+
+    it("getToken returns the persisted access token, or empty string when missing", () => {
+        expect(service.getToken()).toBe("");
+        localStorage.setItem("accessToken", "stored");
+        expect(service.getToken()).toBe("stored");
+    });
 });

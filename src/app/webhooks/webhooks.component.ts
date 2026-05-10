@@ -2,7 +2,7 @@ import { Component, HostListener, inject } from "@angular/core";
 import { QueryParamsService } from "../../core/navigation/service/query-params.service";
 import { SidebarLayoutComponent } from "../common/sidebar-layout/sidebar-layout.component";
 
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 import { WebhookSidebarComponent } from "./webhook-sidebar/webhook-sidebar.component";
 import { WebhookDetailsComponent } from "./webhook-details/webhook-details.component";
 import { ActivatedRoute, Router } from "@angular/router";

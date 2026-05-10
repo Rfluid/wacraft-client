@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { SidebarLayoutComponent } from "../common/sidebar-layout/sidebar-layout.component";
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 import { BillingPlanStoreService } from "../../core/billing/store/billing-plan-store.service";
 import { BillingSubscriptionStoreService } from "../../core/billing/store/billing-subscription-store.service";
 import { BillingEndpointWeightStoreService } from "../../core/billing/store/billing-endpoint-weight-store.service";

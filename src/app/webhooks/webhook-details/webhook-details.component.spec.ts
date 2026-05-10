@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { LoggerTestingModule } from "ngx-logger/testing";
+import { provideRouter } from "@angular/router";
 
 import { WebhookDetailsComponent } from "./webhook-details.component";
 
@@ -8,7 +10,8 @@ describe("WebhookDetailsComponent", () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [WebhookDetailsComponent],
+            imports: [LoggerTestingModule, WebhookDetailsComponent],
+            providers: [provideRouter([])],
         }).compileComponents();
 
         fixture = TestBed.createComponent(WebhookDetailsComponent);

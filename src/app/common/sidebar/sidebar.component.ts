@@ -10,7 +10,7 @@ import { WorkspaceStoreService } from "../../../core/workspace/store/workspace-s
 import { WorkspaceContextService } from "../../../core/workspace/store/workspace-context.service";
 import { Policy } from "../../../core/workspace/model/policy.model";
 import { MatTooltipModule } from "@angular/material/tooltip";
-import { RoutePath } from "../../app.routes";
+import { RoutePath } from "../../../core/common/constant/route-path.enum";
 import { HomeFragment } from "../../home/model/home-fragment.model";
 import { NavItem } from "./model/nav-item.model";
 import { ShortcutsComponent } from "../../shortcuts/shortcuts.component";
