@@ -6,7 +6,7 @@ import { AuthService } from "../../auth/service/auth.service";
 import { WorkspaceContextService } from "../../workspace/store/workspace-context.service";
 import { environment } from "../../../environments/environment";
 import { ServerEndpoints } from "../constant/server-endpoints.enum";
-import { RoutePath } from "../../../app/app.routes";
+import { RoutePath } from "../constant/route-path.enum";
 
 @Injectable({
     providedIn: "root",
