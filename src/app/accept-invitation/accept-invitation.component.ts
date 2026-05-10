@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 
 @Component({
     selector: "app-accept-invitation",

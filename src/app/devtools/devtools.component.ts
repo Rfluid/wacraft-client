@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { SidebarLayoutComponent } from "../common/sidebar-layout/sidebar-layout.component";
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 
 interface DevTool {
     path: string;

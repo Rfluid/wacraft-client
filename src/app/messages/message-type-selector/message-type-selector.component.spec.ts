@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { LoggerTestingModule } from "ngx-logger/testing";
+import { provideRouter } from "@angular/router";
 
 import { MessageTypeSelectorComponent } from "./message-type-selector.component";
 
@@ -8,7 +10,8 @@ describe("MessageTypeSelectorComponent", () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [MessageTypeSelectorComponent],
+            imports: [LoggerTestingModule, MessageTypeSelectorComponent],
+            providers: [provideRouter([])],
         }).compileComponents();
 
         fixture = TestBed.createComponent(MessageTypeSelectorComponent);

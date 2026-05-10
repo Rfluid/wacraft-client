@@ -3,7 +3,7 @@ import { CanActivateFn, Router } from "@angular/router";
 import { AuthService } from "../service/auth.service";
 import { UserStoreService } from "../../user/store/user-store.service";
 import { WorkspaceStoreService } from "../../workspace/store/workspace-store.service";
-import { RoutePath } from "../../../app/app.routes";
+import { RoutePath } from "../../common/constant/route-path.enum";
 
 export const userGuard: CanActivateFn = async (route, state) => {
     const authService = inject(AuthService);

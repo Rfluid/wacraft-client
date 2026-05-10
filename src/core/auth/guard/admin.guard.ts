@@ -2,7 +2,7 @@ import { inject } from "@angular/core";
 import { CanActivateFn, Router } from "@angular/router";
 import { UserStoreService } from "../../user/store/user-store.service";
 import { Role } from "../../user/model/role.model";
-import { RoutePath } from "../../../app/app.routes";
+import { RoutePath } from "../../common/constant/route-path.enum";
 
 export const adminGuard: CanActivateFn = async () => {
     const userStore = inject(UserStoreService);

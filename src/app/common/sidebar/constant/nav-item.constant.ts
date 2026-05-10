@@ -1,5 +1,5 @@
 import { Role } from "../../../../core/user/model/role.model";
-import { RoutePath } from "../../../app.routes";
+import { RoutePath } from "../../../../core/common/constant/route-path.enum";
 import { HomeFragment } from "../../../home/model/home-fragment.model";
 
 export const navItems: NavItem[] = [

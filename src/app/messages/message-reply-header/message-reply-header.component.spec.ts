@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { LoggerTestingModule } from "ngx-logger/testing";
+import { provideRouter } from "@angular/router";
+import { MessageDataPipe } from "../../../core/message/pipe/message-data.pipe";
 
 import { MessageReplyHeaderComponent } from "./message-reply-header.component";
 
@@ -8,7 +11,8 @@ describe("MessageReplyHeaderComponent", () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [MessageReplyHeaderComponent],
+            imports: [LoggerTestingModule, MessageReplyHeaderComponent],
+            providers: [MessageDataPipe, provideRouter([])],
         }).compileComponents();
 
         fixture = TestBed.createComponent(MessageReplyHeaderComponent);

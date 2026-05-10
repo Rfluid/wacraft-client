@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SidebarLayoutComponent } from "../common/sidebar-layout/sidebar-layout.component";
 import { CopyButtonComponent } from "../common/copy-button/copy-button.component";
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 import { WorkspaceStoreService } from "../../core/workspace/store/workspace-store.service";
 import {
     WorkspaceMemberStoreService,

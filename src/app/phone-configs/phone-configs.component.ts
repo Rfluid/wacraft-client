@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
 import { SidebarLayoutComponent } from "../common/sidebar-layout/sidebar-layout.component";
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 import { PhoneConfigStoreService } from "../../core/phone-config/store/phone-config-store.service";
 import { PhoneConfigControllerService } from "../../core/phone-config/controller/phone-config-controller.service";
 import { WorkspaceStoreService } from "../../core/workspace/store/workspace-store.service";

@@ -4,7 +4,7 @@ import { RouterModule } from "@angular/router";
 import { AuthControllerService } from "../../core/auth/controller/auth-controller.service";
 import { AuthService } from "../../core/auth/service/auth.service";
 import { UserStoreService } from "../../core/user/store/user-store.service";
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 import { isHttpError } from "../../core/common/model/http-error-shape.model";
 
 @Component({

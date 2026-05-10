@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { LoggerTestingModule } from "ngx-logger/testing";
+import { provideRouter } from "@angular/router";
 
 import { CampaignDetailsComponent } from "./campaign-details.component";
 
@@ -8,7 +10,8 @@ describe("CampaignDetailsComponent", () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [CampaignDetailsComponent],
+            imports: [LoggerTestingModule, CampaignDetailsComponent],
+            providers: [provideRouter([])],
         }).compileComponents();
 
         fixture = TestBed.createComponent(CampaignDetailsComponent);

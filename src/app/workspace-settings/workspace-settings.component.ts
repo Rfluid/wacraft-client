@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { SidebarLayoutComponent } from "../common/sidebar-layout/sidebar-layout.component";
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 import { WorkspaceStoreService } from "../../core/workspace/store/workspace-store.service";
 import { WorkspaceControllerService } from "../../core/workspace/controller/workspace-controller.service";
 import { CopyButtonComponent } from "../common/copy-button/copy-button.component";

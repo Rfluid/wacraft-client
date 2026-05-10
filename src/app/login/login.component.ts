@@ -6,7 +6,7 @@ import { UserModule } from "../../core/user/user.module";
 import { UserStoreService } from "../../core/user/store/user-store.service";
 import { isHttpError } from "../../core/common/model/http-error-shape.model";
 import { CountdownPipe } from "../../core/common/pipe/countdown.pipe";
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 
 @Component({
     selector: "app-login",

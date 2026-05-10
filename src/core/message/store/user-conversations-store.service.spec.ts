@@ -15,54 +15,10 @@ import { MessageType } from "../model/message-type.model";
 import { Status } from "../../status/entity/status.entity";
 import { SendingStatus } from "../../status/model/sending-status.model";
 import { MessageFields } from "../entity/message.entity";
-
-// Mocks designed to expose the WS callbacks that the store registers,
-// so tests can drive concurrency by invoking them directly. The real
-// service uses a Subject<MessageEvent> over a WebSocket; we only need
-// the registered callback because that is the only seam the store uses.
-//
-// The store fires removeSent and appendConversationIfAtBottom without
-// awaiting, so emit() also drains pending microtasks before returning;
-// otherwise tests would observe state mid-mutex-chain.
-async function drain(times = 100) {
-    for (let i = 0; i < times; i++) await Promise.resolve();
-}
-
-class MockMessageGateway {
-    opened = Promise.resolve();
-    cb?: (msg: Conversation) => void | Promise<void>;
-    watchNewMessage(cb: (msg: Conversation) => void | Promise<void>) {
-        this.cb = cb;
-    }
-    async emit(msg: Conversation) {
-        await this.cb?.(msg);
-        await drain();
-    }
-}
-
-class MockStatusGateway {
-    opened = Promise.resolve();
-    private cb?: (s: Status) => void;
-    watchNewStatus(cb: (s: Status) => void) {
-        this.cb = cb;
-    }
-    emit(status: Status) {
-        this.cb?.(status);
-    }
-}
+import { MockLogger, MockMessageGateway, MockStatusGateway, defer, drain } from "../../../testing";
 
 class MockLocalSettings {
     autoMarkAsRead = false;
-}
-
-class MockLogger {
-    debug = () => {};
-    info = () => {};
-    warn = () => {};
-    error = () => {};
-    trace = () => {};
-    log = () => {};
-    fatal = () => {};
 }
 
 const noopRoute: Partial<ActivatedRoute> = {
@@ -106,27 +62,7 @@ function makeStatus(messageId: string, status: SendingStatus): Status {
     } as unknown as Status;
 }
 
-interface Deferred<T> {
-    promise: Promise<T>;
-    resolve: (v: T) => void;
-    reject: (err?: unknown) => void;
-}
-function defer<T>(): Deferred<T> {
-    let resolve!: (v: T) => void;
-    let reject!: (err?: unknown) => void;
-    const promise = new Promise<T>((res, rej) => {
-        resolve = res;
-        reject = rej;
-    });
-    return { promise, resolve, reject };
-}
-
-// Tick the microtask queue. addUnsent and HTTP .then chains issue many
-// awaits across mutex acquire/release boundaries before reaching a
-// stable state.
-async function flush(times = 100) {
-    for (let i = 0; i < times; i++) await Promise.resolve();
-}
+const flush = drain;
 
 describe("UserConversationsStoreService — concurrency", () => {
     let store: UserConversationsStoreService;
@@ -350,9 +286,9 @@ describe("UserConversationsStoreService — concurrency", () => {
             // sent again (3) ≥ read (1) → push.
             statusGw.emit(makeStatus(realId, SendingStatus.sent));
 
-            const statuses = store.messageHistory.get(MPC)![0].statuses!.map(
-                s => s.product_data.status,
-            );
+            const statuses = store.messageHistory
+                .get(MPC)![0]
+                .statuses!.map(s => s.product_data.status);
             expect(statuses).toEqual([
                 SendingStatus.read,
                 SendingStatus.delivered,
@@ -503,10 +439,7 @@ describe("UserConversationsStoreService — concurrency", () => {
             // First call returns 2 conversations, second returns 0 to terminate.
             convoCtl.getByMessagingProductContact.and.callFake(async (_id, _f, p) => {
                 if (p?.offset === 0)
-                    return [
-                        { id: "h1" } as Conversation,
-                        { id: "h2" } as Conversation,
-                    ];
+                    return [{ id: "h1" } as Conversation, { id: "h2" } as Conversation];
                 return [];
             });
 

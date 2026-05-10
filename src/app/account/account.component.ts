@@ -10,7 +10,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatIconModule } from "@angular/material/icon";
 import { ThemeMode } from "../../core/common/model/theme-modes.model";
 import { SidebarLayoutComponent } from "../common/sidebar-layout/sidebar-layout.component";
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 import { NGXLogger } from "ngx-logger";
 import { TimeoutErrorModalComponent } from "../common/timeout-error-modal/timeout-error-modal.component";
 import { isHttpError } from "../../core/common/model/http-error-shape.model";

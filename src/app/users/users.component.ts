@@ -1,6 +1,6 @@
 import { Component, HostListener, inject } from "@angular/core";
 import { SidebarLayoutComponent } from "../common/sidebar-layout/sidebar-layout.component";
-import { RoutePath } from "../app.routes";
+import { RoutePath } from "../../core/common/constant/route-path.enum";
 import { QueryParamsService } from "../../core/navigation/service/query-params.service";
 import { UserSidebarComponent } from "./user-sidebar/user-sidebar.component";
 import { UserDetailsComponent } from "./user-details/user-details.component";
