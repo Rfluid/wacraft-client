@@ -5,8 +5,8 @@
 #
 # Dependency graph (matches CI jobs):
 #   Wave 1 (parallel): lint | prettier | conftest | gitleaks
-#   Wave 2:            npm_audit    <- needs lint + prettier
-#   Wave 3:            build        <- needs npm_audit
+#   Wave 2 (parallel): npm_audit | test     <- both need lint + prettier
+#   Wave 3:            build                <- needs npm_audit + test
 #   conftest / gitleaks run freely and never block other waves.
 set -uo pipefail
 
@@ -32,6 +32,7 @@ declare -A HINTS
 HINTS[lint]="fix ESLint errors above; run: npm run lint"
 HINTS[prettier]="run: npm run format to auto-fix all formatting"
 HINTS[npm_audit]="upgrade the vulnerable package: npm audit fix, or: npm update <package>"
+HINTS[test]="fix failing specs; run: npx ng test --watch=false --browsers=ChromeHeadless for details"
 HINTS[build]="fix the build errors above; run: npm run build for details"
 HINTS[conftest]="fix the Dockerfile policy violations listed above"
 HINTS[gitleaks]="remove the secret from history; see: git-filter-repo or BFG"
@@ -156,25 +157,27 @@ banner "Gate — lint | prettier"
 wait_for lint prettier
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Wave 2 — npm audit (needs lint-and-format gate)
+# Wave 2 — npm_audit | test (both need lint-and-format gate, run in parallel)
 # ─────────────────────────────────────────────────────────────────────────────
 if gate_ok lint prettier; then
-    banner "Wave 2 — npm_audit"
+    banner "Wave 2 — parallel: npm_audit | test"
     launch npm_audit npm audit --audit-level=high --omit=dev
+    launch test npx ng test --watch=false --browsers=ChromeHeadless
 
-    banner "Gate — npm_audit"
-    wait_for npm_audit
+    banner "Gate — npm_audit | test"
+    wait_for npm_audit test
 
-    # ── Wave 3 — build (needs npm audit) ──────────────────────────────────
-    if gate_ok npm_audit; then
+    # ── Wave 3 — build (needs npm_audit + test) ──────────────────────────
+    if gate_ok npm_audit test; then
         banner "Wave 3 — build"
         launch build npm run build
         wait_for build
     else
-        mark_skip build "npm_audit failed"
+        mark_skip build "npm_audit or test failed"
     fi
 else
     mark_skip npm_audit "lint/prettier gate failed"
+    mark_skip test      "lint/prettier gate failed"
     mark_skip build     "lint/prettier gate failed"
 fi
 
